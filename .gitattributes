@@ -27,6 +27,12 @@
 *.ico           binary
 *.jpeg          binary
 *.gif           binary
+*.eot           binary
+*.svg           binary
+*.ttf           binary
+*.woff          binary
+*.min.js        binary
+*.min.css       binary
 
 # Js
 *.vue           text eol=lf

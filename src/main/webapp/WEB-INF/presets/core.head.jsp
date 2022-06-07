@@ -23,6 +23,21 @@
 <script src="${pageContext.request.contextPath}/static/js/icons/feather-icon/feather.min.js" defer></script>
 <script src="${pageContext.request.contextPath}/static/js/icons/feather-icon/feather-icon.js" defer></script>
 
+<%-- Plugins --%>
+<script src="${pageContext.request.contextPath}/static/js/sweet-alert/sweetalert.min.js" defer></script>
+<script src="${pageContext.request.contextPath}/static/css/sweetalert2.min.css" defer></script>
+
 <%-- App styles and colors --%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/style.min.css">
 <link id="color" rel="stylesheet" href="${pageContext.request.contextPath}/static/css/color-1.min.css" media="screen">
+<script>
+    // Defer script call hack
+    window.defer = (func) => {
+        window._deferQueue = window._deferQueue || [];
+        window._deferQueue.push(func);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const queue = window._deferQueue;
+        while (queue.length) queue.shift().call();
+    });
+</script>

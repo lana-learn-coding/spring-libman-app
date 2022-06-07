@@ -4,14 +4,15 @@ import io.lana.libman.support.security.AuthFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeController {
+class HomeController {
     private final AuthFacade<UserDetails> authFacade;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String root() {
         if (authFacade.isNotAuthenticated()) {
             return "redirect:/home";
@@ -19,12 +20,12 @@ public class HomeController {
         return "redirect:/library/dashboard";
     }
 
-    @RequestMapping("/home")
+    @GetMapping("/home")
     public String home() {
         return "/home/home";
     }
 
-    @RequestMapping("/library/dashboard")
+    @GetMapping("/library/dashboard")
     public String dashboard() {
         return "/home/dashboard";
     }

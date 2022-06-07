@@ -31,19 +31,7 @@
 </div>
 <!-- Loader ends-->
 <!-- page-wrapper Start-->
-<div class="page-wrapper" id="pageWrapper">
-    <jsp:include page="/WEB-INF/shared/header.jsp"/>
-    <!-- Page Body Start-->
-    <div class="page-body-wrapper horizontal-menu">
-        <jsp:include page="/WEB-INF/shared/nav.jsp"/>
-
-        <div class="page-body">
-            <jsp:invoke fragment="body"/>
-        </div>
-        <jsp:include page="/WEB-INF/shared/footer.jsp"/>
-    </div>
-</div>
-
+<jsp:invoke fragment="body"/>
 <jsp:invoke fragment="scripts"/>
 </body>
 </html>

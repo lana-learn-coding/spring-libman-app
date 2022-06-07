@@ -16,8 +16,18 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/me/**/*", "/library/**/*").authenticated()
                 .anyRequest().permitAll()
-                .and().formLogin().permitAll()
-                .and().logout().permitAll();
+
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .failureUrl("/login?error=true")
+
+                .and()
+                .rememberMe()
+
+                .and()
+                .logout();
+
         return http.build();
     }
 
@@ -26,17 +36,17 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(
                 User.withDefaultPasswordEncoder()
                         .username("admin")
-                        .password("123456")
+                        .password("1")
                         .roles("ADMIN")
                         .build(),
                 User.withDefaultPasswordEncoder()
                         .username("user")
-                        .password("password")
+                        .password("1")
                         .roles("LIBRARIAN")
                         .build(),
                 User.withDefaultPasswordEncoder()
                         .username("reader")
-                        .password("123456")
+                        .password("1")
                         .roles()
                         .build()
         );

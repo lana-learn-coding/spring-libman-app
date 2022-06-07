@@ -1,4 +1,6 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <div class="page-main-header">
     <div class="main-header-right row m-0">
         <div class="main-header-left">
@@ -128,8 +130,35 @@
                     </ul>
                 </li>
                 <li class="onhover-dropdown p-0">
-                    <button class="btn btn-primary-light" type="button"><a href="login_two.html"><i
-                            data-feather="log-out"></i>Log out</a></button>
+                    <sec:authorize access="!isAuthenticated()">
+                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/login">
+                            Login
+                        </a>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <form action="${pageContext.request.contextPath}/logout" method="post">
+                            <sec:csrfInput/>
+                            <button class="btn btn-primary-light" type="submit" id="logout">
+                                <i data-feather="log-out"></i> Log out
+                            </button>
+                        </form>
+                        <script>
+                            defer(() => {
+                                $('#logout').click((e) => {
+                                    e.preventDefault();
+                                    const form = $(e.currentTarget).parents('form');
+                                    swal({
+                                        title: 'You are about to logout',
+                                        text: 'You will be logged out of your current account',
+                                        icon: 'info',
+                                        buttons: ['Back', 'Logout'],
+                                    }).then(val => {
+                                        if (val) form.submit();
+                                    });
+                                });
+                            })
+                        </script>
+                    </sec:authorize>
                 </li>
             </ul>
         </div>

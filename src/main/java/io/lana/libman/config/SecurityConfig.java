@@ -1,18 +1,32 @@
 package io.lana.libman.config;
 
+import io.lana.libman.core.user.UserRepo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Map;
+
 @Configuration
-public class SecurityConfig {
+class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .headers()
+                .frameOptions().sameOrigin()
+
+                .and()
+                .csrf()
+                .ignoringAntMatchers("/h2-console/**")
+
+                .and()
                 .authorizeRequests()
                 .antMatchers("/me/**/*", "/library/**/*").authenticated()
                 .anyRequest().permitAll()
@@ -32,23 +46,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.withDefaultPasswordEncoder()
-                        .username("admin")
-                        .password("1")
-                        .roles("ADMIN")
-                        .build(),
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("1")
-                        .roles("LIBRARIAN")
-                        .build(),
-                User.withDefaultPasswordEncoder()
-                        .username("reader")
-                        .password("1")
-                        .roles()
-                        .build()
-        );
+    public UserDetailsService userDetailsService(UserRepo repo) {
+        return username -> repo.findUserForAuth(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        final var defaultEncode = "bcrypt";
+        return new DelegatingPasswordEncoder(defaultEncode, Map.of(
+                defaultEncode, new BCryptPasswordEncoder(),
+                "noop", NoOpPasswordEncoder.getInstance()
+        ));
     }
 }

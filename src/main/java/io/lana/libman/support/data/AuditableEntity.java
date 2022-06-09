@@ -8,16 +8,15 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
 @MappedSuperclass
 public abstract class AuditableEntity implements Identified {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    protected String id = IdUtils.newTimeSortableId();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
@@ -37,7 +36,7 @@ public abstract class AuditableEntity implements Identified {
 
     @Override
     public int hashCode() {
-        return 13;
+        return Objects.hashCode(getId());
     }
 
     @Override
@@ -46,6 +45,6 @@ public abstract class AuditableEntity implements Identified {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         AuditableEntity other = (AuditableEntity) obj;
-        return id != null && id.equals(other.getId());
+        return Objects.equals(getId(), other.getId());
     }
 }

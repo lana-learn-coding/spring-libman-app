@@ -1,6 +1,7 @@
 package io.lana.libman.core.user.role;
 
-import io.lana.libman.support.data.NamedEntity;
+import io.lana.libman.support.data.AuditableEntity;
+import io.lana.libman.support.data.Named;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import static io.lana.libman.core.user.role.Authorities.LIBRARIAN;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Permission extends NamedEntity implements GrantedAuthority {
+public class Permission extends AuditableEntity implements GrantedAuthority, Named {
     private String name;
 
     private String description;
@@ -41,13 +42,13 @@ public class Permission extends NamedEntity implements GrantedAuthority {
 
     public static Permission admin() {
         final var perm = Permission.ofName(ADMIN);
-        perm.id = 1L;
+        perm.id = "01G54DF50000359SJM3WAPSDAA";
         return perm;
     }
 
     public static Permission librarian() {
         final var perm = Permission.ofName(LIBRARIAN);
-        perm.id = 2L;
+        perm.id = "01G54DHD6W27QM73DGNE58381V";
         return perm;
     }
 }

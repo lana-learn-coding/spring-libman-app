@@ -1,7 +1,7 @@
 package io.lana.libman.support.data;
 
 public interface Identified {
-    Long getId();
+    String getId();
 
-    void setId(Long id);
+    void setId(String id);
 }

@@ -5,13 +5,6 @@ $('.mobile-back').click(function () {
   $('.nav-menu').css('left', '-410px');
 });
 
-$('.page-wrapper').attr('class', 'page-wrapper ' + localStorage.getItem('page-wrapper'));
-$('.page-body-wrapper').attr('class', 'page-body-wrapper ' + localStorage.getItem('page-body-wrapper'));
-
-if (localStorage.getItem('page-wrapper') === null) {
-  $('.page-wrapper').addClass('compact-wrapper');
-}
-
 // left sidebar and horizotal menu
 if ($('#pageWrapper').hasClass('compact-wrapper')) {
   jQuery('.submenu-title').append('<div class="according-menu"><i class="fa fa-angle-right"></i></div>');

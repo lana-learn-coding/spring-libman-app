@@ -31,10 +31,10 @@
 </div>
 <!-- Loader ends-->
 <!-- page-wrapper Start-->
-<div class="page-wrapper" id="pageWrapper">
+<div class="page-wrapper compact-wrapper" id="pageWrapper" data-layout="">
     <jsp:include page="/WEB-INF/shared/header.jsp"/>
     <!-- Page Body Start-->
-    <div class="page-body-wrapper horizontal-menu">
+    <div class="page-body-wrapper sidebar-icon">
         <jsp:include page="/WEB-INF/shared/nav.jsp"/>
 
         <div class="page-body">

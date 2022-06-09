@@ -33,12 +33,11 @@
 <link id="color" rel="stylesheet" href="${pageContext.request.contextPath}/static/css/color-1.min.css" media="screen">
 <script>
     // Defer script call hack
+    const queue = window._deferQueue || [];
     window.defer = (func) => {
-        window._deferQueue = window._deferQueue || [];
-        window._deferQueue.push(func);
+        queue.push(func);
     }
     document.addEventListener('DOMContentLoaded', () => {
-        const queue = window._deferQueue;
         while (queue.length) queue.shift().call();
     });
 </script>

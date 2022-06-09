@@ -4,13 +4,19 @@
 <div class="page-main-header">
     <div class="main-header-right row m-0">
         <div class="main-header-left">
-            <div class="logo-wrapper"><a href="index.tag"><img class="img-fluid" src="/static/images/logo/logo.png"
-                                                               alt=""></a></div>
-            <div class="dark-logo-wrapper"><a href="index.tag"><img class="img-fluid"
-                                                                    src="/static/images/logo/dark-logo.png" alt=""></a>
+            <div class="logo-wrapper">
+                <a href="${pageContext.request.contextPath}/" class="fw-bold h4">
+                    <i class="icofont icofont-library"></i> Libman
+                </a>
             </div>
-            <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center"
-                                           id="sidebar-toggle"></i></div>
+            <div class="dark-logo-wrapper">
+                <a href="${pageContext.request.contextPath}/" class="fw-bold">
+                    Libman
+                </a>
+            </div>
+            <div class="toggle-sidebar">
+                <i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle"></i>
+            </div>
         </div>
         <div class="left-menu-header col">
             <ul>

@@ -10,9 +10,12 @@
 <%-- Core --%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/responsive.min.css">
-<script src="${pageContext.request.contextPath}/static/js/jquery-3.5.1.min.js" defer></script>
-<script src="${pageContext.request.contextPath}/static/js/bootstrap/popper.min.js" defer></script>
-<script src="${pageContext.request.contextPath}/static/js/bootstrap/bootstrap.min.js" defer></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/unpoly.min.css">
+<script src="${pageContext.request.contextPath}/static/js/core/jquery-3.5.1.min.js" defer></script>
+<script src="${pageContext.request.contextPath}/static/js/core/popper.min.js" defer></script>
+<script src="${pageContext.request.contextPath}/static/js/core/bootstrap.min.js" defer></script>
+<script src="${pageContext.request.contextPath}/static/js/core/unpoly.min.js" defer></script>
+<script src="${pageContext.request.contextPath}/static/js/core/unpoly-bootstrap5.min.js" defer></script>
 
 <%-- Icon --%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/fontawesome.min.css">

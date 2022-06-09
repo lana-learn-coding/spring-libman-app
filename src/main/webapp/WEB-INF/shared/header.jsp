@@ -26,8 +26,6 @@
         </div>
         <div class="nav-right col pull-right right-menu p-0">
             <ul class="nav-menus">
-                <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i
-                        data-feather="maximize"></i></a></li>
                 <li class="onhover-dropdown">
                     <div class="bookmark-box"><i data-feather="star"></i></div>
                     <div class="bookmark-dropdown onhover-show-div">
@@ -136,28 +134,12 @@
                         </a>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                        <form action="${pageContext.request.contextPath}/logout" method="post">
-                            <sec:csrfInput/>
-                            <button class="btn btn-primary-light" type="submit" id="logout">
-                                <i data-feather="log-out"></i> Log out
-                            </button>
-                        </form>
-                        <script>
-                            defer(() => {
-                                $('#logout').click((e) => {
-                                    e.preventDefault();
-                                    const form = $(e.currentTarget).parents('form');
-                                    swal({
-                                        title: 'You are about to logout',
-                                        text: 'You will be logged out of your current account',
-                                        icon: 'info',
-                                        buttons: ['Back', 'Logout'],
-                                    }).then(val => {
-                                        if (val) form.submit();
-                                    });
-                                });
-                            })
-                        </script>
+                        <button class="btn btn-primary-light"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#logout-modal">
+                            <i data-feather="log-out"></i> Log out
+                        </button>
                     </sec:authorize>
                 </li>
             </ul>
@@ -165,3 +147,22 @@
         <div class="d-lg-none mobile-toggle pull-right w-auto"><i data-feather="more-horizontal"></i></div>
     </div>
 </div>
+<sec:authorize access="isAuthenticated()">
+    <div class="modal fade" tabindex="-1" id="logout-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" action="${pageContext.request.contextPath}/logout"
+                  method="post">
+                <sec:csrfInput/>
+                <div class="modal-body d-flex flex-column align-items-center pt-4 pb-3">
+                    <i data-feather="info" class="txt-info" style="width: 100px; height: 100px; stroke-width: 1"></i>
+                    <h3 class="f-w-600 mt-3">Log Out</h3>
+                    <span>You are about to logout</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">back</button>
+                    <button type="submit" class="btn btn-primary">Log out</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</sec:authorize>

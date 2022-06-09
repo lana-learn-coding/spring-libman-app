@@ -27,8 +27,7 @@
 <script src="${pageContext.request.contextPath}/static/js/icons/feather-icon/feather-icon.js" defer></script>
 
 <%-- Plugins --%>
-<script src="${pageContext.request.contextPath}/static/js/sweet-alert/sweetalert.min.js" defer></script>
-<script src="${pageContext.request.contextPath}/static/css/sweetalert2.min.css" defer></script>
+
 
 <%-- App styles and colors --%>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/style.min.css">

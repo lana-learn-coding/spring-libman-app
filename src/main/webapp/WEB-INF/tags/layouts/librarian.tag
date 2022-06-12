@@ -37,7 +37,7 @@
     <div class="page-body-wrapper sidebar-icon">
         <jsp:include page="/WEB-INF/shared/nav.jsp"/>
 
-        <div class="page-body">
+        <div class="page-body" up-main>
             <jsp:invoke fragment="body"/>
         </div>
         <jsp:include page="/WEB-INF/shared/footer.jsp"/>

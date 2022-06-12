@@ -1,9 +1,11 @@
 package io.lana.libman.config;
 
+import com.github.javafaker.Faker;
 import io.lana.libman.core.tag.Author;
-import io.lana.libman.core.tag.Genres;
+import io.lana.libman.core.tag.Genre;
 import io.lana.libman.core.tag.Publisher;
 import io.lana.libman.core.tag.Series;
+import io.lana.libman.core.tag.repo.*;
 import io.lana.libman.core.user.User;
 import io.lana.libman.core.user.UserRepo;
 import io.lana.libman.core.user.role.Permission;
@@ -17,10 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
-
-import static io.lana.libman.core.user.role.Authorities.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +34,14 @@ class InitialDataConfig implements ApplicationRunner {
 
     private final RoleRepo roleRepo;
 
+    private final AuthorRepo authorRepo;
+
+    private final PublisherRepo publisherRepo;
+
+    private final GenreRepo genreRepo;
+
+    private final SeriesRepo seriesRepo;
+
     private final PasswordEncoder passwordEncoder;
 
 
@@ -39,12 +50,18 @@ class InitialDataConfig implements ApplicationRunner {
         initPermission();
         initRole();
         initUser();
+
+        initTag();
     }
 
     @Transactional
     void initPermission() {
         if (permissionRepo.count() > 0) return;
         permissionRepo.saveAll(Permission.builtIns());
+        permissionRepo.saveAll(Permission.forWriteOnly(Author.class.getSimpleName()));
+        permissionRepo.saveAll(Permission.forWriteOnly(Genre.class.getSimpleName()));
+        permissionRepo.saveAll(Permission.forWriteOnly(Publisher.class.getSimpleName()));
+        permissionRepo.saveAll(Permission.forWriteOnly(Series.class.getSimpleName()));
     }
 
     @Transactional
@@ -66,4 +83,60 @@ class InitialDataConfig implements ApplicationRunner {
         ));
     }
 
+    @Transactional
+    void initTag() {
+        var faker = Faker.instance();
+        if (authorRepo.count() == 0) {
+            Stream.generate(() -> faker.book().author())
+                    .distinct()
+                    .limit(20)
+                    .forEach(name -> {
+                        final var author = new Author();
+                        author.setName(name);
+                        author.setAbout(faker.superhero().descriptor());
+                        author.setDateOfBirth(faker.date().birthday(20, 65).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                        if (faker.bool().bool()) {
+                            author.setDateOfDeath(faker.date().past(36500, 29000, TimeUnit.DAYS)
+                                    .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                        }
+                        authorRepo.save(author);
+                    });
+        }
+
+        if (genreRepo.count() == 0) {
+            Stream.generate(() -> faker.book().genre())
+                    .distinct()
+                    .limit(10)
+                    .forEach(name -> {
+                        final var genres = new Genre();
+                        genres.setName(name);
+                        genres.setAbout(faker.weather().description());
+                        genreRepo.save(genres);
+                    });
+        }
+
+        if (publisherRepo.count() == 0) {
+            Stream.generate(() -> faker.book().publisher())
+                    .distinct()
+                    .limit(8)
+                    .forEach(name -> {
+                        final var publisher = new Publisher();
+                        publisher.setName(name);
+                        publisher.setAbout(faker.weather().description());
+                        publisherRepo.save(publisher);
+                    });
+        }
+
+        if (seriesRepo.count() == 0) {
+            Stream.generate(() -> faker.company().catchPhrase())
+                    .distinct()
+                    .limit(10)
+                    .forEach(name -> {
+                        final var series = new Series();
+                        series.setName(name);
+                        series.setAbout(faker.howIMetYourMother().catchPhrase());
+                        seriesRepo.save(series);
+                    });
+        }
+    }
 }

@@ -1,0 +1,52 @@
+package io.lana.libman.core.book;
+
+import io.lana.libman.core.tag.Author;
+import io.lana.libman.core.tag.Genre;
+import io.lana.libman.core.tag.Publisher;
+import io.lana.libman.core.tag.Series;
+import io.lana.libman.support.data.AuditableEntity;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter
+@Setter
+@Entity
+public class BookInfo extends AuditableEntity {
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
+
+    private String image;
+
+    @Column(columnDefinition = "TEXT")
+    private String about;
+
+    @Column(name = "`year`")
+    private Integer year;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
+
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
+
+
+    @ManyToOne
+    @JoinColumn(name = "series_id")
+    private Series series;
+
+    @ManyToMany
+    @JoinTable(
+            name = "book_info_genres",
+            joinColumns = {@JoinColumn(name = "book_info_id")},
+            inverseJoinColumns = {@JoinColumn(name = "genre_id")}
+    )
+    private Set<Genre> genres = new HashSet<>();
+}

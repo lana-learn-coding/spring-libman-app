@@ -4,16 +4,15 @@ import io.lana.libman.core.user.role.Permission;
 import io.lana.libman.core.user.role.Role;
 import io.lana.libman.support.data.AuditableEntity;
 import io.lana.libman.support.data.Gender;
+import io.lana.libman.support.data.Named;
 import io.lana.libman.support.security.AuthUser;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,9 +24,14 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "`user`")
 @NoArgsConstructor
-public class User extends AuditableEntity implements AuthUser {
+public class User extends AuditableEntity implements AuthUser, Named {
+
+    @NotBlank
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank
+    @Column(nullable = false, unique = true)
     private String username;
 
     private String password;
@@ -64,11 +68,6 @@ public class User extends AuditableEntity implements AuthUser {
     private Set<Permission> permissions;
 
     @Transient
-    public boolean isInternal() {
-        return getAuthorities().stream().anyMatch(p -> p.equals(Permission.librarian()));
-    }
-
-    @Transient
     @Override
     public Collection<Permission> getAuthorities() {
         if (permissions == null) {
@@ -77,6 +76,18 @@ public class User extends AuditableEntity implements AuthUser {
                     .collect(Collectors.toUnmodifiableSet());
         }
         return permissions;
+    }
+
+    @Transient
+    @Override
+    public String getName() {
+        return username;
+    }
+
+    @Transient
+    @Override
+    public void setName(String name) {
+        this.username = name;
     }
 
     @Transient

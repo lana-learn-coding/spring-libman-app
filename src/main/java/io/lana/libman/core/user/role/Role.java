@@ -1,8 +1,7 @@
 package io.lana.libman.core.user.role;
 
 import io.lana.libman.core.user.User;
-import io.lana.libman.support.data.AuditableEntity;
-import io.lana.libman.support.data.Named;
+import io.lana.libman.support.data.NamedEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +20,7 @@ import static io.lana.libman.core.user.role.Authorities.LIBRARIAN;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Role extends AuditableEntity implements Named {
-    private String name;
-
+public class Role extends NamedEntity {
     private String description;
 
     @ManyToMany(fetch = FetchType.EAGER)

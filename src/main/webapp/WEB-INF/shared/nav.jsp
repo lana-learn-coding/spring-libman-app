@@ -26,7 +26,7 @@
         <div class="mt-2"></div>
     </sec:authorize>
     <nav>
-        <div class="main-navbar" up-nav>
+        <div class="main-navbar" up-nav="include-query">
             <div id="mainnav">
                 <ul class="nav-menu custom-scrollbar">
                     <li class="back-btn">

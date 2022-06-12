@@ -9,6 +9,7 @@
       rel="stylesheet">
 
 <%-- Core --%>
+<script src="${pageContext.request.contextPath}/static/js/core/core.min.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/unpoly.min.css">
 <script src="${pageContext.request.contextPath}/static/js/core/jquery-3.5.1.min.js" defer></script>
@@ -40,14 +41,3 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/feather-icon.min.css">
 <script src="${pageContext.request.contextPath}/static/js/icons/feather.min.js" defer></script>
 <script src="${pageContext.request.contextPath}/static/js/icons/feather-icon.js" defer></script>
-
-<script>
-    // Defer script call hack
-    const queue = window._deferQueue || [];
-    window.defer = (func) => {
-        queue.push(func);
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        while (queue.length) queue.shift().call();
-    });
-</script>

@@ -8,9 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public interface AuthFacade<T extends UserDetails> {
     default boolean isAuthenticated() {
@@ -55,8 +54,57 @@ public interface AuthFacade<T extends UserDetails> {
         return getAuthorities();
     }
 
+    default void requireAllAuthorities(final Collection<GrantedAuthority> grantedAuthorities) {
+        if (isNotAuthenticated()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasAllAuthorities(grantedAuthorities)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
+    default void requireAllAuthorities(final String... authorities) {
+        if (isNotAuthenticated()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasAllAuthorities(authorities)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
+    default void requireAnyAuthorities(final Collection<GrantedAuthority> grantedAuthorities) {
+        if (isNotAuthenticated()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasAnyAuthorities(grantedAuthorities)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
+    default void requireAnyAuthorities(final String... authorities) {
+        if (isNotAuthenticated()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasAnyAuthorities(authorities)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * get authorities
+     *
+     * @return authorities or empty if user is not authenticated
+     */
     default Collection<? extends GrantedAuthority> getAuthorities() {
         return getAuthentication().map(Authentication::getAuthorities).orElse(Collections.emptyList());
+    }
+
+    default boolean hasAllAuthorities(final Collection<GrantedAuthority> grantedAuthorities) {
+        return hasAllAuthorities(grantedAuthorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .toArray(String[]::new));
+    }
+
+    default boolean hasAllAuthorities(final String... authorities) {
+        return getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toUnmodifiableSet())
+                .containsAll(List.of(authorities));
+    }
+
+    default boolean hasAnyAuthorities(final Collection<GrantedAuthority> grantedAuthorities) {
+        return hasAnyAuthorities(grantedAuthorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .toArray(String[]::new));
+    }
+
+    default boolean hasAnyAuthorities(final String... authorities) {
+        final Set<String> authoritiesSet = Set.of(authorities);
+        return getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                .anyMatch(authoritiesSet::contains);
     }
 
     /**

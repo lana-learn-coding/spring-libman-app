@@ -13,8 +13,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.lana.libman.core.user.role.Authorities.ADMIN;
-import static io.lana.libman.core.user.role.Authorities.LIBRARIAN;
+import static io.lana.libman.core.user.role.Authorities.*;
+import static io.lana.libman.core.user.role.Authorities.FORCE;
 
 @Getter
 @Setter
@@ -37,20 +37,21 @@ public class Role extends NamedEntity {
 
     public static Role ofName(String name, Collection<Permission> permissions) {
         final var role = new Role();
+        role.id = name;
         role.name = name;
         role.permissions = new HashSet<>(permissions);
         return role;
     }
 
     public static Role admin() {
-        final var role = Role.ofName(ADMIN, Set.of(Permission.admin(), Permission.librarian()));
-        role.id = "01G54DHP66TVR8SNN5AG3K4CTK";
-        return role;
+        return Role.ofName(ADMIN, Set.of(Permission.ofName(ADMIN), Permission.ofName(LIBRARIAN)));
     }
 
     public static Role librarian() {
-        final var role = Role.ofName(LIBRARIAN, Collections.singleton(Permission.librarian()));
-        role.id = "01G54DHW1FYKWE2PCD2YXGZT4Q";
-        return role;
+        return Role.ofName(LIBRARIAN, Collections.singleton(Permission.ofName(LIBRARIAN)));
+    }
+
+    public static Role force() {
+        return Role.ofName(FORCE, Collections.singleton(Permission.ofName(FORCE)));
     }
 }

@@ -1,5 +1,9 @@
 package io.lana.libman.config;
 
+import io.lana.libman.core.tag.Author;
+import io.lana.libman.core.tag.Genres;
+import io.lana.libman.core.tag.Publisher;
+import io.lana.libman.core.tag.Series;
 import io.lana.libman.core.user.User;
 import io.lana.libman.core.user.UserRepo;
 import io.lana.libman.core.user.role.Permission;
@@ -15,6 +19,8 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+
+import static io.lana.libman.core.user.role.Authorities.*;
 
 @Component
 @RequiredArgsConstructor
@@ -38,13 +44,13 @@ class InitialDataConfig implements ApplicationRunner {
     @Transactional
     void initPermission() {
         if (permissionRepo.count() > 0) return;
-        permissionRepo.saveAll(List.of(Permission.admin(), Permission.librarian()));
+        permissionRepo.saveAll(Permission.builtIns());
     }
 
     @Transactional
     void initRole() {
         if (roleRepo.count() > 0) return;
-        roleRepo.saveAll(List.of(Role.admin(), Role.librarian()));
+        roleRepo.saveAll(List.of(Role.admin(), Role.librarian(), Role.force()));
     }
 
     @Transactional

@@ -66,8 +66,8 @@
                                 <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                     <component:sorting
                                             target="#table" up="up-scroll='layer'"
-                                            labels="Name;Updated At;Books Count"
-                                            values="name;updatedAt,desc;booksCount,desc"/>
+                                            labels="Name;Books Count;Updated At;Updated By;Id"
+                                            values="name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -80,6 +80,7 @@
                                              <thead>
                                              <tr>
                                                  <th scope="col">#</th>
+                                                 <th scope="col">Id</th>
                                                  <th scope="col">Name</th>
                                                  <th scope="col">Total Books</th>
                                                  <th scope="col">Updated At</th>
@@ -92,6 +93,8 @@
                                              <c:forEach var="item" items="${data.content}" varStatus="loop">
                                                  <tr>
                                                      <th scope="row">${loop.index + 1}</th>
+                                                     <td class="text-truncate"
+                                                         style="max-width: 180px">${ item.id }</td>
                                                      <td>${ item.name }</td>
                                                      <td>${ item.booksCount }</td>
                                                      <td><helper:formatZonedDateTime date="${item.updatedAt}"/></td>

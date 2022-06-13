@@ -30,7 +30,7 @@ public abstract class TaggedCrudController<T extends TaggedEntity> {
     public ModelAndView index(@RequestParam(value = "query", required = false) String query, Pageable pageable) {
         final var page = StringUtils.isBlank(query)
                 ? repo.findAll(pageable)
-                : repo.findAllByNameLike(query, pageable);
+                : repo.findAllByNameLike("%" + query + "%", pageable);
         return new ModelAndView("/library/tag/index", Map.of(
                 "data", page,
                 "title", getName(),

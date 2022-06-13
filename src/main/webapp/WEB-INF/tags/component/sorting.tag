@@ -22,7 +22,7 @@
     <select class="form-select" name="sort"
     ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') }
             aria-label="Sort">
-        <option <c:if test="${empty param.sort}">selected</c:if>>
+        <option value="" <c:if test="${empty param.sort}">selected</c:if>>
             No Sort
         </option>
         <c:forEach items="${_labels}" varStatus="loop">

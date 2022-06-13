@@ -1,6 +1,7 @@
 package io.lana.libman.core.tag;
 
 import io.lana.libman.core.book.Book;
+import io.lana.libman.core.user.role.Authorities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Shelf extends TaggedEntity {
         final var shelf = new Shelf();
         shelf.id = "DEFAULT";
         shelf.name = "Default Storage";
+        shelf.createdBy = Authorities.User.SYSTEM;
         return shelf;
     }
 

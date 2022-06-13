@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static io.lana.libman.core.user.role.Authorities.*;
-import static io.lana.libman.core.user.role.Authorities.FORCE;
 
 @Getter
 @Setter
@@ -40,6 +39,7 @@ public class Role extends NamedEntity {
         role.id = name;
         role.name = name;
         role.permissions = new HashSet<>(permissions);
+        role.createdBy = Authorities.User.SYSTEM;
         return role;
     }
 

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static io.lana.libman.core.user.role.Authorities.User.SYSTEM;
+
 @Component
 @RequiredArgsConstructor
 class InitialDataConfig implements ApplicationRunner {
@@ -84,9 +86,10 @@ class InitialDataConfig implements ApplicationRunner {
         final var password = passwordEncoder.encode("1");
 
         userRepo.saveAll(List.of(
-                User.newInstance("admin@admin", "admin", password, Collections.singleton(Role.admin())),
-                User.newInstance("librarian@librarian", "librarian", password, Collections.singleton(Role.librarian())),
-                User.newInstance("reader@reader", "reader", password, Collections.emptyList())
+                User.system(),
+                User.newInstance("admin@admin", "admin", password, Collections.singleton(Role.admin()), SYSTEM),
+                User.newInstance("librarian@librarian", "librarian", password, Collections.singleton(Role.librarian()), SYSTEM),
+                User.newInstance("reader@reader", "reader", password, Collections.emptyList(), SYSTEM)
         ));
     }
 
@@ -100,6 +103,7 @@ class InitialDataConfig implements ApplicationRunner {
                     .forEach(name -> {
                         final var author = new Author();
                         author.setName(name);
+                        author.setCreatedBy(SYSTEM);
                         author.setAbout(faker.superhero().descriptor());
                         author.setDateOfBirth(faker.date().birthday(20, 65).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                         if (faker.bool().bool()) {
@@ -118,6 +122,7 @@ class InitialDataConfig implements ApplicationRunner {
                         final var genres = new Genre();
                         genres.setName(name);
                         genres.setAbout(faker.weather().description());
+                        genres.setCreatedBy(SYSTEM);
                         genreRepo.save(genres);
                     });
         }
@@ -130,6 +135,7 @@ class InitialDataConfig implements ApplicationRunner {
                         final var publisher = new Publisher();
                         publisher.setName(name);
                         publisher.setAbout(faker.weather().description());
+                        publisher.setCreatedBy(SYSTEM);
                         publisherRepo.save(publisher);
                     });
         }
@@ -142,17 +148,18 @@ class InitialDataConfig implements ApplicationRunner {
                         final var series = new Series();
                         series.setName(name);
                         series.setAbout(faker.howIMetYourMother().catchPhrase());
+                        series.setCreatedBy(SYSTEM);
                         seriesRepo.save(series);
                     });
         }
 
         if (shelfRepo.count() == 0) {
             shelfRepo.save(Shelf.storage());
-            shelfRepo.save(Shelf.ofName("Historical"));
-            shelfRepo.save(Shelf.ofName("Science"));
-            shelfRepo.save(Shelf.ofName("Manga"));
-            shelfRepo.save(Shelf.ofName("Travel"));
-            shelfRepo.save(Shelf.ofName("Self-help / Personal"));
+            List.of("Historical", "Science", "Manga", "Travel", "Self-help / Personal").forEach(name -> {
+                final var shelf = Shelf.ofName(name);
+                shelf.setCreatedBy(SYSTEM);
+                shelfRepo.save(shelf);
+            });
         }
     }
 
@@ -175,6 +182,7 @@ class InitialDataConfig implements ApplicationRunner {
                     info.setTitle(name);
                     info.setAbout(faker.backToTheFuture().quote());
                     info.setPublisher(faker.options().nextElement(publishers));
+                    info.setCreatedBy(SYSTEM);
                     if (faker.random().nextInt(1, 10) > 1) {
                         info.setAuthor(faker.options().nextElement(authors));
                     }
@@ -194,8 +202,10 @@ class InitialDataConfig implements ApplicationRunner {
                     for (int i = 0; i < numberOfBooks; i++) {
                         final var book = new Book();
                         book.setInfo(info);
+                        book.setCreatedBy(SYSTEM);
                         book.setShelf(faker.options().nextElement(shelf));
                         book.setNote(faker.howIMetYourMother().quote());
+                        bookRepo.save(book);
                     }
                 });
     }

@@ -37,6 +37,7 @@ public class Permission extends NamedEntity implements GrantedAuthority {
         final var perm = new Permission();
         perm.id = name;
         perm.name = name;
+        perm.createdBy = User.SYSTEM;
         return perm;
     }
 

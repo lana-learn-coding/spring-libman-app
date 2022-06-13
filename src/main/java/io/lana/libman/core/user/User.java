@@ -1,5 +1,6 @@
 package io.lana.libman.core.user;
 
+import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.core.user.role.Permission;
 import io.lana.libman.core.user.role.Role;
 import io.lana.libman.support.data.AuditableEntity;
@@ -114,12 +115,29 @@ public class User extends AuditableEntity implements AuthUser, Named {
         return true;
     }
 
+    public static User newInstance(String email, String username, String password, Collection<Role> roles, String createdBy) {
+        final var user = newInstance(email, username, password, roles);
+        user.setCreatedBy(Authorities.User.SYSTEM);
+        return user;
+    }
+
     public static User newInstance(String email, String username, String password, Collection<Role> roles) {
         final var user = new User();
         user.email = email;
         user.username = username;
         user.password = password;
         user.roles = new HashSet<>(roles);
+        return user;
+    }
+
+    public static User system() {
+        final var user = new User();
+        user.id = "SYSTEM";
+        user.email = "SYSTEM";
+        user.username = "SYSTEM";
+        user.password = "{noop}SYSTEM";
+        user.roles = new HashSet<>();
+        user.createdBy = Authorities.User.SYSTEM;
         return user;
     }
 }

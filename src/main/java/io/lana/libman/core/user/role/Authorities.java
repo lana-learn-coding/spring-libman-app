@@ -9,4 +9,11 @@ public final class Authorities {
     public static final String LIBRARIAN = "LIBRARIAN";
 
     public static final String FORCE = "FORCE";
+
+    public static class User {
+        private User() {
+        }
+
+        public static final String SYSTEM = "SYSTEM";
+    }
 }

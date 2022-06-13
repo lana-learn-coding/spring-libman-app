@@ -110,7 +110,8 @@
                     </li>
                     <li>
                         <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/shelf"
-                           up-alias="${pageContext.request.contextPath}/library/tags/shelf/*">
+                           up-alias="${pageContext.request.contextPath}/library/tags/shelf/*"
+                           up-follow up-instant>
                             <i data-feather="package"></i><span>Shelf</span>
                         </a>
                     </li>

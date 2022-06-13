@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -28,6 +29,9 @@ public class BookInfo extends AuditableEntity {
 
     @Column(name = "`year`")
     private Integer year;
+
+    @OneToMany(mappedBy = "info")
+    private Set<Book> books = new LinkedHashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "author_id")

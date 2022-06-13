@@ -1,10 +1,7 @@
 package io.lana.libman.config;
 
 import com.github.javafaker.Faker;
-import io.lana.libman.core.tag.Author;
-import io.lana.libman.core.tag.Genre;
-import io.lana.libman.core.tag.Publisher;
-import io.lana.libman.core.tag.Series;
+import io.lana.libman.core.tag.*;
 import io.lana.libman.core.tag.repo.*;
 import io.lana.libman.core.user.User;
 import io.lana.libman.core.user.UserRepo;
@@ -42,32 +39,33 @@ class InitialDataConfig implements ApplicationRunner {
 
     private final SeriesRepo seriesRepo;
 
+    private final ShelfRepo shelfRepo;
+
     private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         initPermission();
-        initRole();
         initUser();
-
         initTag();
     }
 
     @Transactional
     void initPermission() {
-        if (permissionRepo.count() > 0) return;
-        permissionRepo.saveAll(Permission.builtIns());
-        permissionRepo.saveAll(Permission.forWriteOnly(Author.class.getSimpleName()));
-        permissionRepo.saveAll(Permission.forWriteOnly(Genre.class.getSimpleName()));
-        permissionRepo.saveAll(Permission.forWriteOnly(Publisher.class.getSimpleName()));
-        permissionRepo.saveAll(Permission.forWriteOnly(Series.class.getSimpleName()));
-    }
+        if (permissionRepo.count() == 0) {
+            permissionRepo.saveAll(Permission.builtIns());
+            permissionRepo.saveAll(Permission.forWriteOnly(Author.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forWriteOnly(Genre.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forWriteOnly(Publisher.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forWriteOnly(Series.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forWriteOnly(Shelf.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forReadWrite(User.class.getSimpleName()));
+        }
 
-    @Transactional
-    void initRole() {
-        if (roleRepo.count() > 0) return;
-        roleRepo.saveAll(List.of(Role.admin(), Role.librarian(), Role.force()));
+        if (roleRepo.count() == 0) {
+            roleRepo.saveAll(List.of(Role.admin(), Role.librarian(), Role.force()));
+        }
     }
 
     @Transactional
@@ -137,6 +135,15 @@ class InitialDataConfig implements ApplicationRunner {
                         series.setAbout(faker.howIMetYourMother().catchPhrase());
                         seriesRepo.save(series);
                     });
+        }
+
+        if (shelfRepo.count() == 0) {
+            shelfRepo.save(Shelf.storage());
+            shelfRepo.save(Shelf.ofName("Historical"));
+            shelfRepo.save(Shelf.ofName("Science"));
+            shelfRepo.save(Shelf.ofName("Manga"));
+            shelfRepo.save(Shelf.ofName("Travel"));
+            shelfRepo.save(Shelf.ofName("Self-help / Personal"));
         }
     }
 }

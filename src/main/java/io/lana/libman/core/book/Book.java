@@ -9,16 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @Entity
 public class Book extends AuditableEntity {
-    @NotBlank
-    @Column(nullable = false)
-    private String title;
-
     private String image;
 
     @Column(columnDefinition = "TEXT")

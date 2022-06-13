@@ -1,6 +1,10 @@
 package io.lana.libman.config;
 
 import com.github.javafaker.Faker;
+import io.lana.libman.core.book.Book;
+import io.lana.libman.core.book.BookInfo;
+import io.lana.libman.core.book.repo.BookInfoRepo;
+import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.tag.*;
 import io.lana.libman.core.tag.repo.*;
 import io.lana.libman.core.user.User;
@@ -41,6 +45,10 @@ class InitialDataConfig implements ApplicationRunner {
 
     private final ShelfRepo shelfRepo;
 
+    private final BookInfoRepo bookInfoRepo;
+
+    private final BookRepo bookRepo;
+
     private final PasswordEncoder passwordEncoder;
 
 
@@ -49,6 +57,7 @@ class InitialDataConfig implements ApplicationRunner {
         initPermission();
         initUser();
         initTag();
+        initBook();
     }
 
     @Transactional
@@ -145,5 +154,49 @@ class InitialDataConfig implements ApplicationRunner {
             shelfRepo.save(Shelf.ofName("Travel"));
             shelfRepo.save(Shelf.ofName("Self-help / Personal"));
         }
+    }
+
+    @Transactional
+    void initBook() {
+        if (bookInfoRepo.count() > 0) return;
+        final var faker = Faker.instance();
+
+        final var authors = authorRepo.findAll();
+        final var series = seriesRepo.findAll();
+        final var publishers = publisherRepo.findAll();
+        final var genres = genreRepo.findAll();
+        final var shelf = shelfRepo.findAll();
+
+        Stream.generate(() -> faker.book().title())
+                .distinct()
+                .limit(100)
+                .forEach(name -> {
+                    final var info = new BookInfo();
+                    info.setTitle(name);
+                    info.setAbout(faker.backToTheFuture().quote());
+                    info.setPublisher(faker.options().nextElement(publishers));
+                    if (faker.random().nextInt(1, 10) > 1) {
+                        info.setAuthor(faker.options().nextElement(authors));
+                    }
+                    if (faker.bool().bool()) {
+                        info.setSeries(faker.options().nextElement(series));
+                    }
+
+                    // mark associated genres
+                    final var numberOfGenres = faker.random().nextInt(0, 8);
+                    for (int i = 0; i < numberOfGenres; i++) {
+                        info.getGenres().add(faker.options().nextElement(genres));
+                    }
+                    bookInfoRepo.save(info);
+
+                    // generate associated book
+                    final var numberOfBooks = faker.random().nextInt(0, 5);
+                    for (int i = 0; i < numberOfBooks; i++) {
+                        final var book = new Book();
+                        book.setInfo(info);
+                        book.setShelf(faker.options().nextElement(shelf));
+                        book.setNote(faker.howIMetYourMother().quote());
+                    }
+                });
     }
 }

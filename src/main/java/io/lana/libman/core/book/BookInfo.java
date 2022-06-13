@@ -7,6 +7,7 @@ import io.lana.libman.core.tag.Series;
 import io.lana.libman.support.data.AuditableEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -29,6 +30,9 @@ public class BookInfo extends AuditableEntity {
 
     @Column(name = "`year`")
     private Integer year;
+
+    @Formula("(SELECT COUNT(b.id) FROM book b WHERE b.book_info_id = id)")
+    private int booksCount;
 
     @OneToMany(mappedBy = "info")
     private Set<Book> books = new LinkedHashSet<>();

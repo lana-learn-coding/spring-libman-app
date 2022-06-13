@@ -6,14 +6,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/library/series")
+@RequestMapping("/library/tags/series")
 public class SeriesController extends TaggedCrudController<Series> {
     protected SeriesController(SeriesRepo repo) {
         super(repo);
     }
 
     @Override
-    protected String getViewDir() {
-        return "/tag/series";
+    protected String getName() {
+        return "Series";
+    }
+
+    @Override
+    protected String getAuthority() {
+        return "SERIES";
     }
 }

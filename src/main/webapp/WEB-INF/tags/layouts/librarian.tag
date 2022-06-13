@@ -1,5 +1,5 @@
 <%@tag description="Page layout" pageEncoding="UTF-8" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@attribute name="scripts" fragment="true" %>
 <%@attribute name="body" fragment="true" %>
 <%@attribute name="head" fragment="true" %>

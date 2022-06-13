@@ -1,19 +1,24 @@
 package io.lana.libman.core.tag.controller;
 
-import io.lana.libman.core.tag.Author;
-import io.lana.libman.core.tag.repo.AuthorRepo;
+import io.lana.libman.core.tag.Genre;
+import io.lana.libman.core.tag.repo.GenreRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/library/genres")
-public class GenreController extends TaggedCrudController<Author> {
-    protected GenreController(AuthorRepo authorRepo) {
-        super(authorRepo);
+@RequestMapping("/library/tags/genres")
+public class GenreController extends TaggedCrudController<Genre> {
+    protected GenreController(GenreRepo repo) {
+        super(repo);
     }
 
     @Override
-    protected String getViewDir() {
-        return "/tag/genre";
+    protected String getName() {
+        return "Genres";
+    }
+
+    @Override
+    protected String getAuthority() {
+        return "GENRE";
     }
 }

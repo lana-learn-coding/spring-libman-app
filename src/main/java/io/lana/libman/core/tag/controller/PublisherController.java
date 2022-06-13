@@ -6,14 +6,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/library/publishers")
+@RequestMapping("/library/tags/publishers")
 public class PublisherController extends TaggedCrudController<Publisher> {
     protected PublisherController(PublisherRepo repo) {
         super(repo);
     }
 
     @Override
-    protected String getViewDir() {
-        return "/tag/publisher";
+    protected String getName() {
+        return "Publishers";
+    }
+
+    @Override
+    protected String getAuthority() {
+        return "PUBLISHER";
     }
 }

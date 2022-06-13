@@ -5,15 +5,21 @@ import io.lana.libman.core.tag.repo.AuthorRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 @Controller
-@RequestMapping("/library/authors")
+@RequestMapping("/library/tags/authors")
 public class AuthorController extends TaggedCrudController<Author> {
     protected AuthorController(AuthorRepo authorRepo) {
         super(authorRepo);
     }
 
     @Override
-    protected String getViewDir() {
-        return "/tag/author";
+    protected String getName() {
+        return "Authors";
+    }
+
+    @Override
+    protected String getAuthority() {
+        return "AUTHOR";
     }
 }

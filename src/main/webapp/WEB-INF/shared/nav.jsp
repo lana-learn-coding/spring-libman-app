@@ -56,12 +56,12 @@
                         </div>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/borrow/reader">
                             <i data-feather="user-check"></i><span>Reader</span>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/borrow/borrow">
                             <i data-feather="calendar"></i><span>Borrow</span>
                         </a>
                     </li>
@@ -71,32 +71,46 @@
                         </div>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/books/infos">
                             <i data-feather="book"></i><span>Book Info</span>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
-                            <i data-feather="layers"></i><span>Book Series</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/books/books">
                             <i data-feather="book-open"></i><span>Books</span>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/series"
+                           up-alias="${pageContext.request.contextPath}/library/tags/series/*"
+                           up-follow up-instant>
+                            <i data-feather="layers"></i><span>Book Series</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/authors"
+                           up-alias="${pageContext.request.contextPath}/library/tags/authors/*"
+                           up-follow up-instant>
                             <i data-feather="user"></i><span>Authors</span>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/publishers"
+                           up-alias="${pageContext.request.contextPath}/library/tags/publishers/*"
+                           up-follow up-instant>
+                            <i data-feather="user"></i><span>Publisher</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/genres"
+                           up-alias="${pageContext.request.contextPath}/library/tags/genres/*"
+                           up-follow up-instant>
                             <i data-feather="tag"></i><span>Genres</span>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/shelf"
+                           up-alias="${pageContext.request.contextPath}/library/tags/shelf/*">
                             <i data-feather="package"></i><span>Shelf</span>
                         </a>
                     </li>

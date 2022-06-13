@@ -19,7 +19,7 @@ import java.util.Set;
 public class BookInfo extends AuditableEntity {
     @NotBlank
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     private String image;
 

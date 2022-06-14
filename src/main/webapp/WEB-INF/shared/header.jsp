@@ -10,8 +10,8 @@
                 </a>
             </div>
             <div class="dark-logo-wrapper">
-                <a href="${pageContext.request.contextPath}/" class="fw-bold">
-                    Libman
+                <a href="${pageContext.request.contextPath}/" class="fw-bold h4">
+                    <i class="icofont icofont-library"></i> Libman
                 </a>
             </div>
             <div class="toggle-sidebar">

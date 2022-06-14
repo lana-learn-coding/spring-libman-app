@@ -2,9 +2,11 @@ package io.lana.libman.core.tag.controller;
 
 import io.lana.libman.core.tag.TaggedEntity;
 import io.lana.libman.core.tag.repo.TaggedRepo;
+import io.lana.libman.support.ui.UIFacade;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,9 @@ import java.util.Map;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class TaggedCrudController<T extends TaggedEntity> {
+    @Autowired
+    protected UIFacade ui;
+
     protected final TaggedRepo<T> repo;
 
     protected abstract String getName();

@@ -30,6 +30,7 @@
     </div>
 </div>
 <!-- Loader ends-->
+<jsp:include page="/WEB-INF/shared/notify.jsp"/>
 <!-- page-wrapper Start-->
 <div class="page-wrapper compact-wrapper" id="pageWrapper" data-layout="">
     <jsp:include page="/WEB-INF/shared/header.jsp"/>

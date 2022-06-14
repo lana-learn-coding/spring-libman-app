@@ -40,4 +40,3 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/themify.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/feather-icon.min.css">
 <script src="${pageContext.request.contextPath}/static/js/icons/feather.min.js" defer></script>
-<script src="${pageContext.request.contextPath}/static/js/icons/feather-icon.js" defer></script>

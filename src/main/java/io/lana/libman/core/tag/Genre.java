@@ -4,7 +4,6 @@ import io.lana.libman.core.book.BookInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -18,6 +17,6 @@ public class Genre extends TaggedEntity {
     @ManyToMany(mappedBy = "genres")
     private Set<BookInfo> books = new LinkedHashSet<>();
 
-    @Formula("(SELECT COUNT(b.id) FROM book_info b RIGHT JOIN book_info_genres g WHERE g.genre_id = id)")
+    @Formula("(SELECT COUNT(DISTINCT b.id) FROM book_info b RIGHT JOIN book_info_genres g WHERE g.genre_id = id)")
     private int booksCount;
 }

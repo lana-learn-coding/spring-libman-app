@@ -22,6 +22,7 @@
     up.on('up:fragment:inserted', () => {
       feather.replace();
       renderToast();
+      hideWrapper();
     });
 
     function renderToast() {
@@ -32,6 +33,19 @@
           toastContainer.appendChild(toast);
           bootstrap.Toast.getOrCreateInstance(toast).show();
         });
+      }
+    }
+
+    function hideWrapper() {
+      const loader = document.querySelector('.loader-wrapper');
+      if (loader) {
+        loader.style.transition = 'opacity 1.6s';
+        setTimeout(() => {
+          loader.style.opacity = '0';
+          setTimeout(() => {
+            loader.remove();
+          }, 1500);
+        }, 100);
       }
     }
 

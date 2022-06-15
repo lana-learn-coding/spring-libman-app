@@ -1,17 +1,13 @@
-$('.loader-wrapper').fadeOut('slow', function () {
-  $(this).remove();
-});
-
-$(() => {
+(() => {
   $('.mobile-toggle').click(function () {
     $('.nav-menus').toggleClass('open');
   });
   $('.mobile-toggle-left').click(function () {
     $('.left-header').toggleClass('open');
   });
-});
+})();
 
-$(() => {
+(() => {
   const $body = $('body');
   $body.toggleClass('dark-only', localStorage.getItem('body-dark') === 'true');
   $('.mode').on('click', function () {
@@ -19,4 +15,4 @@ $(() => {
     $body.toggleClass('dark-only');
     localStorage.setItem('body-dark', $body.hasClass('dark-only') ? 'true' : 'false');
   });
-});
+})();

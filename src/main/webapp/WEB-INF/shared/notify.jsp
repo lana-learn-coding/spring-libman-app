@@ -2,8 +2,8 @@
 
 <c:set var="uiToast" value="${sessionScope['ui.toast']}"/>
 
-<div id="notify-container" class="toast-container position-fixed top-0 end-0 card-body"
-     style="z-index: 999; margin-top: 60px" up-hungry>
+
+<div class="d-none" id="notify-hungry" up-hungry>
     <c:if test="${not empty uiToast}">
         <c:remove var="ui.toast" scope="session"/>
         <div class="toast fade" style="background: transparent; border: 0; border-radius: 0"
@@ -18,4 +18,8 @@
             </div>
         </div>
     </c:if>
+</div>
+
+<div id="notify-container" class="toast-container position-fixed top-0 end-0 card-body"
+     style="z-index: 999; margin-top: 60px">
 </div>

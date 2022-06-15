@@ -6,7 +6,7 @@
     queue.push(func);
   };
   document.addEventListener('DOMContentLoaded', () => {
-    // feather icon
+    // Feather icon initial
     feather.replace();
 
     // Auto active with query for unpoly
@@ -21,10 +21,19 @@
 
     up.on('up:fragment:inserted', () => {
       feather.replace();
-
-      const toast = document.querySelector('#notify-container > .toast');
-      if (toast) bootstrap.Toast.getOrCreateInstance(toast).show();
+      renderToast();
     });
+
+    function renderToast() {
+      const toastContainer = document.getElementById('notify-container');
+      const toastList = document.querySelectorAll('#notify-hungry .toast');
+      if (toastList.length && toastContainer) {
+        toastList.forEach(toast => {
+          toastContainer.appendChild(toast);
+          bootstrap.Toast.getOrCreateInstance(toast).show();
+        });
+      }
+    }
 
     while (queue.length) queue.shift().call();
   });

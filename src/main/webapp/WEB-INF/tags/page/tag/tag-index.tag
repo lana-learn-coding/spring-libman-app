@@ -113,11 +113,13 @@
                                                             </sec:authorize>
                                                          <sec:authorize
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_DELETE\')}')">
-                                                                <a href="#" class="mx-1 txt-danger">
+                                                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/delete?id=${item.id}"
+                                                                   up-layer="new" up-align="center" up-history="false"
+                                                                   class="mx-1 txt-danger">
                                                                     <i data-feather="trash"
                                                                        style="width: 20px; height: 20px"></i>
                                                                 </a>
-                                                            </sec:authorize>
+                                                         </sec:authorize>
                                                      </td>
                                                  </tr>
                                              </c:forEach>
@@ -130,11 +132,33 @@
                                 </c:choose>
                             </div>
                             <nav class="d-flex justify-content-end mt-3">
-                                <component:pagination pageMeta="${data}" target="#table" up="up-scroll='layer'"/>
+                                <component:pagination pageMeta="${data}" target="#table"
+                                                      up="up-scroll='layer' up-transition='cross-fade'"/>
                             </nav>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="delete-modal" aria-hidden="true"
+             _="on load remove .show from <.modal-backdrop/> then remove <.modal-backdrop/>">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" action="${pageContext.request.contextPath}/library/tags/${uri}/delete"
+                      method="post"
+                      up-target="#table, #delete-modal" up-scroll="false">
+                    <sec:csrfInput/>
+                    <input id="delete-id" type="hidden" name="id" value="">
+                    <div class="modal-body d-flex flex-column align-items-center pt-4 pb-3">
+                        <i data-feather="alert-triangle" class="txt-warning"
+                           style="width: 100px; height: 100px; stroke-width: 1"></i>
+                        <h3 class="f-w-600 mt-3">Delete item</h3>
+                        <span>Are you sure delete this item</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">back</button>
+                        <button type="submit" class="btn btn-warning">Delete</button>
+                    </div>
+                </form>
             </div>
         </div>
     </jsp:attribute>

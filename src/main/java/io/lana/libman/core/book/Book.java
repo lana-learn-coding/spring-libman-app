@@ -5,10 +5,7 @@ import io.lana.libman.support.data.AuditableEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,7 +17,7 @@ public class Book extends AuditableEntity {
     private String note;
 
     @ManyToOne
-    @JoinColumn(name = "shelf_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "shelf_id", foreignKeyDefinition = "ON DELETE SET NULL"))
     private Shelf shelf;
 
     @ManyToOne

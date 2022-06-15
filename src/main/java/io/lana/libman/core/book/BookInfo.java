@@ -38,23 +38,25 @@ public class BookInfo extends AuditableEntity {
     private Set<Book> books = new LinkedHashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "author_id", foreignKeyDefinition = "ON DELETE SET NULL"))
     private Author author;
 
     @ManyToOne
-    @JoinColumn(name = "publisher_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "publisher_id", foreignKeyDefinition = "ON DELETE SET NULL"))
     private Publisher publisher;
 
 
     @ManyToOne
-    @JoinColumn(name = "series_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "series_id", foreignKeyDefinition = "ON DELETE SET NULL"))
     private Series series;
 
     @ManyToMany
     @JoinTable(
             name = "book_info_genres",
             joinColumns = {@JoinColumn(name = "book_info_id")},
-            inverseJoinColumns = {@JoinColumn(name = "genre_id")}
+            inverseJoinColumns = {@JoinColumn(name = "genre_id")},
+            foreignKey = @ForeignKey(name = "book_info_id", foreignKeyDefinition = "ON DELETE SET NULL"),
+            inverseForeignKey = @ForeignKey(name = "genre_id", foreignKeyDefinition = "ON DELETE SET NULL")
     )
     private Set<Genre> genres = new HashSet<>();
 }

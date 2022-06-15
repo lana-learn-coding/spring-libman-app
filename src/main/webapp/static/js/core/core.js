@@ -19,9 +19,10 @@
       });
     });
 
-    up.on('up:fragment:inserted', () => {
+    up.on('up:fragment:inserted', (e) => {
       feather.replace();
       renderToast();
+      _hyperscript.processNode(e.target);
       hideWrapper();
     });
 

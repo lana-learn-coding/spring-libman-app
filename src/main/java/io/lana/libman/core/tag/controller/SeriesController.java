@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/library/tags/series")
-public class SeriesController extends TaggedCrudController<Series, BookInfo> {
+class SeriesController extends TaggedCrudController<Series, BookInfo> {
     private final BookInfoRepo bookInfoRepo;
 
     protected SeriesController(SeriesRepo repo, BookInfoRepo bookInfoRepo) {

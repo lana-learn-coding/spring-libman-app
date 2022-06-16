@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/library/tags/publishers")
-public class PublisherController extends TaggedCrudController<Publisher, BookInfo> {
+class PublisherController extends TaggedCrudController<Publisher, BookInfo> {
     private final BookInfoRepo bookInfoRepo;
 
     protected PublisherController(PublisherRepo repo, BookInfoRepo bookInfoRepo) {

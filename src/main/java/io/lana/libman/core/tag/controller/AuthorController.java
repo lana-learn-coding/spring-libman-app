@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/library/tags/authors")
-public class AuthorController extends TaggedCrudController<Author, BookInfo> {
+class AuthorController extends TaggedCrudController<Author, BookInfo> {
     private final BookInfoRepo bookInfoRepo;
 
     protected AuthorController(AuthorRepo authorRepo, BookInfoRepo bookInfoRepo) {

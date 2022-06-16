@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/library/tags/genres")
-public class GenreController extends TaggedCrudController<Genre, BookInfo> {
+class GenreController extends TaggedCrudController<Genre, BookInfo> {
     private final BookInfoRepo bookInfoRepo;
 
     protected GenreController(GenreRepo repo, BookInfoRepo bookInfoRepo) {
@@ -32,7 +32,8 @@ public class GenreController extends TaggedCrudController<Genre, BookInfo> {
 
     @Override
     protected Page<BookInfo> getRelationsPage(String id, String query, Pageable pageable) {
-        query = StringUtils.defaultIfBlank(query, "");
-        return bookInfoRepo.findAllByGenresIdAndTitleLike(id, "%" + query + "%", pageable);
+        return StringUtils.isBlank(query)
+                ? bookInfoRepo.findAllByGenresId(id, pageable)
+                : bookInfoRepo.findAllByGenresIdAndTitleLike(id, "%" + query + "%", pageable);
     }
 }

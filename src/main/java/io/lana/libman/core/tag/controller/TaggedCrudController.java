@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableEntity & Named> {
+abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableEntity & Named> {
     @Autowired
     protected UIFacade ui;
 

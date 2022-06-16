@@ -2,6 +2,8 @@ package io.lana.libman.core.tag.controller;
 
 import io.lana.libman.core.tag.TaggedEntity;
 import io.lana.libman.core.tag.repo.TaggedRepo;
+import io.lana.libman.support.data.AuditableEntity;
+import io.lana.libman.support.data.Named;
 import io.lana.libman.support.security.AuthFacade;
 import io.lana.libman.support.security.AuthUser;
 import io.lana.libman.support.ui.UIFacade;
@@ -9,21 +11,18 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Locale;
 import java.util.Map;
 
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class TaggedCrudController<T extends TaggedEntity> {
+public abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableEntity & Named> {
     @Autowired
     protected UIFacade ui;
 
@@ -36,12 +35,21 @@ public abstract class TaggedCrudController<T extends TaggedEntity> {
 
     protected abstract String getAuthority();
 
-    protected String getViewDir() {
-        return getName().toLowerCase(Locale.ENGLISH);
+    protected abstract Page<B> getRelationsPage(String id, String query, Pageable pageable);
+
+    @GetMapping("{id}/detail")
+    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var page = getRelationsPage(id, query, pageable);
+        return new ModelAndView("/library/tag/detail", Map.of(
+                "entity", entity,
+                "data", page,
+                "title", getName()
+        ));
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(value = "query", required = false) String query, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query, Pageable pageable) {
         final var page = StringUtils.isBlank(query)
                 ? repo.findAll(pageable)
                 : repo.findAllByNameLike("%" + query + "%", pageable);

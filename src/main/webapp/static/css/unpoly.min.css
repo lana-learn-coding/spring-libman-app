@@ -8,4 +8,4 @@ up-focus-trap{position:fixed;top:0;left:0;width:0;height:0}up-modal,up-drawer,up
 
 [up-href],[up-clickable]{cursor:pointer}
 
-up-modal-box{margin: auto}
+up-modal-box{margin: auto; box-shadow: none}

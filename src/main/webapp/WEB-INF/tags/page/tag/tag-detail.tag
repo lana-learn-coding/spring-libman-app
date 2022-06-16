@@ -7,18 +7,17 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%@ attribute name="title" required="true" type="java.lang.String" %>
-<%@ attribute name="authority" required="true" type="java.lang.String" %>
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
-<%@ attribute name="data" required="false"
-              type="org.springframework.data.domain.Page<io.lana.libman.core.tag.TaggedEntity>" %>
-
+<%@ attribute name="data" required="false" type="org.springframework.data.domain.Page" %>
+<%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.TaggedEntity" %>
 <%@ attribute name="table" fragment="true" %>
-<%@ attribute name="detail" fragment="true" %>
+
+<%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.support.data.NamedEntity>"--%>
 
 <c:set var="uri" value="${(empty uri) ? title.toLowerCase() : uri}"/>
 
 <layout:librarian>
-    <jsp:attribute name="title">${title} Manage</jsp:attribute>
+    <jsp:attribute name="title">${title} Detail</jsp:attribute>
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="page-header">
@@ -32,7 +31,12 @@
                             </li>
                             <li class="breadcrumb-item">Books</li>
                             <li class="breadcrumb-item">Tags</li>
-                            <li class="breadcrumb-item active">${title}</li>
+                            <li class="breadcrumb-item">
+                                <a href="${pageContext.request.contextPath}/library/tags/${uri}"
+                                   up-follow up-instant>${title}
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">${entity.name}</li>
                         </ol>
                     </div>
                 </div>
@@ -41,10 +45,36 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="card">
+                    <div class="card text-start" up-main="modal">
                         <div class="card-header pb-0">
-                            <h5>${title} Manage</h5>
-                            <span>Manage list of ${title} information and related books</span>
+                            <h5>${title} Detail</h5>
+                            <span>Detail of ${entity.name}</span>
+                        </div>
+                        <div class="card-body pt-1">
+                            <div class="mb-3 text-muted">
+                                <div>
+                                    <i class="fa fa-calendar-o"></i>
+                                    <span class="ms-1"><helper:formatZonedDateTime date="${entity.updatedAt}"/></span>
+                                </div>
+                                <c:if test="${not empty entity.updatedBy}">
+                                    <div class="ms-2 d-none d-md-block">
+                                        <i class="fa fa-user"></i>
+                                        <span class="ms-1">${entity.updatedBy}</span>
+                                    </div>
+                                </c:if>
+                            </div>
+
+                            <div class="mb-1">Name <span class="font-primary ms-2">${entity.name}</span></div>
+                            <c:if test="${not empty entity.about}">
+                                <div class="mb-1">About <span class="font-primary ms-2">${entity.about}</span>
+                                </div>
+                            </c:if>
+                        </div>
+
+                        <hr class="my-0">
+                        <div class="card-header pb-0">
+                            <h5>Related Books</h5>
+                            <span>List books of ${title}: ${entity.name}</span>
                         </div>
                         <div class="card-body" id="table">
                             <div class="row justify-content-between mb-3">
@@ -83,10 +113,8 @@
                                                  <th scope="col">#</th>
                                                  <th scope="col">Id</th>
                                                  <th scope="col">Name</th>
-                                                 <th scope="col">Total Books</th>
                                                  <th scope="col">Updated At</th>
                                                  <th scope="col">Updated By</th>
-                                                 <th scope="col">Action</th>
                                              </tr>
                                              </thead>
                                              <tbody>
@@ -97,32 +125,8 @@
                                                      <td class="text-truncate"
                                                          style="max-width: 180px">${ item.id }</td>
                                                      <td>${ item.name }</td>
-                                                     <td>${ item.booksCount }</td>
                                                      <td><helper:formatZonedDateTime date="${item.updatedAt}"/></td>
                                                      <td>${ item.updatedBy }</td>
-                                                     <td>
-                                                         <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
-                                                            class="mx-1 txt-primary" up-layer="new" up-size="large">
-                                                             <i data-feather="external-link"
-                                                                style="width: 20px; height: 20px"></i>
-                                                         </a>
-                                                         <sec:authorize
-                                                                 access="hasAnyAuthority('ADMIN', '${authority.concat(\'_UPDATE\')}')">
-                                                                <a href="#" class="mx-1 txt-primary">
-                                                                    <i data-feather="edit"
-                                                                       style="width: 20px; height: 20px"></i>
-                                                                </a>
-                                                            </sec:authorize>
-                                                         <sec:authorize
-                                                                 access="hasAnyAuthority('ADMIN', '${authority.concat(\'_DELETE\')}')">
-                                                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/delete?id=${item.id}"
-                                                                   up-layer="new" up-history="false"
-                                                                   class="mx-1 txt-danger">
-                                                                    <i data-feather="trash"
-                                                                       style="width: 20px; height: 20px"></i>
-                                                                </a>
-                                                         </sec:authorize>
-                                                     </td>
                                                  </tr>
                                              </c:forEach>
                                              </tbody>
@@ -140,6 +144,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="delete-modal" aria-hidden="true"
+             _="on load remove .show from <.modal-backdrop/> then remove <.modal-backdrop/>">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" action="${pageContext.request.contextPath}/library/tags/${uri}/delete"
+                      method="post"
+                      up-target="#table, #delete-modal" up-scroll="false">
+                    <sec:csrfInput/>
+                    <input id="delete-id" type="hidden" name="id" value="">
+                    <div class="modal-body d-flex flex-column align-items-center pt-4 pb-3">
+                        <i data-feather="alert-triangle" class="txt-warning"
+                           style="width: 100px; height: 100px; stroke-width: 1"></i>
+                        <h3 class="f-w-600 mt-3">Delete item</h3>
+                        <span>Are you sure delete this item</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">back</button>
+                        <button type="submit" class="btn btn-warning">Delete</button>
+                    </div>
+                </form>
             </div>
         </div>
     </jsp:attribute>

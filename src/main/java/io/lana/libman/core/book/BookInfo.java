@@ -5,6 +5,7 @@ import io.lana.libman.core.tag.Genre;
 import io.lana.libman.core.tag.Publisher;
 import io.lana.libman.core.tag.Series;
 import io.lana.libman.support.data.AuditableEntity;
+import io.lana.libman.support.data.Named;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
@@ -18,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class BookInfo extends AuditableEntity {
+public class BookInfo extends AuditableEntity implements Named {
     @NotBlank
     @Column(nullable = false)
     private String title;
@@ -59,4 +60,16 @@ public class BookInfo extends AuditableEntity {
             inverseForeignKey = @ForeignKey(name = "genre_id", foreignKeyDefinition = "ON DELETE SET NULL")
     )
     private Set<Genre> genres = new HashSet<>();
+
+
+    @Transient
+    @Override
+    public String getName() {
+        return title;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.title = name;
+    }
 }

@@ -13,7 +13,6 @@
               type="org.springframework.data.domain.Page<io.lana.libman.core.tag.TaggedEntity>" %>
 
 <%@ attribute name="table" fragment="true" %>
-<%@ attribute name="detail" fragment="true" %>
 
 <c:set var="uri" value="${(empty uri) ? title.toLowerCase() : uri}"/>
 

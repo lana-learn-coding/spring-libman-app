@@ -10,7 +10,9 @@
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
 <%@ attribute name="data" required="false" type="org.springframework.data.domain.Page" %>
 <%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.TaggedEntity" %>
+
 <%@ attribute name="table" fragment="true" %>
+<%@ attribute name="detail" fragment="true" %>
 
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.support.data.NamedEntity>"--%>
 
@@ -50,26 +52,33 @@
                             <h5>${title} Detail</h5>
                             <span>Detail of ${entity.name}</span>
                         </div>
-                        <div class="card-body pt-1">
-                            <div class="mb-3 text-muted">
-                                <div>
-                                    <i class="fa fa-calendar-o"></i>
-                                    <span class="ms-1"><helper:formatZonedDateTime date="${entity.updatedAt}"/></span>
-                                </div>
-                                <c:if test="${not empty entity.updatedBy}">
-                                    <div class="ms-2 d-none d-md-block">
-                                        <i class="fa fa-user"></i>
-                                        <span class="ms-1">${entity.updatedBy}</span>
-                                    </div>
-                                </c:if>
-                            </div>
-
-                            <div class="mb-1">Name <span class="font-primary ms-2">${entity.name}</span></div>
-                            <c:if test="${not empty entity.about}">
-                                <div class="mb-1">About <span class="font-primary ms-2">${entity.about}</span>
-                                </div>
-                            </c:if>
-                        </div>
+                        <c:choose>
+                            <c:when test="${detail != null}">
+                               <jsp:invoke fragment="detail"/>
+                            </c:when>
+                            <c:otherwise>
+                                 <div class="card-body pt-1">
+                                     <div class="mb-3 text-muted">
+                                         <div>
+                                             <i class="fa fa-calendar-o"></i>
+                                             <span class="ms-1"><helper:formatZonedDateTime
+                                                     date="${entity.updatedAt}"/></span>
+                                         </div>
+                                         <c:if test="${not empty entity.updatedBy}">
+                                            <div class="ms-2 d-none d-md-block">
+                                                <i class="fa fa-user"></i>
+                                                <span class="ms-1">${entity.updatedBy}</span>
+                                            </div>
+                                        </c:if>
+                                     </div>
+                                     <div class="mb-1">Name <span class="font-primary ms-2">${entity.name}</span></div>
+                                     <c:if test="${not empty entity.about}">
+                                        <div class="mb-1">About <span class="font-primary ms-2">${entity.about}</span>
+                                        </div>
+                                     </c:if>
+                                 </div>
+                            </c:otherwise>
+                        </c:choose>
 
                         <hr class="my-0">
                         <div class="card-header pb-0">

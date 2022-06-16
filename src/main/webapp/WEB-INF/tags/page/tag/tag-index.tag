@@ -48,9 +48,9 @@
                         </div>
                         <div class="card-body" id="table">
                             <div class="row justify-content-between mb-3">
-                                <helper:inherit-param excludes="query"/>
                                 <form class="col-xs-12 col-md-6 my-1"
                                       up-target="#table table, nav .pagination" method="get">
+                                    <helper:inherit-param excludes="query"/>
                                     <div class="input-group">
                                         <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
                                         <input type="text"
@@ -66,7 +66,7 @@
                                 </form>
                                 <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                     <component:sorting
-                                            target="#table" up="up-scroll='layer'"
+                                            target="#table, [comp=sorting]" up="up-scroll='layer'"
                                             labels="Name;Books Count;Updated At;Updated By;Id"
                                             values="name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
                                 </div>
@@ -134,7 +134,7 @@
                                 </c:choose>
                             </div>
                             <nav class="d-flex justify-content-end mt-3">
-                                <component:pagination pageMeta="${data}" target="#table"
+                                <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
                                                       up="up-scroll='layer' up-transition='cross-fade'"/>
                             </nav>
                         </div>

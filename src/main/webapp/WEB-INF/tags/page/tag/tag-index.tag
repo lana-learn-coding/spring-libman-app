@@ -114,7 +114,7 @@
                                                             </sec:authorize>
                                                          <sec:authorize
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_DELETE\')}')">
-                                                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/delete?id=${item.id}"
+                                                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/delete"
                                                                    up-layer="new" up-history="false"
                                                                    class="mx-1 txt-danger">
                                                                     <i data-feather="trash"

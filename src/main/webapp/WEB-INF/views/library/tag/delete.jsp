@@ -4,6 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <%--@elvariable id="title" type="java.lang.String"--%>
+<%--@elvariable id="id" type="java.lang.String"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.tag.TaggedEntity"--%>
 <c:set var="uri" value="${title.toLowerCase()}"/>
 <sec:authorize access="hasAnyAuthority('ADMIN', 'FORCE')" var="canForce"/>
@@ -39,19 +40,17 @@
                                             <a href="${pageContext.request.contextPath}/library/tags/${uri}"
                                                class="btn btn-light" up-dismiss>Back</a>
                                             <c:if test="${entity.booksCount == 0}">
-                                                <form action="${pageContext.request.contextPath}/library/tags/${uri}/delete"
+                                                <form action="${pageContext.request.contextPath}/library/tags/${uri}/${id}/delete"
                                                       method="post" up-layer="parent">
                                                     <sec:csrfInput/>
-                                                    <input type="hidden" name="id" value="${entity.id}">
                                                     <button type="submit" class="btn btn-warning">Delete</button>
                                                 </form>
                                             </c:if>
 
                                             <c:if test="${entity.booksCount > 0 && canForce}">
-                                                <form action="${pageContext.request.contextPath}/library/tags/${uri}/force-delete"
+                                                <form action="${pageContext.request.contextPath}/library/tags/${uri}/${id}/force-delete"
                                                       method="post" up-layer="parent">
                                                     <sec:csrfInput/>
-                                                    <input type="hidden" name="id" value="${entity.id}">
                                                     <button type="submit" class="btn btn-danger">Force Delete</button>
                                                 </form>
                                             </c:if>

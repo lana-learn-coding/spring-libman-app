@@ -60,19 +60,20 @@ abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableE
         ));
     }
 
-    @GetMapping("delete")
-    public ModelAndView confirmDelete(@RequestParam String id) {
+    @GetMapping("{id}/delete")
+    public ModelAndView confirmDelete(@PathVariable String id) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return new ModelAndView("/library/tag/delete", Map.of(
                 "entity", entity,
-                "title", getName()
+                "title", getName(),
+                "id", id
         ));
     }
 
-    @PostMapping("delete")
-    public ModelAndView delete(@RequestParam String id, @RequestHeader String referer) {
+    @PostMapping("{id}/delete")
+    public ModelAndView delete(@PathVariable String id, @RequestHeader String referer) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -85,8 +86,8 @@ abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableE
         return new ModelAndView("redirect:" + referer);
     }
 
-    @PostMapping("force-delete")
-    public ModelAndView forceDelete(@RequestParam String id, @RequestHeader String referer) {
+    @PostMapping("{id}/force-delete")
+    public ModelAndView forceDelete(@PathVariable String id, @RequestHeader String referer) {
         auth.requireAnyAuthorities("ADMIN", "FORCE");
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 

@@ -1,5 +1,7 @@
 scoped(() => {
   function initCkEditor() {
+    const isDark = localStorage.getItem('body-dark') === 'true';
+    CKEDITOR.config.bodyClass = isDark ? 'dark-only' : '';
     document.querySelectorAll('[data-editor=true]').forEach(el => {
       if (!el.id) return;
       CKEDITOR.replace(el.id);

@@ -2,6 +2,9 @@
 Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
 For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
+html{
+  background-color: transparent;
+}
 
 body
 {
@@ -14,9 +17,12 @@ body
 	color: #333;
 
 	/* Remove the background color to make it transparent. */
-	background-color: #fff;
-
 	margin: 20px;
+}
+
+body.dark-only
+{
+  color: rgba(255,255,255,0.7);
 }
 
 .cke_editable

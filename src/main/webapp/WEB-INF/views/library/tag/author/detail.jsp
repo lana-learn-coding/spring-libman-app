@@ -12,7 +12,7 @@
         <div class="mb-4 text-muted">
             <div>
                 <i class="fa fa-calendar-o"></i>
-                <span class="ms-1"><helper:formatZonedDateTime date="${entity.updatedAt}"/></span>
+                <span class="ms-1"><helper:format-datetime date="${entity.updatedAt}"/></span>
             </div>
             <c:if test="${not empty entity.updatedBy}">
                 <div class="ms-2 d-none d-md-block">
@@ -37,25 +37,25 @@
                 <c:if test="${not empty entity.dateOfDeath && not empty entity.dateOfBirth}">
                 <div class="mb-1">Born - Died
                     <span class="font-primary ms-2 me-1">
-                        <helper:formatLocalDate date="${entity.dateOfBirth}"/>
+                        <helper:format-date date="${entity.dateOfBirth}"/>
                     </span>
                     -
                     <span class="font-primary m1-2">
-                        <helper:formatLocalDate date="${entity.dateOfDeath}"/>
+                        <helper:format-date date="${entity.dateOfDeath}"/>
                     </span>
                 </div>
                  </c:if>
                 <c:if test="${not empty entity.dateOfBirth && empty entity.dateOfDeath}">
                 <div class="mb-1">Born
                     <span class="font-primary ms-2 me-1">
-                        <helper:formatLocalDate date="${entity.dateOfBirth}"/>
+                        <helper:format-date date="${entity.dateOfBirth}"/>
                     </span>
                 </div>
                 </c:if>
                 <c:if test="${empty entity.dateOfBirth && not empty entity.dateOfDeath}">
                     <div class="mb-1">Died
                         <span class="font-primary ms-2 me-1">
-                        <helper:formatLocalDate date="${entity.dateOfDeath}"/>
+                        <helper:format-date date="${entity.dateOfDeath}"/>
                         </span>
                     </div>
                 </c:if>

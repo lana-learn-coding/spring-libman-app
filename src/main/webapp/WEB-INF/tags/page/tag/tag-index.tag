@@ -97,7 +97,7 @@
                                                          style="max-width: 180px">${ item.id }</td>
                                                      <td>${ item.name }</td>
                                                      <td>${ item.booksCount }</td>
-                                                     <td><helper:formatZonedDateTime date="${item.updatedAt}"/></td>
+                                                     <td><helper:format-datetime date="${item.updatedAt}"/></td>
                                                      <td>${ item.updatedBy }</td>
                                                      <td>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"

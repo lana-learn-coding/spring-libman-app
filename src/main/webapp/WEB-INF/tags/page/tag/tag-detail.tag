@@ -61,7 +61,7 @@
                                      <div class="mb-3 text-muted">
                                          <div>
                                              <i class="fa fa-calendar-o"></i>
-                                             <span class="ms-1"><helper:formatZonedDateTime
+                                             <span class="ms-1"><helper:format-datetime
                                                      date="${entity.updatedAt}"/></span>
                                          </div>
                                          <c:if test="${not empty entity.updatedBy}">
@@ -134,7 +134,7 @@
                                                      <td class="text-truncate"
                                                          style="max-width: 180px">${ item.id }</td>
                                                      <td>${ item.name }</td>
-                                                     <td><helper:formatZonedDateTime date="${item.updatedAt}"/></td>
+                                                     <td><helper:format-datetime date="${item.updatedAt}"/></td>
                                                      <td>${ item.updatedBy }</td>
                                                  </tr>
                                              </c:forEach>

@@ -33,6 +33,6 @@ class PublisherController extends TaggedCrudController<Publisher, BookInfo> {
     @Override
     protected Page<BookInfo> getRelationsPage(String id, String query, Pageable pageable) {
         query = StringUtils.defaultIfBlank(query, "");
-        return bookInfoRepo.findAllByPublisherIdAndTitleLike(id, "%" + query + "%", pageable);
+        return bookInfoRepo.findAllByPublisherIdAndTitleLikeIgnoreCase(id, "%" + query + "%", pageable);
     }
 }

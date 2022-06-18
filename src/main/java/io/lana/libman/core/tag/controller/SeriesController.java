@@ -33,6 +33,6 @@ class SeriesController extends TaggedCrudController<Series, BookInfo> {
     @Override
     protected Page<BookInfo> getRelationsPage(String id, String query, Pageable pageable) {
         query = StringUtils.defaultIfBlank(query, "");
-        return bookInfoRepo.findAllBySeriesIdAndTitleLike(id, "%" + query + "%", pageable);
+        return bookInfoRepo.findAllBySeriesIdAndTitleLikeIgnoreCase(id, "%" + query + "%", pageable);
     }
 }

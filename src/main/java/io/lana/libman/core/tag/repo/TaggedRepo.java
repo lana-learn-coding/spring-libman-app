@@ -10,7 +10,7 @@ import java.util.List;
 
 @NoRepositoryBean
 public interface TaggedRepo<T extends TaggedEntity> extends PagingAndSortingRepository<T, String> {
-    Page<T> findAllByNameLike(String name, Pageable pageable);
+    Page<T> findAllByNameLikeIgnoreCase(String name, Pageable pageable);
 
     @Override
     List<T> findAll();

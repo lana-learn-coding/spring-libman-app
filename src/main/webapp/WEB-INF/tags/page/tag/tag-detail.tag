@@ -25,7 +25,7 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h3>Layout Light</h3>
+                        <h3>${title}</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="${pageContext.request.contextPath}/library/dashboard"
@@ -38,7 +38,7 @@
                                    up-follow up-instant>${title}
                                 </a>
                             </li>
-                            <li class="breadcrumb-item">${entity.name}</li>
+                            <li class="breadcrumb-item active">${entity.name}</li>
                         </ol>
                     </div>
                 </div>
@@ -153,27 +153,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="modal fade" tabindex="-1" id="delete-modal" aria-hidden="true"
-             _="on load remove .show from <.modal-backdrop/> then remove <.modal-backdrop/>">
-            <div class="modal-dialog modal-dialog-centered">
-                <form class="modal-content" action="${pageContext.request.contextPath}/library/tags/${uri}/delete"
-                      method="post"
-                      up-target="#table, #delete-modal" up-scroll="false">
-                    <sec:csrfInput/>
-                    <input id="delete-id" type="hidden" name="id" value="">
-                    <div class="modal-body d-flex flex-column align-items-center pt-4 pb-3">
-                        <i data-feather="alert-triangle" class="txt-warning"
-                           style="width: 100px; height: 100px; stroke-width: 1"></i>
-                        <h3 class="f-w-600 mt-3">Delete item</h3>
-                        <span>Are you sure delete this item</span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">back</button>
-                        <button type="submit" class="btn btn-warning">Delete</button>
-                    </div>
-                </form>
             </div>
         </div>
     </jsp:attribute>

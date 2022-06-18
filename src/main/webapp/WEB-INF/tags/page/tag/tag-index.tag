@@ -23,7 +23,7 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h3>Layout Light</h3>
+                        <h3>${title}</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="${pageContext.request.contextPath}/library/dashboard"
@@ -46,24 +46,23 @@
                             <span>Manage list of ${title} information and related books</span>
                         </div>
                         <div class="card-body" id="table">
+                            <form class="col-xs-12 col-md-6 col-lg-5 mb-2"
+                                  up-target="#table table, nav .pagination" method="get">
+                                <helper:inherit-param excludes="query"/>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           name="query"
+                                           placeholder="Search for item"
+                                           aria-label="query"
+                                           value="${param.query}"
+                                           up-autosubmit
+                                           up-delay="400">
+                                </div>
+                            </form>
                             <div class="row justify-content-between mb-3">
-                                <form class="col-xs-12 col-md-6 my-1"
-                                      up-target="#table table, nav .pagination" method="get">
-                                    <helper:inherit-param excludes="query"/>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
-                                        <input type="text"
-                                               style="max-width: 500px"
-                                               class="form-control form-control-lg"
-                                               name="query"
-                                               placeholder="Search for item"
-                                               aria-label="query"
-                                               value="${param.query}"
-                                               up-autosubmit
-                                               up-delay="400">
-                                    </div>
-                                </form>
-                                <div class="col-xs-12 col-md-3 col-lg-2 my-1">
+                                <div class="col-6 col-md-3 col-lg-2">
                                     <component:sorting
                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
                                             labels="Name;Books Count;Updated At;Updated By;Id"
@@ -101,7 +100,8 @@
                                                      <td>${ item.updatedBy }</td>
                                                      <td>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
-                                                            class="mx-1 txt-primary" up-layer="new" up-size="large">
+                                                            class="mx-1 txt-primary" up-layer="new" up-size="large"
+                                                            up-instant>
                                                              <i data-feather="external-link"
                                                                 style="width: 20px; height: 20px"></i>
                                                          </a>
@@ -115,7 +115,7 @@
                                                          <sec:authorize
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_DELETE\')}')">
                                                                 <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/delete"
-                                                                   up-layer="new" up-history="false"
+                                                                   up-layer="new" up-history="false" up-instant
                                                                    class="mx-1 txt-danger">
                                                                     <i data-feather="trash"
                                                                        style="width: 20px; height: 20px"></i>

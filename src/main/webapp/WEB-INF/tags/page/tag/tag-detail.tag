@@ -105,8 +105,7 @@
                                              <c:forEach var="item" items="${data.content}" varStatus="loop">
                                                  <tr>
                                                      <th scope="row">${loop.index + 1}</th>
-                                                     <td class="text-truncate"
-                                                         style="max-width: 180px">${ item.id }</td>
+                                                     <td>${ item.id }</td>
                                                      <td>${ item.name }</td>
                                                      <td><helper:format-datetime date="${item.updatedAt}"/></td>
                                                      <td>${ item.updatedBy }</td>

@@ -96,22 +96,23 @@
                                              </tr>
                                              </thead>
                                              <tbody>
-                                             <c:set var="highlight" value="${}"/>
                                              <c:set var="content" value="${empty data ? [] : data.content}"/>
                                              <c:forEach var="item" items="${data.content}" varStatus="loop">
-                                                 <tr <c:if test="${item.id == param.highlight}">
-                                                     data-remove-class="bg-success"
-                                                     style="transition: background-color 3s"
-                                                     class="bg-success"</c:if>
-                                                 >
-                                                     <th scope="row">${loop.index + 1}</th>
-                                                     <td class="text-truncate"
-                                                         style="max-width: 180px">${ item.id }</td>
-                                                     <td>${ item.name }</td>
-                                                     <td>${ item.booksCount }</td>
-                                                     <td><helper:format-datetime date="${item.updatedAt}"/></td>
-                                                     <td>${ item.updatedBy }</td>
-                                                     <td>
+                                                 <c:set var="highlight" value="${item.id == param.highlight}"/>
+                                                 <tr>
+                                                     <th scope="row" <component:table-higlight
+                                                             test="${highlight}"/>>${loop.index + 1}</th>
+                                                     <td <component:table-higlight
+                                                             test="${highlight}"/>>${ item.id }</td>
+                                                     <td <component:table-higlight
+                                                             test="${highlight}"/>>${ item.name }</td>
+                                                     <td <component:table-higlight
+                                                             test="${highlight}"/>>${ item.booksCount }</td>
+                                                     <td <component:table-higlight test="${highlight}"/>>
+                                                         <helper:format-datetime date="${item.updatedAt}"/></td>
+                                                     <td <component:table-higlight
+                                                             test="${highlight}"/>>${ item.updatedBy }</td>
+                                                     <td <component:table-higlight test="${highlight}"/>>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
                                                             class="mx-1 txt-primary" up-layer="new" up-size="large"
                                                             up-instant up-history="false">

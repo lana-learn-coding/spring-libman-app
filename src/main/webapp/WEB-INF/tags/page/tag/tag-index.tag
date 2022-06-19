@@ -65,8 +65,16 @@
                                 <div class="col-6 col-md-3 col-lg-2">
                                     <component:sorting
                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
-                                            labels="Name;Books Count;Updated At;Updated By;Id"
-                                            values="name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
+                                            labels="Newest;Name;Books Count;Updated At;Updated By;Id"
+                                            values="createdAt,desc;name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
+                                </div>
+                                <div class="col-6 col-md-4 d-flex align-items-center justify-content-end">
+                                    <a href="${pageContext.request.contextPath}/library/tags/${uri}/create"
+                                       class="btn btn-primary flex-grow-1 flex-md-grow-0" up-layer="new" up-instant
+                                       up-history="false" up-dismissable="button">
+                                        <i class="fa fa-plus-square-o fa-lg pe-2"></i>
+                                        Create
+                                    </a>
                                 </div>
                             </div>
                             <div class="table-responsive">
@@ -88,9 +96,14 @@
                                              </tr>
                                              </thead>
                                              <tbody>
+                                             <c:set var="highlight" value="${}"/>
                                              <c:set var="content" value="${empty data ? [] : data.content}"/>
                                              <c:forEach var="item" items="${data.content}" varStatus="loop">
-                                                 <tr>
+                                                 <tr <c:if test="${item.id == param.highlight}">
+                                                     data-remove-class="bg-success"
+                                                     style="transition: background-color 3s"
+                                                     class="bg-success"</c:if>
+                                                 >
                                                      <th scope="row">${loop.index + 1}</th>
                                                      <td class="text-truncate"
                                                          style="max-width: 180px">${ item.id }</td>
@@ -107,7 +120,10 @@
                                                          </a>
                                                          <sec:authorize
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_UPDATE\')}')">
-                                                                <a href="#" class="mx-1 txt-primary">
+                                                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/update"
+                                                                   class="mx-1 txt-primary" up-instant
+                                                                   up-history="false" up-layer="new"
+                                                                   up-dismissable="button">
                                                                     <i data-feather="edit"
                                                                        style="width: 20px; height: 20px"></i>
                                                                 </a>
@@ -116,6 +132,7 @@
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_DELETE\')}')">
                                                                 <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/delete"
                                                                    up-layer="new" up-history="false" up-instant
+                                                                   up-dismissable="button"
                                                                    class="mx-1 txt-danger">
                                                                     <i data-feather="trash"
                                                                        style="width: 20px; height: 20px"></i>
@@ -132,7 +149,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            <nav class="d-flex justify-content-end mt-3">
+                            <nav class="d-flex justify-content-start mt-3">
                                 <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
                                                       up="up-scroll='layer' up-transition='cross-fade'"/>
                             </nav>

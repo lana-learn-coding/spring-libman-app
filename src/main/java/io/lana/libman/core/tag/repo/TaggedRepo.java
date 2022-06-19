@@ -14,4 +14,8 @@ public interface TaggedRepo<T extends TaggedEntity> extends PagingAndSortingRepo
 
     @Override
     List<T> findAll();
+
+    boolean existsByNameIgnoreCaseAndIdNot(String name, String id);
+
+    boolean existsByNameIgnoreCase(String name);
 }

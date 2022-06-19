@@ -22,6 +22,12 @@ up.compiler('#notify-hungry .toast', (toast) => {
   }
 });
 
+up.compiler('[data-remove-class]', (el) => {
+  const duration = el.getAttribute('data-remove-duration') || 1000;
+  const timeout = setTimeout(() => el.classList.remove(el.getAttribute('data-remove-class')), Number(duration));
+  return () => clearTimeout(timeout);
+});
+
 up.compiler('.loader-wrapper', (loader) => {
   if (loader) {
     loader.style.transition = 'opacity 1.6s';

@@ -6,25 +6,30 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.ZonedDateTime;
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.time.Instant;
 import java.util.Objects;
 
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity implements Identified {
     @Id
     protected String id = IdUtils.newTimeSortableId();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
-    protected ZonedDateTime createdAt = ZonedDateTime.now();
+    protected Instant createdAt = Instant.now();
 
     @Column(name = "updated_at")
     @LastModifiedDate
-    protected ZonedDateTime updatedAt = ZonedDateTime.now();
+    protected Instant updatedAt = Instant.now();
 
     @Column(name = "created_by", updatable = false)
     @CreatedBy

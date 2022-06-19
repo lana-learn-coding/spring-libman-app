@@ -109,7 +109,7 @@
                                                      <td <component:table-higlight
                                                              test="${highlight}"/>>${ item.booksCount }</td>
                                                      <td <component:table-higlight test="${highlight}"/>>
-                                                         <helper:format-datetime date="${item.updatedAt}"/></td>
+                                                         <helper:format-instant date="${item.updatedAt}"/></td>
                                                      <td <component:table-higlight
                                                              test="${highlight}"/>>${ item.updatedBy }</td>
                                                      <td <component:table-higlight test="${highlight}"/>>

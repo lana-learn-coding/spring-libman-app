@@ -4,7 +4,6 @@ import io.lana.libman.core.book.BookInfo;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;

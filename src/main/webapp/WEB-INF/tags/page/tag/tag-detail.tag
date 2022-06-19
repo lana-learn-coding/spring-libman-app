@@ -35,7 +35,7 @@
                                      <div class="mb-3 text-muted">
                                          <div>
                                              <i class="fa fa-calendar-o"></i>
-                                             <span class="ms-1"><helper:format-datetime
+                                             <span class="ms-1"><helper:format-instant
                                                      date="${entity.updatedAt}"/></span>
                                          </div>
                                          <c:if test="${not empty entity.updatedBy}">
@@ -107,7 +107,7 @@
                                                      <th scope="row">${loop.index + 1}</th>
                                                      <td>${ item.id }</td>
                                                      <td>${ item.name }</td>
-                                                     <td><helper:format-datetime date="${item.updatedAt}"/></td>
+                                                     <td><helper:format-instant date="${item.updatedAt}"/></td>
                                                      <td>${ item.updatedBy }</td>
                                                  </tr>
                                              </c:forEach>

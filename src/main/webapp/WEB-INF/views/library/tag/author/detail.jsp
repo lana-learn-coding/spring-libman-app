@@ -12,7 +12,7 @@
         <div class="mb-4 text-muted">
             <div>
                 <i class="fa fa-calendar-o"></i>
-                <span class="ms-1"><helper:format-datetime date="${entity.updatedAt}"/></span>
+                <span class="ms-1"><helper:format-instant date="${entity.updatedAt}"/></span>
             </div>
             <c:if test="${not empty entity.updatedBy}">
                 <div class="ms-2 d-none d-md-block">

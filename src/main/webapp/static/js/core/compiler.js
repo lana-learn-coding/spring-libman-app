@@ -28,6 +28,24 @@ up.compiler('[data-remove-class]', (el) => {
   return () => clearTimeout(timeout);
 });
 
+up.compiler('[data-daterange-picker]', (el) => {
+  return () => {
+    if (window.$ && window.$.fn.daterangepicker) {
+      const data = $(el).data('daterangepicker');
+      if (data) data.remove();
+    }
+  };
+});
+
+up.compiler('input.datepicker-here', (el) => {
+  return () => {
+    if (window.$ && window.$.fn.datepicker) {
+      const data = $(el).data('datepicker');
+      if (data) data.destroy();
+    }
+  };
+});
+
 up.compiler('.loader-wrapper', (loader) => {
   if (loader) {
     loader.style.transition = 'opacity 1.6s';

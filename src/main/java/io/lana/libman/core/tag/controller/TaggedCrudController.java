@@ -48,6 +48,10 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         return "/library/tags/" + getName().toLowerCase(Locale.ENGLISH);
     }
 
+    protected String getEditFormView() {
+        return "/library/tag/edit";
+    }
+
     @GetMapping("{id}/detail")
     public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -77,7 +81,7 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     public ModelAndView update(@PathVariable String id) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_UPDATE");
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return new ModelAndView("/library/tag/edit", Map.of(
+        return new ModelAndView(getEditFormView(), Map.of(
                 "entity", entity,
                 "title", getName(),
                 "edit", true
@@ -89,14 +93,11 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     public ModelAndView update(@PathVariable String id, @Valid @ModelAttribute("entity") T entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_UPDATE");
-
+        validateEntity(entity, bindingResult, id);
         entity.setId(id);
-        if (repo.existsByNameIgnoreCaseAndIdNot(entity.getName(), entity.getId())) {
-            bindingResult.rejectValue("name", "name.exists", "The name was already taken");
-        }
 
         if (bindingResult.hasErrors()) {
-            final var model = new ModelAndView("/library/tag/edit", Map.of(
+            final var model = new ModelAndView(getEditFormView(), Map.of(
                     "entity", entity,
                     "title", getName(),
                     "edit", true
@@ -116,7 +117,7 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     public ModelAndView create() {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_CREATE");
         final var entity = ModelUtils.construct(clazz);
-        return new ModelAndView("/library/tag/edit", Map.of(
+        return new ModelAndView(getEditFormView(), Map.of(
                 "entity", entity,
                 "title", getName(),
                 "edit", false
@@ -127,12 +128,9 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     public ModelAndView create(@Valid @ModelAttribute("entity") T entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_CREATE");
-        if (repo.existsByNameIgnoreCase(entity.getName())) {
-            bindingResult.rejectValue("name", "name.exists", "The name was already taken");
-        }
-
+        validateEntity(entity, bindingResult, null);
         if (bindingResult.hasErrors()) {
-            final var model = new ModelAndView("/library/tag/edit", Map.of(
+            final var model = new ModelAndView(getEditFormView(), Map.of(
                     "entity", entity,
                     "title", getName(),
                     "edit", false
@@ -183,5 +181,18 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         repo.delete(entity);
         ui.toast("Item delete succeed").success();
         return new ModelAndView("redirect:" + getIndexUri());
+    }
+
+    protected void validateEntity(T entity, BindingResult bindingResult, String id) {
+        if (StringUtils.isBlank(id)) {
+            if (repo.existsByNameIgnoreCase(entity.getName())) {
+                bindingResult.rejectValue("name", "name.exists", "The name was already taken");
+            }
+            return;
+        }
+
+        if (repo.existsByNameIgnoreCaseAndIdNot(entity.getName(), entity.getId())) {
+            bindingResult.rejectValue("name", "name.exists", "The name was already taken");
+        }
     }
 }

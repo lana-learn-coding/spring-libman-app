@@ -5,6 +5,7 @@
 
 <%@ attribute name="date" required="true" type="java.time.LocalDate" %>
 <%@ attribute name="pattern" required="false" type="java.lang.String" %>
+<%@ attribute name="var" required="false" type="java.lang.String" %>
 
 <c:if test="${empty pattern}">
     <c:set var="pattern" value="yyyy-MM-dd"/>
@@ -12,4 +13,5 @@
 
 <jsp:useBean id="parsedDate" class="java.util.Date"/>
 <fmt:parseDate value="${date.toString()}" type="date" var="parsedDate" pattern="${pattern}"/>
-<fmt:formatDate value="${parsedDate}" type="date" pattern="${pattern}"/>
+<fmt:formatDate value="${parsedDate}" type="date" pattern="${pattern}" var="value"/>
+<c:set target="${requestScope}" property="${var}" value="${value}"/>

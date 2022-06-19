@@ -5,6 +5,7 @@
 
 <%@ attribute name="date" required="true" type="java.time.ZonedDateTime" %>
 <%@ attribute name="pattern" required="false" type="java.lang.String" %>
+<%@ attribute name="var" required="false" type="java.lang.String" %>
 
 <c:if test="${empty pattern}">
     <c:set var="pattern" value="yyyy-MM-dd HH:mm:ss"/>
@@ -12,4 +13,5 @@
 
 <jsp:useBean id="parsedDate" class="java.util.Date"/>
 <c:set target="${parsedDate}" property="time" value="${date.toInstant().toEpochMilli()}"/>
-<fmt:formatDate value="${parsedDate}" type="both" pattern="${pattern}"/>
+<fmt:formatDate value="${parsedDate}" type="both" pattern="${pattern}" var="value"/>
+<c:set target="${requestScope}" property="${var}" value="${value}"/>

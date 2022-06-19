@@ -18,7 +18,7 @@
 <script src="<c:url value="/static/js/core/bootstrap.min.js"/>" defer></script>
 <script src="<c:url value="/static/js/core/unpoly.min.js"/>" defer></script>
 <script src="<c:url value="/static/js/core/unpoly-bootstrap5.min.js"/>" defer></script>
-<script src="<c:url value="/static/js/core/hyperscript.min.js"/>" defer></script>
+<script src="<c:url value="/static/js/core/compiler.js"/>" defer></script>
 
 <%-- App styles and colors --%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.min.css"/>">

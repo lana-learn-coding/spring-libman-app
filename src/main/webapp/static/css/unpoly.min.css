@@ -16,3 +16,4 @@ up-modal-content .header-simple { display: none!important;}
 .dark-only .standalone-wrapper .page-body-wrapper {  background: transparent!important; }
 .standalone-wrapper .page-body { margin-left: 145px!important; margin-right: 145px!important }
 @media screen and (max-width: 991px){.standalone-wrapper .page-body{margin-right: 0 !important;}}
+.up-active-overlay{display: none} form.up-active .up-active-overlay {left: 0;top: 0;width: 100%;height: 100%;position: absolute;background: rgba(0, 0, 0, .2);z-index: 100; display: flex; justify-content: center; align-items: center}

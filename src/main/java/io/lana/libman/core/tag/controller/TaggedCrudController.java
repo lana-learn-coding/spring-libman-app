@@ -73,7 +73,7 @@ abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableE
     }
 
     @PostMapping("{id}/delete")
-    public ModelAndView delete(@PathVariable String id, @RequestHeader String referer) {
+    public ModelAndView delete(@PathVariable String id) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -83,17 +83,17 @@ abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableE
             repo.delete(entity);
             ui.toast("Item delete succeed").success();
         }
-        return new ModelAndView("redirect:" + referer);
+        return new ModelAndView("redirect:" + getIndexUri());
     }
 
     @PostMapping("{id}/force-delete")
-    public ModelAndView forceDelete(@PathVariable String id, @RequestHeader String referer) {
+    public ModelAndView forceDelete(@PathVariable String id) {
         auth.requireAnyAuthorities("ADMIN", "FORCE");
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         repo.delete(entity);
         ui.toast("Item delete succeed").success();
-        return new ModelAndView("redirect:" + referer);
+        return new ModelAndView("redirect:" + getIndexUri());
     }
 }

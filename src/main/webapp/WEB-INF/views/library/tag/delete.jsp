@@ -27,7 +27,7 @@
                                                     <i data-feather="alert-triangle" class="txt-warning"
                                                        style="width: 100px; height: 100px; stroke-width: 1"></i>
                                                     <h3 class="f-w-600 mt-3">${entity.name}</h3>
-                                                    <span>Are you sure delete this item</span>
+                                                    <span>Are you sure delete this item (${entity.booksCount} books affected)</span>
                                                 </c:otherwise>
                                             </c:choose>
                     </div>

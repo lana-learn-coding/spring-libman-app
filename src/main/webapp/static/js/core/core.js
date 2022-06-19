@@ -48,13 +48,11 @@ defer(() => {
     });
   });
 
-  up.compiler('#notify-container', (toastContainer) => {
-    const toastList = document.querySelectorAll('#notify-hungry .toast');
-    if (toastList.length && toastContainer) {
-      toastList.forEach(toast => {
-        toastContainer.appendChild(toast);
-        bootstrap.Toast.getOrCreateInstance(toast).show();
-      });
+  up.compiler('#notify-hungry .toast', (toast) => {
+    const toastContainer = document.querySelector('#notify-container');
+    if (toastContainer) {
+      toastContainer.appendChild(toast);
+      bootstrap.Toast.getOrCreateInstance(toast).show();
     }
   });
 

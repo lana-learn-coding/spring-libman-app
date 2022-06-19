@@ -9,3 +9,10 @@ up-focus-trap{position:fixed;top:0;left:0;width:0;height:0}up-modal,up-drawer,up
 [up-href],[up-clickable]{cursor:pointer}
 
 up-modal-box{margin: auto; box-shadow: none}
+up-modal-content .standalone-wrapper .page-body,.up-modal-cotent .page-body { padding: 0!important; min-height: 0!important; margin: 0!important;}
+up-modal-content .modal { display: block; position: static; background: transparent }
+up-modal-content .modal-dialog { width: 100%; max-width: 100%; margin: 0}
+up-modal-content .header-simple { display: none!important;}
+.dark-only .standalone-wrapper .page-body-wrapper {  background: transparent!important; }
+.standalone-wrapper .page-body { margin-left: 145px!important; margin-right: 145px!important }
+@media screen and (max-width: 991px){.standalone-wrapper .page-body{margin-right: 0 !important;}}

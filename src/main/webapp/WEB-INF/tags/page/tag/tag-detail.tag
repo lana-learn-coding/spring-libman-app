@@ -18,41 +18,15 @@
 
 <c:set var="uri" value="${(empty uri) ? title.toLowerCase() : uri}"/>
 
-<layout:librarian>
+<layout:modal>
     <jsp:attribute name="title">${title} Detail</jsp:attribute>
     <jsp:attribute name="body">
-        <div class="container-fluid">
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <h3>${title}</h3>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="${pageContext.request.contextPath}/library/dashboard"
-                                   up-follow up-instant>Home</a>
-                            </li>
-                            <li class="breadcrumb-item">Books</li>
-                            <li class="breadcrumb-item">Tags</li>
-                            <li class="breadcrumb-item">
-                                <a href="${pageContext.request.contextPath}/library/tags/${uri}"
-                                   up-follow up-instant>${title}
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active">${entity.name}</li>
-                        </ol>
-                    </div>
-                </div>
+        <div class="card text-start">
+            <div class="card-header pb-0">
+                <h5>${title} Detail</h5>
+                <span>Detail of ${entity.name}</span>
             </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card text-start" up-main="modal">
-                        <div class="card-header pb-0">
-                            <h5>${title} Detail</h5>
-                            <span>Detail of ${entity.name}</span>
-                        </div>
-                        <c:choose>
+            <c:choose>
                             <c:when test="${detail != null}">
                                <jsp:invoke fragment="detail"/>
                             </c:when>
@@ -80,37 +54,37 @@
                             </c:otherwise>
                         </c:choose>
 
-                        <hr class="my-0">
-                        <div class="card-header pb-0">
-                            <h5>Related Books</h5>
-                            <span>List books of ${title}: ${entity.name} (Total of ${entity.booksCount})</span>
+            <hr class="my-0">
+            <div class="card-header pb-0">
+                <h5>Related Books</h5>
+                <span>List books of ${title}: ${entity.name} (Total of ${entity.booksCount})</span>
+            </div>
+            <div class="card-body" id="table">
+                <div class="row justify-content-between mb-3">
+                    <form class="col-xs-12 col-md-6 my-1"
+                          up-target="#table table, nav .pagination" method="get">
+                        <helper:inherit-param excludes="query"/>
+                        <div class="input-group">
+                            <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
+                            <input type="text"
+                                   style="max-width: 500px"
+                                   class="form-control form-control-lg"
+                                   name="query"
+                                   placeholder="Search for item"
+                                   aria-label="query"
+                                   value="${param.query}"
+                                   up-autosubmit
+                                   up-delay="400">
                         </div>
-                        <div class="card-body" id="table">
-                            <div class="row justify-content-between mb-3">
-                                <form class="col-xs-12 col-md-6 my-1"
-                                      up-target="#table table, nav .pagination" method="get">
-                                    <helper:inherit-param excludes="query"/>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
-                                        <input type="text"
-                                               style="max-width: 500px"
-                                               class="form-control form-control-lg"
-                                               name="query"
-                                               placeholder="Search for item"
-                                               aria-label="query"
-                                               value="${param.query}"
-                                               up-autosubmit
-                                               up-delay="400">
-                                    </div>
-                                </form>
-                                <div class="col-xs-12 col-md-3 col-lg-2 my-1">
+                    </form>
+                    <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                     <component:sorting
                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
                                             labels="Updated At;Updated By;Id"
                                             values="updatedAt,desc;updatedBy,id"/>
-                                </div>
-                            </div>
-                            <div class="table-responsive">
+                    </div>
+                </div>
+                <div class="table-responsive">
                                 <c:choose>
                                     <c:when test="${table != null}">
                                         <jsp:invoke fragment="table"/>
@@ -145,15 +119,12 @@
                                         </c:if>
                                     </c:otherwise>
                                 </c:choose>
-                            </div>
-                            <nav class="d-flex justify-content-end mt-3">
+                </div>
+                <nav class="d-flex justify-content-end mt-3">
                                 <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
                                                       up="up-scroll='layer' up-transition='cross-fade'"/>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+                </nav>
             </div>
         </div>
     </jsp:attribute>
-</layout:librarian>
+</layout:modal>

@@ -101,7 +101,7 @@
                                                      <td>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
                                                             class="mx-1 txt-primary" up-layer="new" up-size="large"
-                                                            up-instant>
+                                                            up-instant up-history="false">
                                                              <i data-feather="external-link"
                                                                 style="width: 20px; height: 20px"></i>
                                                          </a>

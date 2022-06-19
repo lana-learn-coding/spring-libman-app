@@ -10,10 +10,12 @@ up-focus-trap{position:fixed;top:0;left:0;width:0;height:0}up-modal,up-drawer,up
 
 up-modal-box{margin: auto; box-shadow: none}
 up-modal-content .standalone-wrapper .page-body,.up-modal-cotent .page-body { padding: 0!important; min-height: 0!important; margin: 0!important;}
+up-modal-content .page-wrapper .page-body-wrapper .page-body > .card { margin-bottom: 0 }
 up-modal-content .modal { display: block; position: static; background: transparent }
 up-modal-content .modal-dialog { width: 100%; max-width: 100%; margin: 0}
 up-modal-content .header-simple { display: none!important;}
 .dark-only .standalone-wrapper .page-body-wrapper {  background: transparent!important; }
 .standalone-wrapper .page-body { margin-left: 145px!important; margin-right: 145px!important }
-@media screen and (max-width: 991px){.standalone-wrapper .page-body{margin-right: 0 !important;}}
 .up-active-overlay{display: none} form.up-active .up-active-overlay {left: 0;top: 0;width: 100%;height: 100%;position: absolute;background: rgba(0, 0, 0, .2);z-index: 100; display: flex; justify-content: center; align-items: center}
+@media screen and (max-width: 991px){.standalone-wrapper .page-body{margin-right: 0 !important;}}
+@media screen and (max-width: 575px){up-modal-content .page-wrapper .page-body-wrapper .page-body{padding-top: 0px!important; padding-bottom: 0px!important;}}

@@ -9,7 +9,7 @@
 <%@ attribute name="title" required="true" type="java.lang.String" %>
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
 <%@ attribute name="data" required="false" type="org.springframework.data.domain.Page" %>
-<%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.TaggedEntity" %>
+<%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.Tagged" %>
 
 <%@ attribute name="table" fragment="true" %>
 <%@ attribute name="detail" fragment="true" %>
@@ -61,6 +61,12 @@
             </div>
             <div class="card-body" id="table">
                 <div class="row justify-content-between mb-3">
+                    <div class="col-xs-12 col-md-3 col-lg-2 my-1">
+                                    <component:sorting
+                                            target="#table, [comp=sorting]" up="up-scroll='layer'"
+                                            labels="Updated At;Updated By;Id"
+                                            values="updatedAt,desc;updatedBy,id"/>
+                    </div>
                     <form class="col-xs-12 col-md-6 my-1"
                           up-target="#table table, nav .pagination" method="get">
                         <helper:inherit-param excludes="query"/>
@@ -77,12 +83,6 @@
                                    up-delay="400">
                         </div>
                     </form>
-                    <div class="col-xs-12 col-md-3 col-lg-2 my-1">
-                                    <component:sorting
-                                            target="#table, [comp=sorting]" up="up-scroll='layer'"
-                                            labels="Updated At;Updated By;Id"
-                                            values="updatedAt,desc;updatedBy,id"/>
-                    </div>
                 </div>
                 <div class="table-responsive">
                                 <c:choose>
@@ -119,7 +119,7 @@
                                     </c:otherwise>
                                 </c:choose>
                 </div>
-                <nav class="d-flex justify-content-end mt-3">
+                <nav class="d-flex justify-content-start mt-3">
                                 <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
                                                       up="up-scroll='layer' up-transition='cross-fade'"/>
                 </nav>

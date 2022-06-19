@@ -9,12 +9,12 @@
 <%@ attribute name="title" required="true" type="java.lang.String" %>
 <%@ attribute name="edit" required="false" type="java.lang.Boolean" %>
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
-<%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.TaggedEntity" %>
+<%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.Tagged" %>
 
 <%@ attribute name="form" fragment="true" %>
 
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.support.data.NamedEntity>"--%>
-<c:set var="op" value="${edit ? 'Edit' : 'Create'}"/>
+<c:set var="op" value="${edit ? 'Update' : 'Create'}"/>
 <c:set var="uri" value="${(empty uri) ? title.toLowerCase() : uri}"/>
 
 <layout:modal>
@@ -39,37 +39,37 @@
               </c:if>
            </div>
            <div class="card-body">
+               <div class="theme-form" style="max-width: 900px">
                <c:choose>
                    <c:when test="${form != null}">
                        <jsp:invoke fragment="form"/>
                    </c:when>
                    <c:otherwise>
-                       <div class="theme-form" style="max-width: 900px">
-                           <div class="mb-3">
-                               <label class="col-form-label pt-0" for="name">Name</label>
-                               <form:input path="name" cssClass="form-control"
-                                           cssErrorClass="form-control is-invalid"
-                                           placeholder="Enter the name" required="true"/>
-                               <form:errors path="name" cssClass="invalid-feedback"/>
-                           </div>
-                           <div class="mb-3">
-                               <label class="col-form-label pt-0"
-                                      for="about">About</label>
-                               <textarea class="form-control" id="about" data-editor="true"
-                                         placeholder="About">${entity.about}</textarea>
-                           </div>
-                           <div class="mb-3">
-                               <label class="col-form-label pt-0" for="user">
-                                       ${op}d by
-                               </label>
-                               <input class="form-control"
-                                      id="user"
-                                      value="<sec:authentication property="principal.email"/>" type="text"
-                                      disabled>
-                           </div>
+                       <div class="mb-3">
+                           <label class="col-form-label pt-0" for="name">Name</label>
+                           <form:input path="name" cssClass="form-control"
+                                       cssErrorClass="form-control is-invalid"
+                                       placeholder="Enter the name" required="true"/>
+                           <form:errors path="name" cssClass="invalid-feedback"/>
+                       </div>
+                       <div class="mb-3">
+                           <label class="col-form-label pt-0"
+                                  for="about">About</label>
+                           <textarea class="form-control" id="about" data-editor="true"
+                                     placeholder="About">${entity.about}</textarea>
                        </div>
                    </c:otherwise>
                </c:choose>
+                   <div class="mb-3">
+                       <label class="col-form-label pt-0" for="user">
+                               ${op}d by
+                       </label>
+                       <input class="form-control"
+                              id="user"
+                              value="<sec:authentication property="principal.username"/>" type="text"
+                              disabled>
+                   </div>
+               </div>
            </div>
            <div class="card-footer">
                <button class="btn btn-primary" type="submit">Submit</button>

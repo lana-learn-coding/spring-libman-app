@@ -10,7 +10,7 @@
 <%@ attribute name="authority" required="true" type="java.lang.String" %>
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
 <%@ attribute name="data" required="false"
-              type="org.springframework.data.domain.Page<io.lana.libman.core.tag.TaggedEntity>" %>
+              type="org.springframework.data.domain.Page<io.lana.libman.core.tag.Tagged>" %>
 
 <%@ attribute name="table" fragment="true" %>
 
@@ -46,36 +46,36 @@
                             <span>Manage list of ${title} information and related books</span>
                         </div>
                         <div class="card-body" id="table">
-                            <form class="col-xs-12 col-md-6 col-lg-5 mb-2"
-                                  up-target="#table table, nav .pagination" method="get">
-                                <helper:inherit-param excludes="query"/>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
-                                    <input type="text"
-                                           class="form-control form-control-lg"
-                                           name="query"
-                                           placeholder="Search for item"
-                                           aria-label="query"
-                                           value="${param.query}"
-                                           up-autosubmit
-                                           up-delay="400">
-                                </div>
-                            </form>
-                            <div class="row justify-content-between mb-3">
-                                <div class="col-6 col-md-3 col-lg-2">
+                            <div class="d-flex justify-content-end mb-3">
+                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/create"
+                                   class="btn btn-primary" up-instant up-layer="new"
+                                   up-history="false" up-dismissable="button">
+                                    <i class="fa fa-plus-square-o fa-lg pe-2"></i>
+                                    Create
+                                </a>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-12 col-sm- col-md-3 col-lg-2 mb-3">
                                     <component:sorting
                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
                                             labels="Newest;Name;Books Count;Updated At;Updated By;Id"
                                             values="createdAt,desc;name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
                                 </div>
-                                <div class="col-6 col-md-4 d-flex align-items-center justify-content-end">
-                                    <a href="${pageContext.request.contextPath}/library/tags/${uri}/create"
-                                       class="btn btn-primary flex-grow-1 flex-md-grow-0" up-layer="new" up-instant
-                                       up-history="false" up-dismissable="button">
-                                        <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                        Create
-                                    </a>
-                                </div>
+                                <form class="col-12 col-md-6 col-lg-5 mb-3"
+                                      up-target="#table table, nav .pagination" method="get">
+                                    <helper:inherit-param excludes="query"/>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
+                                        <input type="text"
+                                               class="form-control form-control-lg"
+                                               name="query"
+                                               placeholder="Search for item"
+                                               aria-label="query"
+                                               value="${param.query}"
+                                               up-autosubmit
+                                               up-delay="400">
+                                    </div>
+                                </form>
                             </div>
                             <div class="table-responsive">
                                 <c:choose>

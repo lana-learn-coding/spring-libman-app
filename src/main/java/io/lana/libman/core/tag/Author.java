@@ -1,14 +1,15 @@
 package io.lana.libman.core.tag;
 
 import io.lana.libman.core.book.BookInfo;
+import io.lana.libman.support.data.AuditableEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,7 +17,14 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Author extends TaggedEntity {
+public class Author extends AuditableEntity implements Tagged {
+    @NotBlank
+    @Column(nullable = false)
+    protected String name;
+
+    @Column(columnDefinition = "TEXT")
+    protected String about;
+
     @OneToMany(mappedBy = "author")
     private Set<BookInfo> books = new LinkedHashSet<>();
 

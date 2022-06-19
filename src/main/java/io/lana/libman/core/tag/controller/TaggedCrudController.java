@@ -1,6 +1,6 @@
 package io.lana.libman.core.tag.controller;
 
-import io.lana.libman.core.tag.TaggedEntity;
+import io.lana.libman.core.tag.Tagged;
 import io.lana.libman.core.tag.repo.TaggedRepo;
 import io.lana.libman.support.data.AuditableEntity;
 import io.lana.libman.support.data.ModelUtils;
@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-abstract class TaggedCrudController<T extends TaggedEntity, B extends AuditableEntity & Named> {
+abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, B extends AuditableEntity & Named> {
     protected final TaggedRepo<T> repo;
 
     protected final Class<T> clazz = ModelUtils.getGenericType(getClass());

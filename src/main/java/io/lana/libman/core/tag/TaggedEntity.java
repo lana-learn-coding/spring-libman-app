@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class TaggedEntity extends NamedEntity {
+public abstract class TaggedEntity extends NamedEntity implements Tagged {
     @Column(columnDefinition = "TEXT")
     protected String about;
 

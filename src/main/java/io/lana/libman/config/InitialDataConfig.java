@@ -94,11 +94,28 @@ class InitialDataConfig implements ApplicationRunner {
             permissionRepo.saveAll(Permission.forWriteOnly(Publisher.class.getSimpleName()));
             permissionRepo.saveAll(Permission.forWriteOnly(Series.class.getSimpleName()));
             permissionRepo.saveAll(Permission.forWriteOnly(Shelf.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forWriteOnly(BookInfo.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forWriteOnly(Book.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forReadWrite(BookBorrow.class.getSimpleName()));
             permissionRepo.saveAll(Permission.forReadWrite(User.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forReadWrite(Permission.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forReadWrite(Role.class.getSimpleName()));
+            permissionRepo.saveAll(Permission.forReadWrite(Reader.class.getSimpleName()));
         }
 
         if (roleRepo.count() == 0) {
-            roleRepo.saveAll(List.of(Role.admin(), Role.librarian(), Role.force()));
+            final var librarian = Role.librarian();
+            final var librarianPerms = librarian.getPermissions();
+            librarianPerms.addAll(Permission.forWriteOnly(Author.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forWriteOnly(Genre.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forWriteOnly(Publisher.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forWriteOnly(Series.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forWriteOnly(Shelf.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forWriteOnly(BookInfo.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forWriteOnly(Book.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forReadWrite(BookBorrow.class.getSimpleName()));
+            librarianPerms.addAll(Permission.forReadWrite(Reader.class.getSimpleName()));
+            roleRepo.saveAll(List.of(Role.admin(), Role.force(), librarian));
         }
     }
 
@@ -298,7 +315,7 @@ class InitialDataConfig implements ApplicationRunner {
         Stream.generate(() -> faker.options().nextElement(readers))
                 .distinct()
                 .filter(x -> borrowedBook.size() < books.size())
-                .limit(25)
+                .limit(20)
                 .forEach(reader -> {
                     var borrowLimit = faker.number().numberBetween(1, reader.getBorrowLimit());
                     final var numberOfTickets = borrowLimit < 2 ? 1 : faker.number().numberBetween(1, borrowLimit / 2);

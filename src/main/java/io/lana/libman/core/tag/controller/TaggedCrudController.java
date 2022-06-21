@@ -175,7 +175,9 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (entity.getBooksCount() > 0) {
+        if (StringUtils.equalsIgnoreCase(entity.getId(), "DEFAULT")) {
+            ui.toast("Can't delete default item").error();
+        } else if (entity.getBooksCount() > 0) {
             ui.toast("Item have update during delete, please try again").warning();
         } else {
             repo.delete(entity);
@@ -190,6 +192,11 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (StringUtils.equalsIgnoreCase(entity.getId(), "DEFAULT")) {
+            ui.toast("Can't delete default item").error();
+            return new ModelAndView("redirect:" + getIndexUri());
+        }
+
         repo.delete(entity);
         ui.toast("Item delete succeed").success();
         return new ModelAndView("redirect:" + getIndexUri());

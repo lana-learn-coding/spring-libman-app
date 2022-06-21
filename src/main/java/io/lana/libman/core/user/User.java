@@ -55,7 +55,7 @@ public class User extends AuditableEntity implements AuthUser, Named {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -77,6 +77,10 @@ public class User extends AuditableEntity implements AuthUser, Named {
                     .collect(Collectors.toUnmodifiableSet());
         }
         return permissions;
+    }
+
+    public boolean isInternal() {
+        return getAuthorities().contains(Permission.internal());
     }
 
     @Transient

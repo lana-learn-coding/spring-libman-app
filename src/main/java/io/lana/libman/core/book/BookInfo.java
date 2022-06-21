@@ -1,11 +1,13 @@
 package io.lana.libman.core.book;
 
+import io.lana.libman.core.book.support.BookDetails;
 import io.lana.libman.core.tag.Author;
 import io.lana.libman.core.tag.Genre;
 import io.lana.libman.core.tag.Publisher;
 import io.lana.libman.core.tag.Series;
 import io.lana.libman.support.data.AuditableEntity;
 import io.lana.libman.support.data.Named;
+import io.lana.libman.support.data.NamedEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
@@ -15,11 +17,12 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @Entity
-public class BookInfo extends AuditableEntity implements Named {
+public class BookInfo extends AuditableEntity implements Named, BookDetails {
     @NotBlank
     @Column(nullable = false)
     private String title;
@@ -34,6 +37,9 @@ public class BookInfo extends AuditableEntity implements Named {
 
     @Formula("(SELECT COUNT(b.id) FROM book b WHERE b.book_info_id = id)")
     private int booksCount;
+
+    @Formula("(SELECT COUNT(b.id) FROM book b WHERE b.book_info_id = id AND b.status = 'AVAILABLE')")
+    private int availableBooksCount;
 
     @OneToMany(mappedBy = "info")
     private Set<Book> books = new LinkedHashSet<>();
@@ -70,5 +76,34 @@ public class BookInfo extends AuditableEntity implements Named {
     @Override
     public void setName(String name) {
         this.title = name;
+    }
+
+    @Override
+    public String getAuthorName() {
+        if (author == null) return null;
+        return author.getName();
+    }
+
+    @Override
+    public String getPublisherName() {
+        if (publisher == null) return null;
+        return publisher.getName();
+    }
+
+    @Override
+    public String getSeriesName() {
+        if (series == null) return null;
+        return series.getName();
+    }
+
+    @Override
+    public String getGenresName() {
+        if (genres == null || genres.isEmpty()) return null;
+        return genres.stream().map(NamedEntity::getName).collect(Collectors.joining(","));
+    }
+
+    @Override
+    public Set<String> getGenresSet() {
+        return genres.stream().map(NamedEntity::getName).collect(Collectors.toUnmodifiableSet());
     }
 }

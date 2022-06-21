@@ -45,6 +45,10 @@ public class Permission extends NamedEntity implements GrantedAuthority {
         return List.of(Permission.ofName(ADMIN), Permission.ofName(LIBRARIAN), Permission.ofName(FORCE));
     }
 
+    public static Permission internal() {
+        return Permission.ofName(LIBRARIAN);
+    }
+
     public static List<Permission> forReadWrite(final String name) {
         final var nameUpper = StringUtils.upperCase(name, Locale.ENGLISH);
         final var rw = List.of("_CREATE", "_READ", "_DELETE", "_UPDATE");

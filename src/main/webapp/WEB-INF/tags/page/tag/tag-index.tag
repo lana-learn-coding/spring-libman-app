@@ -45,37 +45,36 @@
                             <h5>${title} Manage</h5>
                             <span>Manage list of ${title} information and related books</span>
                         </div>
-                        <div class="card-body" id="table">
-                            <div class="d-flex justify-content-end mb-3">
-                                <a href="${pageContext.request.contextPath}/library/tags/${uri}/create"
-                                   class="btn btn-primary" up-instant up-layer="new"
-                                   up-history="false" up-dismissable="button">
-                                    <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                    Create
-                                </a>
+                        <form class="card-body row" up-target="#table table, nav .pagination" method="get">
+                            <helper:inherit-param excludes="query"/>
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
+                                <input type="text"
+                                       class="form-control form-control-lg"
+                                       name="query"
+                                       placeholder="Search for item"
+                                       aria-label="query"
+                                       value="${param.query}"
+                                       up-autosubmit
+                                       up-delay="400">
                             </div>
+                        </form>
+                        <hr class="my-0">
+                        <div class="card-body" id="table">
                             <div class="row justify-content-between">
-                                <div class="col-12 col-sm- col-md-3 col-lg-2 mb-3">
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
                                     <component:sorting
                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
                                             labels="Newest;Name;Books Count;Updated At;Updated By;Id"
                                             values="createdAt,desc;name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
                                 </div>
-                                <form class="col-12 col-md-6 col-lg-5 mb-3"
-                                      up-target="#table table, nav .pagination" method="get">
-                                    <helper:inherit-param excludes="query"/>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
-                                        <input type="text"
-                                               class="form-control form-control-lg"
-                                               name="query"
-                                               placeholder="Search for item"
-                                               aria-label="query"
-                                               value="${param.query}"
-                                               up-autosubmit
-                                               up-delay="400">
-                                    </div>
-                                </form>
+                                <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
+                                    <button up-href="${pageContext.request.contextPath}/library/tags/${uri}/create"
+                                            class="btn btn-primary" up-instant up-layer="new" up-dismissable="button">
+                                        <i class="fa fa-plus-square-o fa-lg pe-2 d-none d-sm-inline"></i>
+                                        Create
+                                    </button>
+                                </div>
                             </div>
                             <div class="table-responsive">
                                 <c:choose>
@@ -111,10 +110,10 @@
                                                      <td <component:table-higlight test="${highlight}"/>>
                                                          <helper:format-instant date="${item.updatedAt}"/></td>
                                                      <td <component:table-higlight
-                                                             test="${highlight}"/>>${ item.updatedBy }</td>
+                                                             test="${highlight}"/>>${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</td>
                                                      <td <component:table-higlight test="${highlight}"/>>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
-                                                            class="mx-1 txt-primary" up-layer="new" up-size="large"
+                                                            class="mr-1 txt-primary" up-layer="new" up-size="large"
                                                             up-instant up-history="false">
                                                              <i data-feather="external-link"
                                                                 style="width: 20px; height: 20px"></i>
@@ -122,7 +121,7 @@
                                                          <sec:authorize
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_UPDATE\')}')">
                                                                 <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/update"
-                                                                   class="mx-1 txt-primary" up-instant
+                                                                   class="mr-1 txt-primary" up-instant
                                                                    up-history="false" up-layer="new"
                                                                    up-dismissable="button">
                                                                     <i data-feather="edit"
@@ -134,7 +133,7 @@
                                                                 <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/delete"
                                                                    up-layer="new" up-history="false" up-instant
                                                                    up-dismissable="button"
-                                                                   class="mx-1 txt-danger">
+                                                                   class="txt-danger">
                                                                     <i data-feather="trash"
                                                                        style="width: 20px; height: 20px"></i>
                                                                 </a>

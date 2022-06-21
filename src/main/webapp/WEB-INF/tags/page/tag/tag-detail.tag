@@ -73,7 +73,6 @@
                         <div class="input-group">
                             <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
                             <input type="text"
-                                   style="max-width: 500px"
                                    class="form-control form-control-lg"
                                    name="query"
                                    placeholder="Search for item"
@@ -85,39 +84,39 @@
                     </form>
                 </div>
                 <div class="table-responsive">
-                                <c:choose>
-                                    <c:when test="${table != null}">
-                                        <jsp:invoke fragment="table"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                         <table class="table">
-                                             <thead>
-                                             <tr>
-                                                 <th scope="col">#</th>
-                                                 <th scope="col">Id</th>
-                                                 <th scope="col">Name</th>
-                                                 <th scope="col">Updated At</th>
-                                                 <th scope="col">Updated By</th>
-                                             </tr>
-                                             </thead>
-                                             <tbody>
-                                             <c:set var="content" value="${empty data ? [] : data.content}"/>
-                                             <c:forEach var="item" items="${data.content}" varStatus="loop">
-                                                 <tr>
-                                                     <th scope="row">${loop.index + 1}</th>
-                                                     <td>${ item.id }</td>
-                                                     <td>${ item.name }</td>
-                                                     <td><helper:format-instant date="${item.updatedAt}"/></td>
-                                                     <td>${ item.updatedBy }</td>
-                                                 </tr>
-                                             </c:forEach>
-                                             </tbody>
-                                         </table>
-                                        <c:if test="${empty content}">
-                                            <component:empty/>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
+                    <c:choose>
+                        <c:when test="${table != null}">
+                            <jsp:invoke fragment="table"/>
+                        </c:when>
+                        <c:otherwise>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Updated At</th>
+                                    <th scope="col">Updated By</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:set var="content" value="${empty data ? [] : data.content}"/>
+                                <c:forEach var="item" items="${data.content}" varStatus="loop">
+                                    <tr>
+                                        <th scope="row">${loop.index + 1}</th>
+                                        <td>${ item.id }</td>
+                                        <td>${ item.name }</td>
+                                        <td><helper:format-instant date="${item.updatedAt}"/></td>
+                                        <td>${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                            <c:if test="${empty content}">
+                                <component:empty/>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <nav class="d-flex justify-content-start mt-3">
                                 <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"

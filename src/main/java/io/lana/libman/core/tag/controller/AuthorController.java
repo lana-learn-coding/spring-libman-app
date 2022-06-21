@@ -72,7 +72,7 @@ class AuthorController extends TaggedCrudController<Author, BookInfo> {
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_CREATE");
         validateEntity(entity, bindingResult, null);
-        if (imageService.validate(file, bindingResult, "image")) {
+        if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
             entity.setImage(imageService.save(image).getUri());
         }
@@ -86,7 +86,7 @@ class AuthorController extends TaggedCrudController<Author, BookInfo> {
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_UPDATE");
         validateEntity(entity, bindingResult, id);
-        if (imageService.validate(file, bindingResult, "image")) {
+        if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
             entity.setImage(imageService.save(image).getUri());
         }

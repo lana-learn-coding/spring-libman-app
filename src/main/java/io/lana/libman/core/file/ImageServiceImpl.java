@@ -29,7 +29,7 @@ class ImageServiceImpl implements ImageService {
 
     @Override
     public boolean validate(MultipartFile file) {
-        if (file == null || file.isEmpty()) return true;
+        if (file == null || file.isEmpty()) throw new FileViolationException(file, "File is required");
         if (file.getSize() > maxSize) throw new FileViolationException(file, "File size too large");
 
         final var contentType = file.getContentType();

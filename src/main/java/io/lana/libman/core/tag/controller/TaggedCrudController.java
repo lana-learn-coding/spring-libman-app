@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -105,6 +107,18 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
                 "entity", entity,
                 "title", getName(),
                 "edit", false
+        ));
+    }
+
+    @GetMapping("autocomplete")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> autocomplete(@RequestParam(required = false, name = "q") String query) {
+        final var page = repo.findAllByNameLikeIgnoreCase("%" + query + "%", Pageable.ofSize(6));
+        final var data = page.stream()
+                .map(t -> Map.of("id", t.getId(), "text", t.getName()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(Map.of(
+                "results", data
         ));
     }
 

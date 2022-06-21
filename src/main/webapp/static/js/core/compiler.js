@@ -37,6 +37,28 @@ up.compiler('[data-daterange-picker]', (el) => {
   };
 });
 
+up.macro('[select2]', (el) => {
+  if (!window.$ || !window.$.fn.select2) return;
+  const url = el.getAttribute('select2');
+  el.setAttribute('data-ajax--url', url);
+  el.setAttribute('data-ajax--delay', '300');
+});
+
+up.compiler('[select2]', (el) => {
+  if (!window.$ || !window.$.fn.select2) return;
+  const $el = $(el);
+  const $modal = $el.parents('up-modal-content');
+  if (!$modal.length) {
+    $el.select2();
+  } else {
+    $el.select2({
+      dropdownParent: $modal,
+    });
+  }
+  return () => $el.select2('destroy');
+});
+
+
 up.compiler('input.datepicker-here', (el) => {
   return () => {
     if (window.$ && window.$.fn.datepicker) {

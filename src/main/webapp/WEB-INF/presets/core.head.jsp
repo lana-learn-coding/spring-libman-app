@@ -20,6 +20,17 @@
 <script src="<c:url value="/static/js/core/unpoly-bootstrap5.min.js"/>" defer></script>
 <script src="<c:url value="/static/js/core/compiler.js"/>" defer></script>
 
+<%-- Icon --%>
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/fontawesome.min.css"/>">
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/icofont.min.css"/>">
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/themify.min.css"/>">
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/feather-icon.min.css"/>">
+<script src="<c:url value="/static/js/icons/feather.min.js"/>" defer></script>
+
+<%-- Plugins --%>
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/select2.min.css"/>">
+<script src="<c:url value="/static/js/select2/select2.full.min.js"/>" defer></script>
+
 <%-- App styles and colors --%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.min.css"/>">
 <sec:authorize access="!hasAuthority('LIBRARIAN')" var="isAdmin">
@@ -36,9 +47,3 @@
 </sec:authorize>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/responsive.min.css"/>">
 
-<%-- Icon --%>
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/fontawesome.min.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/icofont.min.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/themify.min.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/feather-icon.min.css"/>">
-<script src="<c:url value="/static/js/icons/feather.min.js"/>" defer></script>

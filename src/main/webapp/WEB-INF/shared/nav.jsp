@@ -76,7 +76,9 @@
                         </div>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/library/books/infos">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/books/infos"
+                           up-alias="${pageContext.request.contextPath}/library/books/infos/*"
+                           up-follow up-instant>
                             <i data-feather="book"></i><span>Book Info</span>
                         </a>
                     </li>

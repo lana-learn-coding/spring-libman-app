@@ -7,6 +7,7 @@ import io.lana.libman.support.data.Named;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -36,6 +37,11 @@ public class Book extends AuditableEntity implements Named, BookDetails {
     @ManyToOne(optional = false)
     @JoinColumn(name = "book_info_id")
     private BookInfo info;
+
+    public String getImage() {
+        if (info == null) return image;
+        return StringUtils.defaultIfBlank(image, info.getImage());
+    }
 
     @Transient
     @Override

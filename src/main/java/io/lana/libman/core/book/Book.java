@@ -18,7 +18,7 @@ public class Book extends AuditableEntity implements Named {
     private String note;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "shelf_id", foreignKeyDefinition = "ON DELETE SET NULL"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "shelf_id", foreignKeyDefinition = "FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE SET NULL"))
     private Shelf shelf;
 
     @ManyToOne(optional = false)

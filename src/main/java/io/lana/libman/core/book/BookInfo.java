@@ -39,16 +39,15 @@ public class BookInfo extends AuditableEntity implements Named {
     private Set<Book> books = new LinkedHashSet<>();
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "author_id", foreignKeyDefinition = "ON DELETE SET NULL"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "author_id", foreignKeyDefinition = "FOREIGN KEY (author_id) REFERENCES author(id) ON DELETE SET NULL"))
     private Author author;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "publisher_id", foreignKeyDefinition = "ON DELETE SET NULL"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "publisher_id", foreignKeyDefinition = "FOREIGN KEY (publisher_id) REFERENCES publisher(id) ON DELETE SET NULL"))
     private Publisher publisher;
 
-
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "series_id", foreignKeyDefinition = "ON DELETE SET NULL"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "series_id", foreignKeyDefinition = "FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE SET NULL"))
     private Series series;
 
     @ManyToMany
@@ -56,8 +55,8 @@ public class BookInfo extends AuditableEntity implements Named {
             name = "book_info_genres",
             joinColumns = {@JoinColumn(name = "book_info_id")},
             inverseJoinColumns = {@JoinColumn(name = "genre_id")},
-            foreignKey = @ForeignKey(name = "book_info_id", foreignKeyDefinition = "ON DELETE SET NULL"),
-            inverseForeignKey = @ForeignKey(name = "genre_id", foreignKeyDefinition = "ON DELETE SET NULL")
+            foreignKey = @ForeignKey(name = "book_info_id", foreignKeyDefinition = "FOREIGN KEY (book_info_id) REFERENCES book_info(id) ON DELETE CASCADE"),
+            inverseForeignKey = @ForeignKey(name = "genre_id", foreignKeyDefinition = "FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE")
     )
     private Set<Genre> genres = new HashSet<>();
 

@@ -13,7 +13,7 @@
     </c:forEach>
 </c:url>
 
-<c:set var="totalPages" value="${pageMeta.totalPages == 0 ? 1 : pageMeta.totalPages - 1}"/>
+<c:set var="totalPages" value="${pageMeta.totalPages <= 0 ? 0 : pageMeta.totalPages - 1}"/>
 <ul class="pagination pagination-primary" comp="pagination">
     <li class="page-item <c:if test="${pageMeta.pageable.pageNumber == 0}">disabled</c:if>">
         <a class="page-link"

@@ -31,12 +31,14 @@
 </div>
 <!-- Loader ends-->
 <!-- page-wrapper Start-->
-<div class="page-wrapper compact-wrapper standalone-wrapper" id="pageWrapper"  up-main="modal">
-    <jsp:include page="/WEB-INF/shared/header-simple.jsp"/>
+<div class="page-wrapper compact-wrapper standalone-wrapper" id="pageWrapper" up-main="modal">
+    <jsp:include page="/WEB-INF/shared/header.jsp"/>
     <div class="page-body-wrapper">
+        <jsp:include page="/WEB-INF/shared/nav.jsp"/>
         <div class="page-body" up-main>
             <jsp:invoke fragment="body"/>
         </div>
+        <jsp:include page="/WEB-INF/shared/footer.jsp"/>
     </div>
 </div>
 <jsp:invoke fragment="scripts"/>

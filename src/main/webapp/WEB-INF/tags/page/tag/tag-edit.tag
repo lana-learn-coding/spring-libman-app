@@ -19,64 +19,93 @@
 <c:set var="enctype" value="${not empty enctype ? enctype : 'application/x-www-form-urlencoded'}"/>
 
 <layout:modal>
-    <jsp:attribute name="title">${title}</jsp:attribute>
+    <jsp:attribute name="title">${op} ${title}</jsp:attribute>
     <jsp:attribute name="body">
-       <form:form class="card text-start" method="post" up-main="modal" up-submit="true" modelAttribute="entity"
-                  up-layer="parent" enctype="${enctype}">
-           <sec:csrfInput/>
-           <div class="up-active-overlay">
-               <div class="loader-box">
-                   <div class="loader-3"></div>
+        <div class="container-fluid">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3>${op} ${title}</h3>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="${pageContext.request.contextPath}/library/dashboard"
+                                   up-follow up-instant>Home</a>
+                            </li>
+                            <li class="breadcrumb-item">Books</li>
+                            <li class="breadcrumb-item">Tags</li>
+                            <li class="breadcrumb-item">
+                                <a href="${pageContext.request.contextPath}/library/tags/${uri}"
+                                   up-follow up-instant>${title}
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">${op}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="container-fluid">
+           <div class="row">
+               <div class="col-12 modal-p-0">
+                   <form:form class="card text-start modal-m-0" method="post" up-main="modal" up-submit="true"
+                              modelAttribute="entity" up-layer="parent" enctype="${enctype}">
+                       <sec:csrfInput/>
+                       <div class="up-active-overlay">
+                           <div class="loader-box">
+                               <div class="loader-3"></div>
+                           </div>
+                       </div>
+                       <jsp:include page="/WEB-INF/presets/editor.head.jsp"/>
+                       <div class="card-header pb-0">
+                           <h5>${op} ${title}</h5>
+                           <c:if test="${edit}">
+                               <span>Editing ${entity.name}</span>
+                           </c:if>
+                           <c:if test="${not edit}">
+                                <span>Create new</span>
+                          </c:if>
+                       </div>
+                       <div class="card-body">
+                           <div class="theme-form" style="max-width: 900px">
+                           <c:choose>
+                               <c:when test="${form != null}">
+                                   <jsp:invoke fragment="form"/>
+                               </c:when>
+                               <c:otherwise>
+                                   <div class="mb-3">
+                                       <label class="col-form-label pt-0" for="name">Name</label>
+                                       <form:input path="name" cssClass="form-control"
+                                                   cssErrorClass="form-control is-invalid"
+                                                   placeholder="Enter the name" required="true"/>
+                                       <form:errors path="name" cssClass="invalid-feedback"/>
+                                   </div>
+                                   <div class="mb-3">
+                                       <label class="col-form-label pt-0"
+                                              for="about">About</label>
+                                       <textarea class="form-control" id="about" data-editor="true"
+                                                 placeholder="About">${entity.about}</textarea>
+                                   </div>
+                               </c:otherwise>
+                           </c:choose>
+                               <div class="mb-3">
+                                   <label class="col-form-label pt-0" for="user">
+                                           ${op}d by
+                                   </label>
+                                   <input class="form-control"
+                                          id="user"
+                                          value="<sec:authentication property="principal.username"/>" type="text"
+                                          disabled>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="card-footer">
+                           <button class="btn btn-primary" type="submit">Submit</button>
+                           <a class="btn btn-secondary" href="${pageContext.request.contextPath}/library/tags/${uri}"
+                              up-dismiss>Cancel</a>
+                       </div>
+                   </form:form>
                </div>
            </div>
-           <jsp:include page="/WEB-INF/presets/editor.head.jsp"/>
-           <div class="card-header pb-0">
-               <h5>${op} ${title}</h5>
-               <c:if test="${edit}">
-                   <span>Editing ${entity.name}</span>
-               </c:if>
-               <c:if test="${not edit}">
-                    <span>Create new</span>
-              </c:if>
-           </div>
-           <div class="card-body">
-               <div class="theme-form" style="max-width: 900px">
-               <c:choose>
-                   <c:when test="${form != null}">
-                       <jsp:invoke fragment="form"/>
-                   </c:when>
-                   <c:otherwise>
-                       <div class="mb-3">
-                           <label class="col-form-label pt-0" for="name">Name</label>
-                           <form:input path="name" cssClass="form-control"
-                                       cssErrorClass="form-control is-invalid"
-                                       placeholder="Enter the name" required="true"/>
-                           <form:errors path="name" cssClass="invalid-feedback"/>
-                       </div>
-                       <div class="mb-3">
-                           <label class="col-form-label pt-0"
-                                  for="about">About</label>
-                           <textarea class="form-control" id="about" data-editor="true"
-                                     placeholder="About">${entity.about}</textarea>
-                       </div>
-                   </c:otherwise>
-               </c:choose>
-                   <div class="mb-3">
-                       <label class="col-form-label pt-0" for="user">
-                               ${op}d by
-                       </label>
-                       <input class="form-control"
-                              id="user"
-                              value="<sec:authentication property="principal.username"/>" type="text"
-                              disabled>
-                   </div>
-               </div>
-           </div>
-           <div class="card-footer">
-               <button class="btn btn-primary" type="submit">Submit</button>
-               <a class="btn btn-secondary" href="${pageContext.request.contextPath}/library/tags/${uri}"
-                  up-dismiss>Cancel</a>
-           </div>
-       </form:form>
+       </div>
     </jsp:attribute>
 </layout:modal>

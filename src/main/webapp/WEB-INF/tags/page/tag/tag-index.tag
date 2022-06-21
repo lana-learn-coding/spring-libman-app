@@ -114,7 +114,7 @@
                                                      <td <component:table-higlight test="${highlight}"/>>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
                                                             class="mr-1 txt-primary" up-layer="new" up-size="large"
-                                                            up-instant up-history="false">
+                                                            up-instant>
                                                              <i data-feather="external-link"
                                                                 style="width: 20px; height: 20px"></i>
                                                          </a>
@@ -122,7 +122,7 @@
                                                                  access="hasAnyAuthority('ADMIN', '${authority.concat(\'_UPDATE\')}')">
                                                                 <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/update"
                                                                    class="mr-1 txt-primary" up-instant
-                                                                   up-history="false" up-layer="new"
+                                                                   up-layer="new"
                                                                    up-dismissable="button">
                                                                     <i data-feather="edit"
                                                                        style="width: 20px; height: 20px"></i>

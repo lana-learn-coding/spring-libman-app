@@ -3,10 +3,11 @@
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags/page/tag" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--@elvariable id="edit" type="java.lang.Boolean"--%>
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.tag.Author"--%>
-<p:tag-edit title="${title}" entity="${entity}" edit="${edit}">
+<p:tag-edit title="${title}" entity="${entity}" edit="${edit}" enctype="multipart/form-data">
     <jsp:attribute name="form">
         <jsp:include page="/WEB-INF/presets/datepicker.head.jsp"/>
         <div class="mb-3">
@@ -42,6 +43,21 @@
                    for="about">About</label>
             <textarea class="form-control" id="about" data-editor="true"
                       placeholder="About">${entity.about}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="col-form-label pt-0">Author image</label>
+            <div class="d-flex align-items-center">
+                <img id="image" class="rounded-circle" style="width: 70px"
+                     src="${pageContext.request.contextPath}${(empty entity.image ? '/static/images/avatar/default.png' : entity.image)}"
+                     alt="avatar">
+                <spring:bind path="image">
+	                <div class="ms-3 flex-grow-1">
+                        <input name="file" class="form-control ${status.error ? 'is-invalid' : ''}"
+                               placeholder="Upload image" type="file" accept="image/*"/>
+                        <form:errors path="image" cssClass="invalid-feedback"/>
+                    </div>
+                </spring:bind>
+            </div>
         </div>
     </jsp:attribute>
 </p:tag-edit>

@@ -64,8 +64,7 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, Pageable pageable,
-                              RedirectAttributes redirectAttributes) {
+    public ModelAndView index(@RequestParam(required = false) String query, Pageable pageable) {
         final var page = StringUtils.isBlank(query)
                 ? repo.findAll(pageable)
                 : repo.findAllByNameLikeIgnoreCase("%" + query + "%", pageable);
@@ -89,28 +88,13 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
 
-    @PostMapping("{id}/update")
+    @PostMapping(path = "{id}/update")
     public ModelAndView update(@PathVariable String id, @Valid @ModelAttribute("entity") T entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_UPDATE");
-        validateEntity(entity, bindingResult, id);
         entity.setId(id);
-
-        if (bindingResult.hasErrors()) {
-            final var model = new ModelAndView(getEditFormView(), Map.of(
-                    "entity", entity,
-                    "title", getName(),
-                    "edit", true
-            ));
-            model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
-            return model;
-        }
-
-        repo.save(entity);
-        ui.toast("Item successfully created").success();
-        redirectAttributes.addAttribute("highlight", entity.getId());
-        redirectAttributes.addAttribute("sort", "updatedAt,desc");
-        return new ModelAndView("redirect:" + getIndexUri());
+        validateEntity(entity, bindingResult, id);
+        return store(entity, bindingResult, redirectAttributes, id);
     }
 
     @GetMapping("create")
@@ -124,24 +108,38 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         ));
     }
 
-    @PostMapping("create")
+    @PostMapping(path = "create")
     public ModelAndView create(@Valid @ModelAttribute("entity") T entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_CREATE");
         validateEntity(entity, bindingResult, null);
+        return store(entity, bindingResult, redirectAttributes, null);
+    }
+
+    protected ModelAndView store(T entity, BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes, String id) {
+        final var isEdit = StringUtils.isNotBlank(id);
+        if (isEdit && !repo.existsById(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
         if (bindingResult.hasErrors()) {
             final var model = new ModelAndView(getEditFormView(), Map.of(
                     "entity", entity,
                     "title", getName(),
-                    "edit", false
+                    "edit", isEdit
             ));
             model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
             return model;
         }
 
         repo.save(entity);
-        ui.toast("Item successfully created").success();
         redirectAttributes.addAttribute("highlight", entity.getId());
+
+        if (isEdit) {
+            ui.toast("Item successfully updated").success();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:" + getIndexUri());
+        }
+        ui.toast("Item successfully created").success();
         redirectAttributes.addAttribute("sort", "createdAt,desc");
         return new ModelAndView("redirect:" + getIndexUri());
     }

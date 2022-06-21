@@ -10,18 +10,19 @@
 <%@ attribute name="edit" required="false" type="java.lang.Boolean" %>
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
 <%@ attribute name="entity" required="false" type="io.lana.libman.core.tag.Tagged" %>
-
+<%@ attribute name="enctype" required="false" type="java.lang.String" %>
 <%@ attribute name="form" fragment="true" %>
 
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.support.data.NamedEntity>"--%>
 <c:set var="op" value="${edit ? 'Update' : 'Create'}"/>
 <c:set var="uri" value="${(empty uri) ? title.toLowerCase() : uri}"/>
+<c:set var="enctype" value="${not empty enctype ? enctype : 'application/x-www-form-urlencoded'}"/>
 
 <layout:modal>
     <jsp:attribute name="title">${title}</jsp:attribute>
     <jsp:attribute name="body">
        <form:form class="card text-start" method="post" up-main="modal" up-submit="true" modelAttribute="entity"
-                  up-layer="parent">
+                  up-layer="parent" enctype="${enctype}">
            <sec:csrfInput/>
            <div class="up-active-overlay">
                <div class="loader-box">

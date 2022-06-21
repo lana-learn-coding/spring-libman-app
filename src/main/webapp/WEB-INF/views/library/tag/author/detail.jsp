@@ -25,7 +25,7 @@
         <div class="d-flex flex-column flex-sm-row">
             <div class="me-3 me-md-4 d-flex justify-content-center justify-content-sm-start align-items-baseline">
                 <img class="rounded-circle" style="width: 110px"
-                     src="${pageContext.request.contextPath}${(empty entity.image ? '/static/images/avatar/default.png' : entity.image)}"
+                     src="${(empty entity.image ? '/static/images/avatar/default.png' : entity.image)}"
                      alt="avatar">
             </div>
             <div class="mt-2">

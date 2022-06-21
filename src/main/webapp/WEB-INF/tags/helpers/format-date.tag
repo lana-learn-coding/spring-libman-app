@@ -13,5 +13,10 @@
 
 <jsp:useBean id="parsedDate" class="java.util.Date"/>
 <fmt:parseDate value="${date.toString()}" type="date" var="parsedDate" pattern="${pattern}"/>
-<fmt:formatDate value="${parsedDate}" type="date" pattern="${pattern}" var="value"/>
-<c:set target="${requestScope}" property="${var}" value="${value}"/>
+<c:if test="${not empty var}">
+    <fmt:formatDate value="${parsedDate}" type="date" pattern="${pattern}" var="value"/>
+    <c:set target="${requestScope}" property="${var}" value="${value}"/>
+</c:if>
+<c:if test="${empty var}">
+    <fmt:formatDate value="${parsedDate}" type="date" pattern="${pattern}"/>
+</c:if>

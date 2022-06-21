@@ -41,6 +41,11 @@
                         </div>
                     </li>
                     <li>
+                        <a id="back-link" class="nav-link" href="${pageContext.request.contextPath}/" up-back up-hungry>
+                            <i data-feather="arrow-left"></i><span>Go Back</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="nav-link" href="${pageContext.request.contextPath}/library/dashboard">
                             <i data-feather="bar-chart-2"></i><span>Dashboard</span>
                         </a>

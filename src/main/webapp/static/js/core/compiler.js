@@ -84,3 +84,25 @@ up.compiler('.loader-wrapper', (loader) => {
     };
   }
 });
+
+up.compiler('body', (body) => {
+  const $body = $(body);
+  $body.toggleClass('dark-only', localStorage.getItem('body-dark') === 'true');
+  $('.mode').on('click', function () {
+    $('.mode i').toggleClass('fa-moon-o').toggleClass('fa-lightbulb-o');
+    $body.toggleClass('dark-only');
+    localStorage.setItem('body-dark', $body.hasClass('dark-only') ? 'true' : 'false');
+  });
+});
+
+up.compiler('.mobile-toggle', (el) => {
+  $(el).click(() => {
+    $('.nav-menus').toggleClass('open');
+  });
+});
+
+up.compiler('.mobile-toggle-left', (el) => {
+  $(el).click(() => {
+    $('.left-header').toggleClass('open');
+  });
+});

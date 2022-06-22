@@ -19,6 +19,7 @@
 <script src="<c:url value="/static/js/core/unpoly.min.js"/>" defer></script>
 <script src="<c:url value="/static/js/core/unpoly-bootstrap5.min.js"/>" defer></script>
 <script src="<c:url value="/static/js/core/compiler.js"/>" defer></script>
+<script src="<c:url value="/static/js/sidebar-menu.js"/>" defer></script>
 
 <%-- Icon --%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/fontawesome.min.css"/>">

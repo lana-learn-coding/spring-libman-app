@@ -893,8 +893,8 @@
                      <h3>500 - Internal server error</h3>
                      <p class="sub-content">The page you are attempting to reach is currently not available. This may be
                          because the page does not exist or has been moved.</p>
-                     <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/">BACK TO
-                         HOME PAGE</a>
+                     <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/" up-back>BACK TO
+                         PREVIOUS PAGE</a>
                  </div>
              </div>
          </div>

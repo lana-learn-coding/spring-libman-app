@@ -109,7 +109,7 @@ class BookInfoController {
 
         entity.setId(id);
         repo.save(entity);
-        redirectAttributes.addAttribute("highlight", entity.getId());
+        redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "updatedAt,desc");
         ui.toast("Item updated successfully").success();
         return new ModelAndView("redirect:/library/books/infos");
@@ -146,7 +146,7 @@ class BookInfoController {
             bookRepo.save(related);
         }
 
-        redirectAttributes.addAttribute("highlight", entity.getId());
+        redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Item created successfully").success();
         return new ModelAndView("redirect:/library/books/infos");

@@ -6,6 +6,7 @@
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookInfo>"--%>
+<%--@elvariable id="highlight" type="java.lang.String"--%>
 
 
 <layout:librarian>
@@ -97,22 +98,22 @@
                                     <tbody>
                                     <c:set var="content" value="${empty data ? [] : data.content}"/>
                                     <c:forEach var="item" items="${data.content}" varStatus="loop">
-                                        <c:set var="highlight" value="${item.id == param.highlight}"/>
+                                        <c:set var="isHighlight" value="${item.id == highlight}"/>
                                         <tr>
                                             <th scope="row" <component:table-higlight
-                                                    test="${highlight}"/>>${loop.index + 1}</th>
-                                            <td <component:table-higlight test="${highlight}"/>>
+                                                    test="${isHighlight}"/>>${loop.index + 1}</th>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <div style="max-width: 120px">
                                                         ${ item.id }
                                                 </div>
                                             </td>
                                             <td <component:table-higlight
-                                                    test="${highlight}"/>>
+                                                    test="${isHighlight}"/>>
                                                 <img class="round-box mx-auto" style="width: 70px"
                                                      src="${(empty item.image ? '/static/images/book-default.png' : item.image)}"
                                                      alt="book cover">
                                             </td>
-                                            <td <component:table-higlight test="${highlight}"/>>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <div>${ item.name } <c:if
                                                         test="${not empty item.year}">(${item.year})</c:if></div>
                                                 <c:if test="${not empty item.seriesName}">
@@ -126,7 +127,7 @@
                                                 </c:if>
                                             </td>
                                             <td <component:table-higlight
-                                                    test="${highlight}"/>>
+                                                    test="${isHighlight}"/>>
                                                 <c:if test="${not empty item.publisherName}"><div>${ item.publisherName }</div></c:if>
                                                 <c:if test="${not empty item.authorName}">
                                                     <div>Written by <a
@@ -136,14 +137,14 @@
                                                 </c:if>
                                             </td>
                                             <td <component:table-higlight
-                                                    test="${highlight}"/>>
+                                                    test="${isHighlight}"/>>
                                                 <span class="txt-primary">${ item.availableBooksCount }</span>
                                                 /
                                                 <span>${ item.booksCount }</span>
                                             </td>
-                                            <td <component:table-higlight test="${highlight}"/>>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <helper:format-instant date="${item.updatedAt}"/></td>
-                                            <td <component:table-higlight test="${highlight}"/>>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/detail"
                                                    up-instant up-follow class="mr-1 txt-primary">
                                                     <i data-feather="external-link"

@@ -148,7 +148,7 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         }
 
         repo.save(entity);
-        redirectAttributes.addAttribute("highlight", entity.getId());
+        redirectAttributes.addFlashAttribute("highlight", entity.getId());
 
         if (isEdit) {
             ui.toast("Item successfully updated").success();

@@ -9,13 +9,13 @@
 <%@ attribute name="title" required="true" type="java.lang.String" %>
 <%@ attribute name="authority" required="true" type="java.lang.String" %>
 <%@ attribute name="uri" required="false" type="java.lang.String" %>
+<%@ attribute name="highlight" required="false" type="java.lang.String" %>
 <%@ attribute name="data" required="false"
               type="org.springframework.data.domain.Page<io.lana.libman.core.tag.Tagged>" %>
 
 <%@ attribute name="table" fragment="true" %>
 
 <c:set var="uri" value="${(empty uri) ? title.toLowerCase() : uri}"/>
-
 <layout:librarian>
     <jsp:attribute name="title">${title} Manage</jsp:attribute>
     <jsp:attribute name="body">
@@ -97,21 +97,21 @@
                                              <tbody>
                                              <c:set var="content" value="${empty data ? [] : data.content}"/>
                                              <c:forEach var="item" items="${data.content}" varStatus="loop">
-                                                 <c:set var="highlight" value="${item.id == param.highlight}"/>
+                                                 <c:set var="isHighlight" value="${item.id == highlight}"/>
                                                  <tr>
                                                      <th scope="row" <component:table-higlight
-                                                             test="${highlight}"/>>${loop.index + 1}</th>
+                                                             test="${isHighlight}"/>>${loop.index + 1}</th>
                                                      <td <component:table-higlight
-                                                             test="${highlight}"/>>${ item.id }</td>
+                                                             test="${isHighlight}"/>>${ item.id }</td>
                                                      <td <component:table-higlight
-                                                             test="${highlight}"/>>${ item.name }</td>
+                                                             test="${isHighlight}"/>>${ item.name }</td>
                                                      <td <component:table-higlight
-                                                             test="${highlight}"/>>${ item.booksCount }</td>
-                                                     <td <component:table-higlight test="${highlight}"/>>
+                                                             test="${isHighlight}"/>>${ item.booksCount }</td>
+                                                     <td <component:table-higlight test="${isHighlight}"/>>
                                                          <helper:format-instant date="${item.updatedAt}"/></td>
                                                      <td <component:table-higlight
-                                                             test="${highlight}"/>>${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</td>
-                                                     <td <component:table-higlight test="${highlight}"/>>
+                                                             test="${isHighlight}"/>>${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</td>
+                                                     <td <component:table-higlight test="${isHighlight}"/>>
                                                          <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
                                                             class="mr-1 txt-primary" up-layer="new" up-size="large"
                                                             up-instant>

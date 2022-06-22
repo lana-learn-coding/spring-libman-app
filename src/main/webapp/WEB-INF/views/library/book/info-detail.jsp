@@ -10,7 +10,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-
+<%--@elvariable id="highlight" type="java.lang.String"--%>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.Book>"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.book.BookInfo"--%>
 
@@ -166,22 +166,22 @@
                                     <tbody>
                                     <c:set var="content" value="${empty data ? [] : data.content}"/>
                                     <c:forEach var="item" items="${data.content}" varStatus="loop">
-                                        <c:set var="highlight" value="${item.id == param.highlight}"/>
+                                        <c:set var="isHighlight" value="${item.id == highlight}"/>
                                         <tr>
                                             <th scope="row" <component:table-higlight
-                                                    test="${highlight}"/>>${loop.index + 1}</th>
-                                            <td <component:table-higlight test="${highlight}"/>>
+                                                    test="${isHighlight}"/>>${loop.index + 1}</th>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <div style="max-width: 120px">
                                                         ${ item.id }
                                                 </div>
                                             </td>
                                             <td <component:table-higlight
-                                                    test="${highlight}"/>>
+                                                    test="${isHighlight}"/>>
                                                 <img class="round-box mx-auto" style="width: 70px"
                                                      src="${(empty item.image ? '/static/images/book-default.png' : item.image)}"
                                                      alt="book cover">
                                             </td>
-                                            <td <component:table-higlight test="${highlight}"/>>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <c:if test="${item.status == 'AVAILABLE'}">
                                                     <span class="badge badge-success">${item.status}</span>
                                                 </c:if>

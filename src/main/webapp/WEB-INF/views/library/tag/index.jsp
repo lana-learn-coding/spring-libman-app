@@ -3,4 +3,4 @@
 <%--@elvariable id="authority" type="java.lang.String"--%>
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.tag.TaggedEntity>"--%>
-<p:tag-index authority="${authority}" title="${title}" data="${data}"/>
+<p:tag-index authority="${authority}" title="${title}" data="${data}" highlight="${highlight}"/>

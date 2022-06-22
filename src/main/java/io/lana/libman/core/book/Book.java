@@ -8,9 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -30,8 +33,12 @@ public class Book extends AuditableEntity implements Named, BookDetails {
     @JoinColumn(foreignKey = @ForeignKey(name = "shelf_id", foreignKeyDefinition = "FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE SET NULL"))
     private Shelf shelf;
 
-    @OneToMany(mappedBy = "info")
-    private Set<Book> books = new LinkedHashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+    @Where(clause = "returned = false")
+    private List<BookBorrow> ticket = Collections.emptyList();
+
+    @OneToMany(mappedBy = "book")
+    private Set<BookBorrow> borrows = new LinkedHashSet<>();
 
     @Delegate(types = BookDetails.class)
     @ManyToOne(optional = false)

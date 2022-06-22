@@ -10,12 +10,12 @@
     <jsp:attribute name="detail">
     <div class="card-body pt-1">
         <div class="mb-4 text-muted">
-            <div>
+            <div class="d-inline">
                 <i class="fa fa-calendar-o"></i>
                 <span class="ms-1"><helper:format-instant date="${entity.updatedAt}"/></span>
             </div>
             <c:if test="${not empty entity.updatedBy}">
-                <div class="ms-2 d-none d-md-block">
+                <div class="ms-2 d-none d-md-inline">
                     <i class="fa fa-user"></i>
                     <span class="ms-1">${entity.updatedBy}</span>
                 </div>

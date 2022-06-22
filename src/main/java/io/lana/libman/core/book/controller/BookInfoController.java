@@ -47,8 +47,12 @@ class BookInfoController {
     @GetMapping("{id}/detail")
     public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var page = StringUtils.isBlank(query)
+                ? bookRepo.findAllByInfoId(id, pageable)
+                : bookRepo.findAllByInfoIdAndQuery(id, query, pageable);
         return new ModelAndView("/library/book/info-detail", Map.of(
-                "entity", entity
+                "entity", entity,
+                "data", page
         ));
     }
 

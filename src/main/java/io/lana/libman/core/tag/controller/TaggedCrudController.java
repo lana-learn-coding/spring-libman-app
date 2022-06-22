@@ -113,7 +113,9 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     @GetMapping("autocomplete")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> autocomplete(@RequestParam(required = false, name = "q") String query) {
-        final var page = repo.findAllByNameLikeIgnoreCase("%" + query + "%", Pageable.ofSize(6));
+        final var page = StringUtils.isBlank(query)
+                ? repo.findAll(Pageable.ofSize(6))
+                : repo.findAllByNameLikeIgnoreCase("%" + query + "%", Pageable.ofSize(6));
         final var data = page.stream()
                 .map(t -> Map.of("id", t.getId(), "text", t.getName()))
                 .collect(Collectors.toList());

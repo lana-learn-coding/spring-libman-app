@@ -40,8 +40,10 @@ up.compiler('[data-daterange-picker]', (el) => {
 up.macro('[select2]', (el) => {
   if (!window.$ || !window.$.fn.select2) return;
   const url = el.getAttribute('select2');
-  el.setAttribute('data-ajax--url', url);
-  el.setAttribute('data-ajax--delay', '300');
+  if (url) {
+    el.setAttribute('data-ajax--url', url);
+    el.setAttribute('data-ajax--delay', '300');
+  }
 });
 
 up.compiler('[select2]', (el) => {
@@ -55,7 +57,25 @@ up.compiler('[select2]', (el) => {
       dropdownParent: $modal,
     });
   }
-  return () => $el.select2('destroy');
+  if ($el.attr('up-autosubmit') != null) {
+    $el.on('select2:select', () => {
+      const $form = $el.closest('form');
+      if ($form.length > 0) up.submit($form[0]);
+    });
+    $el.on('select2:unselect', () => {
+      const $form = $el.closest('form');
+      if ($el.attr('multiple') == null) {
+        $el.val('');
+        $el.trigger('change');
+      }
+      if ($form.length > 0) up.submit($form[0]);
+    });
+  }
+  return () => {
+    $el.select2('destroy');
+    $el.off('select2:select');
+    $el.off('select2:unselect');
+  };
 });
 
 

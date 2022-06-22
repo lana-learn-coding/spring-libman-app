@@ -23,9 +23,12 @@ public interface BookInfoRepo extends PagingAndSortingRepository<BookInfo, Strin
 
     boolean existsByTitleIgnoreCase(String name);
 
-    @Query("select b from BookInfo b " +
-            "join b.author a join b.publisher p join b.series s " +
-            "where b.title like :query or a.name like :query or p.name like :query or s.name like :query")
-    Page<BookInfo> findAllByQuery(String query, Pageable pageable);
+    @Query(value = "select b from BookInfo b " +
+            "join fetch b.author a join fetch b.publisher p join fetch b.series s join b.genres g " +
+            "where (:query is null or b.title like :query or a.name like :query or p.name like :query or s.name like :query) and (:genreId is null or g.id like :genreId)",
+            countQuery = "select count(b.id) from BookInfo b " +
+                    "join b.author a join b.publisher p join b.series s join b.genres g " +
+                    "where (:query is null or b.title like :query or a.name like :query or p.name like :query or s.name like :query) and (:genreId is null or g.id like :genreId)")
+    Page<BookInfo> findAllByQuery(String query, String genreId, Pageable pageable);
 
 }

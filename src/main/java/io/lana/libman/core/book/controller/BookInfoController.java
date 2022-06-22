@@ -53,10 +53,11 @@ class BookInfoController {
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, Pageable pageable) {
-        final var page = StringUtils.isBlank(query)
+    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String genreId, Pageable pageable) {
+        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
+        final var page = StringUtils.isAllBlank(query, genreId)
                 ? repo.findAll(pageable)
-                : repo.findAllByQuery("%" + query + "%", pageable);
+                : repo.findAllByQuery(query, genreId, pageable);
         return new ModelAndView("/library/book/info-index", Map.of("data", page));
     }
 

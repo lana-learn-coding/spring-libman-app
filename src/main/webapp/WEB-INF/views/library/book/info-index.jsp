@@ -37,17 +37,29 @@
                             <span>Manage list of book metadata and information</span>
                         </div>
                         <form class="card-body row" up-target="#table table, nav .pagination" method="get">
-                            <helper:inherit-param excludes="query"/>
-                            <div class="input-group">
-                                <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
-                                <input type="text"
-                                       class="form-control form-control-lg"
-                                       name="query"
-                                       placeholder="Search for item"
-                                       aria-label="query"
-                                       value="${param.query}"
-                                       up-autosubmit
-                                       up-delay="400">
+                            <helper:inherit-param excludes="query,genreId"/>
+                            <div class="col-12 col-sm-6 col-md-8 col-lg-9 mb-2">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           name="query"
+                                           placeholder="Search for item"
+                                           aria-label="query"
+                                           value="${param.query}"
+                                           up-autosubmit
+                                           up-delay="400">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-2">
+                                <select name="genreId"
+                                        class="form-select"
+                                        up-autosubmit
+                                        data-placeholder="Filter genre"
+                                        select2="${pageContext.request.contextPath}/library/tags/genres/autocomplete"
+                                        data-allow-clear="true">
+                                    <option selected="selected"></option>
+                                </select>
                             </div>
                         </form>
                         <hr class="my-0">
@@ -132,7 +144,7 @@
                                             <td <component:table-higlight test="${highlight}"/>>
                                                 <helper:format-instant date="${item.updatedAt}"/></td>
                                             <td <component:table-higlight test="${highlight}"/>>
-                                                <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/detail?size=6"
+                                                <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/detail"
                                                    up-instant up-follow class="mr-1 txt-primary">
                                                     <i data-feather="external-link"
                                                        style="width: 20px; height: 20px"></i>

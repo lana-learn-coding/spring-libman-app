@@ -10,14 +10,14 @@
 <c:set var="_labels" value="${fn:split(labels, ';')}"/>
 <c:set var="_values" value="${fn:split(values, ';')}"/>
 
-<form method="get" ${up} up-history="true" up-autosubmit comp="sorting">
+<form method="get" ${up} up-history="true" up-autosubmit comp="sorting"
+${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') }>
     <c:forEach items="${param}" var="entry">
         <c:if test="${entry.key != 'page' && entry.key != 'sort'}">
             <input type="hidden" name="${entry.key}" value="${entry.value}">
         </c:if>
     </c:forEach>
     <select class="form-select" name="sort"
-    ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') }
             aria-label="Sort">
         <option value="" <c:if test="${empty param.sort}">selected</c:if>>
             No Sort

@@ -151,7 +151,7 @@
                             </div>
                             <nav class="d-flex justify-content-start mt-3">
                                 <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
-                                                      up="up-scroll='layer' up-transition='cross-fade'"/>
+                                                      up="up-scroll='#table' up-transition='cross-fade'"/>
                             </nav>
                         </div>
                     </div>

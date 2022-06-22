@@ -89,7 +89,8 @@
                             <div class="row justify-content-between mb-3">
                                 <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                      <component:sorting
-                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
+                                             target="#table, [comp=sorting]"
+                                             up="up-scroll='#table' up-transition='cross-fade'"
                                              labels="Updated At;Updated By;Id"
                                              values="updatedAt,desc;updatedBy,id"/>
                                 </div>
@@ -146,7 +147,7 @@
                             </div>
                             <nav class="d-flex justify-content-start mt-3">
                                  <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
-                                                       up="up-scroll='layer' up-transition='cross-fade'"/>
+                                                       up="up-scroll='#table' up-transition='cross-fade'"/>
                             </nav>
                         </div>
                     </div>

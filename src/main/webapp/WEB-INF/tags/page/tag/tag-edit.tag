@@ -48,7 +48,7 @@
            <div class="row">
                <div class="col-12 modal-p-0">
                    <form:form class="card text-start modal-m-0" method="post" up-main="modal" up-submit="true"
-                              modelAttribute="entity" up-layer="parent" enctype="${enctype}">
+                              modelAttribute="entity" up-layer="parent root" enctype="${enctype}">
                        <sec:csrfInput/>
                        <div class="up-active-overlay">
                            <div class="loader-box">

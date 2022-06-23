@@ -158,6 +158,7 @@ class InitialDataConfig implements ApplicationRunner {
                     final var reader = new Reader();
                     reader.setAccount(user);
                     reader.setBorrowLimit(faker.number().numberBetween(2, 20));
+                    reader.setCreatedBy(SYSTEM);
                     readerRepo.save(reader);
                 });
     }
@@ -314,15 +315,13 @@ class InitialDataConfig implements ApplicationRunner {
         final List<Book> borrowedBook = new ArrayList<>();
         Stream.generate(() -> faker.options().nextElement(readers))
                 .distinct()
+                .limit(25)
                 .filter(x -> borrowedBook.size() < books.size())
-                .limit(20)
                 .forEach(reader -> {
                     var borrowLimit = faker.number().numberBetween(1, reader.getBorrowLimit());
-                    final var numberOfTickets = borrowLimit < 2 ? 1 : faker.number().numberBetween(1, borrowLimit / 2);
+                    final var numberOfTickets = faker.number().numberBetween(1, borrowLimit);
 
                     for (int i = 0; i < numberOfTickets; i++) {
-                        if (borrowLimit == 0) continue;
-
                         final var ticketId = IdUtils.newTimeSortableId();
                         final var borrowDate = faker.date().past(20, 2, TimeUnit.DAYS)
                                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -348,7 +347,10 @@ class InitialDataConfig implements ApplicationRunner {
                             borrowedBook.add(book);
                             borrow.setBook(book);
                             bookBorrowRepo.save(borrow);
+                            borrowLimit--;
+                            if (borrowLimit <= 0) break;
                         }
+                        if (borrowLimit <= 0) break;
                     }
                 });
         bookRepo.saveAll(borrowedBook);

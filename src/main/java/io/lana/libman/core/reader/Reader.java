@@ -5,6 +5,8 @@ import io.lana.libman.core.user.User;
 import io.lana.libman.support.data.AuditableEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -20,6 +22,16 @@ public class Reader extends AuditableEntity {
 
     @Column(name = "borrow_limit")
     private int borrowLimit = 5;
+
+    @OneToMany(mappedBy = "reader")
+    @Where(clause = "returned = false")
+    private Set<BookBorrow> borrowingBooks = new LinkedHashSet<>();
+
+    @Formula("(SELECT COUNT(b.id) FROM book_borrow b WHERE b.returned is false and b.reader_id = id)")
+    private int borrowingBooksCount;
+
+    @Formula("(SELECT COUNT(b.id) FROM book_borrow b WHERE b.returned is false and b.due_date < CURRENT_DATE() and b.reader_id = id)")
+    private int overDueBooksCount;
 
     @OneToMany(mappedBy = "reader")
     private Set<BookBorrow> borrowedBooks = new LinkedHashSet<>();

@@ -61,7 +61,9 @@
                         </div>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/library/borrow/reader">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/library/readers"
+                           up-alias="${pageContext.request.contextPath}/library/readers/*"
+                           up-follow up-instant>
                             <i data-feather="user-check"></i><span>Reader</span>
                         </a>
                     </li>

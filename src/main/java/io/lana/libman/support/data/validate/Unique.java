@@ -23,6 +23,8 @@ public @interface Unique {
 
     String message() default "The value was already taken";
 
+    boolean ignoreCase() default true;
+
     String[] messages() default {};
 
     Class<?>[] groups() default {};

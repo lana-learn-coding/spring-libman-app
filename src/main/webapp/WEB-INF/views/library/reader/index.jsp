@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <button up-href="${pageContext.request.contextPath}/library/readers/create"
-                                            class="btn btn-primary" up-instant up-layer="new" up-size="large"
+                                            class="btn btn-primary" up-instant up-layer="new"
                                             up-dismissable="button">
                                         <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                         Create
@@ -155,9 +155,9 @@
                                                 </a>
                                                 <sec:authorize
                                                         access="hasAnyAuthority('ADMIN', 'READER_UPDATE')">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/update"
+                                                    <a href="${pageContext.request.contextPath}/library/readers/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
-                                                       up-size="large" up-dismissable="button">
+                                                       up-dismissable="button">
                                                         <i data-feather="edit"
                                                            style="width: 20px; height: 20px"></i>
                                                     </a>

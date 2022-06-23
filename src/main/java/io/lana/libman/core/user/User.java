@@ -6,14 +6,20 @@ import io.lana.libman.core.user.role.Role;
 import io.lana.libman.support.data.AuditableEntity;
 import io.lana.libman.support.data.Gender;
 import io.lana.libman.support.data.Named;
+import io.lana.libman.support.data.validate.DateBeforeNow;
+import io.lana.libman.support.data.validate.PhoneNumber;
+import io.lana.libman.support.data.validate.Unique;
 import io.lana.libman.support.security.AuthUser;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,13 +31,14 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "`user`")
 @NoArgsConstructor
+@Unique(value = "email", message = "The email was already registered")
+@Unique(value = "phone", message = "The phone was already used")
 public class User extends AuditableEntity implements AuthUser, Named {
-
+    @Email
     @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -39,19 +46,24 @@ public class User extends AuditableEntity implements AuthUser, Named {
 
     private String avatar;
 
+    @NotBlank
     @Column(name = "first_name")
     private String firstName = "Anon";
 
     @Column(name = "last_name")
     private String lastName;
 
+    @NotBlank
+    @PhoneNumber
     private String phone;
 
     private String address;
 
+    @NotNull
     @Enumerated
     private Gender gender = Gender.UNSPECIFIED;
 
+    @DateBeforeNow
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -83,10 +95,21 @@ public class User extends AuditableEntity implements AuthUser, Named {
         return getAuthorities().contains(Permission.internal());
     }
 
+
+    public void setEmail(String email) {
+        this.email = email;
+        if (StringUtils.isEmpty(username)) this.username = email;
+    }
+
+    @Override
+    public String getUsername() {
+        return StringUtils.defaultIfEmpty(username, email);
+    }
+
     @Transient
     @Override
     public String getName() {
-        return username;
+        return getUsername();
     }
 
     @Transient

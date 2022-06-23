@@ -9,6 +9,7 @@ import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class Reader extends AuditableEntity {
+    @Valid
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @PrimaryKeyJoinColumn
     private User account;

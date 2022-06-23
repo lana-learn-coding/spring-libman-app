@@ -17,17 +17,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 
+@Validated
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, B extends AuditableEntity & Named> {
     protected final TaggedRepo<T> repo;
@@ -91,12 +92,10 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
 
 
     @PostMapping(path = "{id}/update")
-    public ModelAndView update(@PathVariable String id, @Valid @ModelAttribute("entity") T entity,
+    public ModelAndView update(@Validated @ModelAttribute("entity") T entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_UPDATE");
-        entity.setId(id);
-        validateEntity(entity, bindingResult, id);
-        return store(entity, bindingResult, redirectAttributes, id);
+        return store(entity, bindingResult, redirectAttributes, entity.getId());
     }
 
     @GetMapping("create")
@@ -125,10 +124,9 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
     @PostMapping(path = "create")
-    public ModelAndView create(@Valid @ModelAttribute("entity") T entity,
+    public ModelAndView create(@Validated @ModelAttribute("entity") T entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_CREATE");
-        validateEntity(entity, bindingResult, null);
         return store(entity, bindingResult, redirectAttributes, null);
     }
 
@@ -202,18 +200,5 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
         repo.delete(entity);
         ui.toast("Item delete succeed").success();
         return new ModelAndView("redirect:" + getIndexUri());
-    }
-
-    protected void validateEntity(T entity, BindingResult bindingResult, String id) {
-        if (StringUtils.isBlank(id)) {
-            if (repo.existsByNameIgnoreCase(entity.getName())) {
-                bindingResult.rejectValue("name", "name.exists", "The name was already taken");
-            }
-            return;
-        }
-
-        if (repo.existsByNameIgnoreCaseAndIdNot(entity.getName(), entity.getId())) {
-            bindingResult.rejectValue("name", "name.exists", "The name was already taken");
-        }
     }
 }

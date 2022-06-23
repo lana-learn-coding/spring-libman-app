@@ -25,7 +25,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.Map;
 import java.util.Objects;
 
@@ -88,11 +87,8 @@ class BookInfoController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_UPDATE')")
     public ModelAndView update(@PathVariable String id,
                                @RequestPart(required = false) MultipartFile file,
-                               @Valid @ModelAttribute("entity") BookInfo entity,
+                               @Validated @ModelAttribute("entity") BookInfo entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (repo.existsByTitleIgnoreCaseAndIdNot(entity.getTitle(), entity.getId())) {
-            bindingResult.rejectValue("title", "title.exists", "The title was already taken");
-        }
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
             entity.setImage(imageService.save(image).getUri());
@@ -118,11 +114,8 @@ class BookInfoController {
     @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
     public ModelAndView create(@RequestPart(required = false) MultipartFile file,
-                               @Valid @ModelAttribute("entity") CreateBookInfoDto form,
+                               @Validated @ModelAttribute("entity") CreateBookInfoDto form,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (repo.existsByTitleIgnoreCase(form.getTitle())) {
-            bindingResult.rejectValue("title", "title.exists", "The title was already taken");
-        }
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
             form.setImage(imageService.save(image).getUri());

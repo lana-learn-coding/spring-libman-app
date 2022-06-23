@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Objects;
 
 
@@ -67,7 +65,7 @@ class AuthorController extends TaggedCrudController<Author, BookInfo> {
     }
 
     @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView create(@Valid @ModelAttribute("entity") Author entity,
+    public ModelAndView create(@Validated @ModelAttribute("entity") Author entity,
                                @RequestPart(required = false) MultipartFile file,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_CREATE");
@@ -80,30 +78,20 @@ class AuthorController extends TaggedCrudController<Author, BookInfo> {
     }
 
     @PostMapping(path = "{id}/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView update(@PathVariable String id,
-                               @RequestPart(required = false) MultipartFile file,
-                               @Valid @ModelAttribute("entity") Author entity,
+    public ModelAndView update(@RequestPart(required = false) MultipartFile file,
+                               @Validated @ModelAttribute("entity") Author entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_UPDATE");
-        validateEntity(entity, bindingResult, id);
+        validateEntity(entity, bindingResult, entity.getId());
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
             entity.setImage(imageService.save(image).getUri());
         }
-        entity.setId(id);
-        return store(entity, bindingResult, redirectAttributes, id);
+        entity.setId(entity.getId());
+        return store(entity, bindingResult, redirectAttributes, entity.getId());
     }
 
-    @Override
-    protected void validateEntity(Author entity, BindingResult bindingResult, String id) {
-        if (Objects.nonNull(entity.getDateOfDeath()) && entity.getDateOfDeath().isAfter(LocalDate.now())) {
-            bindingResult.rejectValue("dateOfDeath", "", "Date of death must not after now");
-        }
-
-        if (Objects.nonNull(entity.getDateOfBirth()) && entity.getDateOfBirth().isAfter(LocalDate.now())) {
-            bindingResult.rejectValue("dateOfBirth", "", "Date of death must not after now");
-        }
-
+    private void validateEntity(Author entity, BindingResult bindingResult, String id) {
         if (ObjectUtils.allNotNull(entity.getDateOfBirth(), entity.getDateOfDeath()) && entity.getDateOfBirth().isAfter(entity.getDateOfDeath())) {
             bindingResult.rejectValue("dateOfBirth", "", "Date of birth must before date of death");
             bindingResult.rejectValue("dateOfDeath", "", "Date of death must after date of birth");

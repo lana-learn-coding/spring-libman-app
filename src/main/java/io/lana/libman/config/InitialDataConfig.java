@@ -177,7 +177,7 @@ class InitialDataConfig implements ApplicationRunner {
                         author.setAbout(faker.superhero().descriptor());
                         author.setDateOfBirth(faker.date().birthday(20, 65).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                         if (faker.bool().bool()) {
-                            author.setDateOfDeath(faker.date().past(36500, 29000, TimeUnit.DAYS)
+                            author.setDateOfDeath(faker.date().birthday(0, 10)
                                     .toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                         }
                         authorRepo.save(author);

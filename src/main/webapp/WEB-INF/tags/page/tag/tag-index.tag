@@ -100,7 +100,9 @@
                                                  <c:set var="isHighlight" value="${item.id == highlight}"/>
                                                  <tr>
                                                      <th scope="row" <component:table-higlight
-                                                             test="${isHighlight}"/>>${loop.index + 1}</th>
+                                                             test="${isHighlight}"/>>
+                                                         <component:index pageMeta="${data}" i="${loop.index}"/>
+                                                     </th>
                                                      <td <component:table-higlight
                                                              test="${isHighlight}"/>>${ item.id }</td>
                                                      <td <component:table-higlight

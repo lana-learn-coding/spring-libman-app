@@ -130,7 +130,8 @@
                                             <c:set var="content" value="${empty data ? [] : data.content}"/>
                                             <c:forEach var="item" items="${data.content}" varStatus="loop">
                                                 <tr>
-                                                    <th scope="row">${loop.index + 1}</th>
+                                                    <th scope="row"><component:index pageMeta="${data}"
+                                                                                     i="${loop.index}"/></th>
                                                     <td>${ item.id }</td>
                                                     <td>${ item.name }</td>
                                                     <td><helper:format-instant date="${item.updatedAt}"/></td>

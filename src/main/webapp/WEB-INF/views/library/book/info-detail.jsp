@@ -172,11 +172,10 @@
                                         <tr>
                                             <th scope="row" <component:table-higlight
                                                     test="${isHighlight}"/>>${loop.index + 1}</th>
-                                            <td <component:table-higlight test="${isHighlight}"/>>
-                                                <div style="max-width: 120px">
-                                                        ${ item.id }
-                                                </div>
-                                            </td>
+                                            <th scope="row" <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <component:index pageMeta="${data}" i="${loop.index}"/>
+                                            </th>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <img class="round-box mx-auto" style="width: 70px"

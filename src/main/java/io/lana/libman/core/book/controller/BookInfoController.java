@@ -49,7 +49,7 @@ class BookInfoController {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         final var page = StringUtils.isBlank(query)
                 ? bookRepo.findAllByInfoId(id, pageable)
-                : bookRepo.findAllByInfoIdAndQuery(id, query, pageable);
+                : bookRepo.findAllByInfoIdAndQuery(id, "%" + query + "%", pageable);
         return new ModelAndView("/library/book/info-detail", Map.of(
                 "entity", entity,
                 "data", page

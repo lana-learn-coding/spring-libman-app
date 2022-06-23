@@ -191,7 +191,7 @@
                        <div class="card-footer">
                            <button class="btn btn-primary" type="submit">Submit</button>
                            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/library/books/infos"
-                              up-dismiss>Cancel</a>
+                              up-dismiss up-follow>Cancel</a>
                        </div>
                    </form:form>
                </div>

@@ -19,10 +19,18 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Unique {
     String[] value();
 
+    /**
+     * Entity class, must specify if validating subclass
+     */
+    Class<?> entity() default Void.class;
+
     String id() default "id";
 
     String message() default "The value was already taken";
 
+    /**
+     * Ignore case match when field value is string
+     */
     boolean ignoreCase() default true;
 
     String[] messages() default {};

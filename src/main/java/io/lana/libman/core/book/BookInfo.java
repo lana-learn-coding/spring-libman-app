@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-@Unique("title")
+@Unique(value = "title", entity = BookInfo.class)
 public class BookInfo extends AuditableEntity implements Named, BookDetails {
     @NotBlank
     @Column(nullable = false)

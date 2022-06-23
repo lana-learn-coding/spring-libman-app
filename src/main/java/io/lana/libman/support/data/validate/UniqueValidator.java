@@ -1,5 +1,6 @@
 package io.lana.libman.support.data.validate;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -21,9 +22,11 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
     private boolean ignoreCase;
 
+    private Class<?> entityClazz;
+
     @Override
     public boolean isValid(Object entity, ConstraintValidatorContext context) {
-        final var clazz = entity.getClass();
+        final var clazz = ObjectUtils.defaultIfNull(entityClazz, entity.getClass());
         for (int i = 0; i < properties.length; i++) {
             final var property = properties[i];
             final var propertyValue = new BeanWrapperImpl(entity).getPropertyValue(property);
@@ -53,6 +56,9 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         id = unique.id();
         messages = unique.messages();
         ignoreCase = unique.ignoreCase();
+        if (!unique.entity().equals(Void.class)) {
+            entityClazz = unique.entity();
+        }
         if (messages.length == 0) {
             messages = new String[properties.length];
             messages[0] = unique.message();

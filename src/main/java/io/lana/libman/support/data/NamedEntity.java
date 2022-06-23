@@ -1,5 +1,6 @@
 package io.lana.libman.support.data;
 
+import io.lana.libman.support.data.validate.Unique;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @MappedSuperclass
+@Unique("name")
 public abstract class NamedEntity extends AuditableEntity implements Named {
     @NotBlank
     @Column(nullable = false, unique = true)

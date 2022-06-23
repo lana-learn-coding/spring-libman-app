@@ -2,6 +2,7 @@ package io.lana.libman.core.tag;
 
 import io.lana.libman.core.book.BookInfo;
 import io.lana.libman.support.data.AuditableEntity;
+import io.lana.libman.support.data.validate.DateBeforeNow;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
@@ -33,9 +34,11 @@ public class Author extends AuditableEntity implements Tagged {
     @Formula("(SELECT COUNT(b.id) FROM book_info b WHERE b.author_id = id)")
     private int booksCount;
 
+    @DateBeforeNow
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @DateBeforeNow
     @Column(name = "date_of_death")
     private LocalDate dateOfDeath;
 }

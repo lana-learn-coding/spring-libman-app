@@ -10,19 +10,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.time.Instant;
-import java.util.Objects;
 
 @Getter
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableEntity implements Identified {
-    @Id
-    protected String id = IdUtils.newTimeSortableId();
-
+public abstract class AuditableEntity extends IdentifiedEntity {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     protected Instant createdAt = Instant.now();
@@ -38,18 +33,4 @@ public abstract class AuditableEntity implements Identified {
     @Column(name = "updated_by")
     @LastModifiedBy
     protected String updatedBy;
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        AuditableEntity other = (AuditableEntity) obj;
-        return Objects.equals(getId(), other.getId());
-    }
 }

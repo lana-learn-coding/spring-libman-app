@@ -29,10 +29,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,6 +40,8 @@ import static io.lana.libman.core.user.role.Authorities.User.SYSTEM;
 @RequiredArgsConstructor
 @Slf4j
 class InitialDataConfig implements ApplicationRunner {
+    private final Faker faker = Faker.instance(new Locale("vi", "VN"));
+
     private final UserRepo userRepo;
 
     private final PermissionRepo permissionRepo;
@@ -122,7 +121,6 @@ class InitialDataConfig implements ApplicationRunner {
     @Transactional
     void initUser() {
         if (userRepo.count() > 0) return;
-        final var faker = Faker.instance();
         final var password = passwordEncoder.encode("1");
 
         userRepo.saveAll(List.of(
@@ -145,7 +143,7 @@ class InitialDataConfig implements ApplicationRunner {
                     user.setLastName(faker.name().lastName());
                     user.setPhone(faker.phoneNumber().phoneNumber());
                     if (faker.bool().bool()) {
-                        user.setAddress(faker.phoneNumber().phoneNumber());
+                        user.setAddress(faker.address().fullAddress());
                         user.setGender(faker.options().option(Gender.values()));
                         user.setDateOfBirth(faker.date().birthday(10, 45).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                     }
@@ -165,7 +163,6 @@ class InitialDataConfig implements ApplicationRunner {
 
     @Transactional
     void initTag() {
-        var faker = Faker.instance();
         if (authorRepo.count() == 0) {
             Stream.generate(() -> faker.book().author())
                     .distinct()
@@ -236,8 +233,6 @@ class InitialDataConfig implements ApplicationRunner {
     @Transactional
     void initBook() {
         if (bookInfoRepo.count() > 0) return;
-        final var faker = Faker.instance();
-
         final var authors = authorRepo.findAll();
         final var series = seriesRepo.findAll();
         final var publishers = publisherRepo.findAll();
@@ -287,7 +282,6 @@ class InitialDataConfig implements ApplicationRunner {
     @Transactional
     void initBookBorrow() {
         if (bookBorrowRepo.count() > 0) return;
-        final var faker = Faker.instance();
         final var books = bookRepo.findAll();
         final var readers = readerRepo.findAll();
         final var users = userRepo.findAll().stream()

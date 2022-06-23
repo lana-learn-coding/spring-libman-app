@@ -33,6 +33,7 @@ class WebConfig {
         return registry -> {
             registry.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
             registry.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500"));
+            registry.addErrorPages(new ErrorPage(HttpStatus.FORBIDDEN, "/403"));
         };
     }
 }

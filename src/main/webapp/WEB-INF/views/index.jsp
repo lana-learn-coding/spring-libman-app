@@ -1,300 +1,115 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<layout:librarian>
-    <jsp:attribute name="title">Spring Application</jsp:attribute>
+<layout:base>
+    <jsp:attribute name="title">Not Found</jsp:attribute>
     <jsp:attribute name="body">
-        <div class="container-fluid">
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h3>Layout Light</h3>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="../ltr/index.html">Home</a></li>
-                            <li class="breadcrumb-item">Starter Kit</li>
-                            <li class="breadcrumb-item">Color Version</li>
-                            <li class="breadcrumb-item active">Layout Light</li>
-                        </ol>
-                    </div>
-                    <div class="col-sm-6">
-                        <!-- Bookmark Start-->
-                        <div class="bookmark">
-                            <ul>
-                                <li><a href="javascript:void(0)" data-container="body" data-bs-toggle="popover"
-                                       data-placement="top" title="" data-original-title="Tables"><i
-                                        data-feather="inbox"></i></a></li>
-                                <li><a href="javascript:void(0)" data-container="body" data-bs-toggle="popover"
-                                       data-placement="top" title="" data-original-title="Chat"><i
-                                        data-feather="message-square"></i></a></li>
-                                <li><a href="javascript:void(0)" data-container="body" data-bs-toggle="popover"
-                                       data-placement="top" title="" data-original-title="Icons"><i
-                                        data-feather="command"></i></a></li>
-                                <li><a href="javascript:void(0)" data-container="body" data-bs-toggle="popover"
-                                       data-placement="top" title="" data-original-title="Learning"><i
-                                        data-feather="layers"></i></a></li>
-                                <li><a href="javascript:void(0)"><i class="bookmark-search" data-feather="star"></i></a>
-                                    <form class="form-inline search-form">
-                                        <div class="form-group form-control-search">
-                                            <input type="text" placeholder="Search..">
-                                        </div>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- Bookmark Ends-->
-                    </div>
-                </div>
-            </div>
-        </div>
-            <!-- Container-fluid starts-->
-            <div class="container-fluid">
-                <div class="row starter-main">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h5>Kick start your project development !</h5>
-                                <div class="setting-list">
-                                    <ul class="list-unstyled setting-option">
-                                        <li>
-                                            <div class="setting-primary"><i class="icon-settings"></i></div>
-                                        </li>
-                                        <li><i class="view-html fa fa-code font-primary"></i></li>
-                                        <li><i class="icofont icofont-maximize full-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-minus minimize-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-refresh reload-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-error close-card font-primary"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p>Getting start with your project custom requirements using a ready template which is
-                                    quite difficult and time taking process, viho Admin provides useful features to kick
-                                    start your project development with no efforts !</p>
-                                <ul>
-                                    <li>
-                                        <p>viho Admin provides you getting start pages with different layouts, use the
-                                            layout as per your custom requirements and just change the branding, menu &
-                                            content.</p>
-                                    </li>
-                                    <li>
-                                        <p>Every components in viho Admin are decoupled, it means use only components
-                                            you actually need! Remove unnecessary and extra code easily just by
-                                            excluding the path to specific SCSS, JS file.</p>
-                                    </li>
-                                    <li>
-                                        <p>It use PUG as template engine to generate pages and whole template quickly
-                                            using node js. Save your time for doing the common changes for each page
-                                            (i.e menu, branding and footer) by generating template with pug.</p>
-                                    </li>
-                                </ul>
-                                <div class="code-box-copy">
-                                    <button class="code-box-copy__btn btn-clipboard"
-                                            data-clipboard-target="#example-head" title="Copy"><i
-                                            class="icofont icofont-copy-alt"></i></button>
-                                    <pre><code class="language-html" id="example-head">&lt;!-- Cod Box Copy begin --&gt;
-&lt;p&gt;Getting start with your project custom requirements using a ready template which is quite difficult and time taking process, viho Admin provides useful features to kick start your project development with no efforts !&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;viho Admin provides you getting start pages with different layouts, use the layout as per your custom requirements and just change the branding, menu & content.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Every components in viho Admin are decoupled, it means use only components you actually need! Remove unnecessary and extra code easily just by excluding the path to specific SCSS, JS file.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;It use PUG as template engine to generate pages and whole template quickly using node js. Save your time for doing the common changes for each page (i.e menu, branding and footer) by generating template with pug.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!-- Cod Box Copy end --&gt;</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h5>What is starter kit ?</h5>
-                                <div class="setting-list">
-                                    <ul class="list-unstyled setting-option">
-                                        <li>
-                                            <div class="setting-primary"><i class="icon-settings"></i></div>
-                                        </li>
-                                        <li><i class="view-html fa fa-code font-primary"></i></li>
-                                        <li><i class="icofont icofont-maximize full-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-minus minimize-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-refresh reload-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-error close-card font-primary"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p>Starter kit is a set of pages with different layouts, useful for your next project to
-                                    start development process from scratch with no time.</p>
-                                <ul>
-                                    <li>
-                                        <p>Each layout includes basic components only.</p>
-                                    </li>
-                                    <li>
-                                        <p>Select your choice of layout from starter kit, customize it with optional
-                                            changes like colors and branding, add required dependency only.</p>
-                                    </li>
-                                    <li>
-                                        <p>Using template engine to generate whole template quickly with your selected
-                                            layout and other custom changes. </p>
-                                    </li>
-                                </ul>
-                                <div class="code-box-copy">
-                                    <button class="code-box-copy__btn btn-clipboard"
-                                            data-clipboard-target="#example-head1" title="Copy"><i
-                                            class="icofont icofont-copy-alt"></i></button>
-                                    <pre><code class="language-html" id="example-head1">&lt;!-- Cod Box Copy begin --&gt;
-&lt;p&gt;Starter kit is a set of pages with different layouts, useful for your next project to start development process from scratch with no time. &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Each layout includes basic components only.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select your choice of layout from starter kit, customize it with optional changes like colors and branding, add required dependency only.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Using template engine to generate whole template quickly with your selected layout and other custom changes.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;!-- Cod Box Copy end --&gt;</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h5>How to use starter kit ?</h5>
-                                <div class="setting-list">
-                                    <ul class="list-unstyled setting-option">
-                                        <li>
-                                            <div class="setting-primary"><i class="icon-settings"></i></div>
-                                        </li>
-                                        <li><i class="view-html fa fa-code font-primary"></i></li>
-                                        <li><i class="icofont icofont-maximize full-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-minus minimize-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-refresh reload-card font-primary"></i></li>
-                                        <li><i class="icofont icofont-error close-card font-primary"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p><span class="f-w-600">HTML</span></p>
-                                <p>If you know just HTML, select your choice of layout from starter kit folder,
-                                    customize it with optional changes like colors and branding, add required dependency
-                                    only.</p>
-                                <p><span class="f-w-600">PUG</span></p>
-                                <p>To use PUG it required node.js and basic knowledge of using it. Using PUG as template
-                                    engine to generate whole template quickly with your selected layout and other custom
-                                    changes. To getting start with PUG usage & template generating process please refer
-                                    template documentation.</p>
-                                <div class="alert alert-primary inverse" role="alert"><i class="icon-info-alt"></i>
-                                    <h5>Tips!</h5>
-                                    <p>Hideable navbar option is available for fixed navbar with static navigation only.
-                                        Works in top and bottom positions, single and multiple navbars.</p>
-                                </div>
-                                <div class="code-box-copy">
-                                    <button class="code-box-copy__btn btn-clipboard"
-                                            data-clipboard-target="#example-head2" title="Copy"><i
-                                            class="icofont icofont-copy-alt"></i></button>
-                                    <pre><code class="language-html" id="example-head2">&lt;!-- Cod Box Copy begin --&gt;
-&lt;p&gt;&lt;span class="f-w-600"&gt;HTML&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;If you know just HTML, select your choice of layout from starter kit folder, customize it with optional changes like colors and branding, add required dependency only.&lt;/p&gt;
-&lt;p&gt;&lt;span class="f-w-600"&gt;PUG&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;To use PUG it required node.js and basic knowledge of using it. Using PUG as template engine to generate whole template quickly with your selected layout and other custom changes. To getting start with PUG usage & template generating process please refer template documentation.&lt;/p&gt;
-&lt;div class="alert alert-primary inverse" role="alert"&gt;
-&lt;i class="icon-info-alt"&gt;&lt;/i&gt;
-&lt;h5&gt;Tips!&lt;/h5&gt;
-&lt;p&gt;Hideable navbar option is available for fixed navbar with static navigation only. Works in top and bottom positions, single and multiple navbars.&lt;/p&gt;
-&lt;/div&gt;
-&lt;!-- Cod Box Copy end --&gt;</code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h5>Simple Card</h5>
-                            </div>
-                            <div class="card-body">
-                                <h6>HTML Ipsum Presents</h6>
-                                <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada
-                                    fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
-                                    tempor sit amet, ante. Donec eu libero sit amet quam egestas
-                                    semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo.
-                                    Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi,
-                                    condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean
-                                    fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus
-                                    lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut
-                                    felis.
-                                </p>
-                                <h6>Header Level 2</h6>
-                                <ol>
-                                    <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                                    <li>Aliquam tincidunt mauris eu risus.</li>
-                                </ol>
-                                <div class="figure d-block">
-                                    <blockquote class="blockquote">
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras
-                                            in mi at felis aliquet congue. Ut a est eget ligula molestie gravida.
-                                            Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est
-                                            malesuada
-                                            tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.
-                                        </p>
-                                    </blockquote>
-                                </div>
-                                <h4>Header Level<span> 3</span></h4>
-                                <ul>
-                                    <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-                                    <li>Aliquam tincidunt mauris eu risus.</li>
-                                </ul>
-                                <pre>#header h1 a {
-  display: block;
-  width: 300px;
-  height: 80px;
-}</pre>
-                                <dl>
-                                    <dt>Definition list</dt>
-                                    <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                        laboris nisi ut aliquip ex ea commodo consequat.
-                                    </dd>
-                                    <dt>Lorem ipsum dolor sit amet</dt>
-                                    <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                        laboris nisi ut aliquip ex ea commodo consequat.
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header pb-0">
-                                <h5>With Header</h5>
-                            </div>
-                            <div class="card-body">
-                                <h5>Content title</h5>
-                                <p>Add a heading to card with <code>.card-header.pb-0</code> class</p>
-                                <p>You may also include any &lt;h1&gt;-&lt;h6&gt; with a <code>.card-header.pb-0 </code>
-                                    & <code>.card-title</code> class to add heading.</p>
-                                <p>Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake
-                                    sugar plum. Marshmallow wafer tiramisu jelly beans.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header pb-0 card-no-border">
-                                <h5>With Header & No Border</h5>
-                            </div>
-                            <div class="card-body">
-                                <h5>Content title</h5>
-                                <p>Add a heading to card with <code>.card-header.pb-0 </code> class & without header
-                                    border<code>.border-bottom-0</code> class.</p>
-                                <p>You may also include any &lt;h1&gt;-&lt;h6&gt; with a <code>.card-header.pb-0 </code>
-                                    & <code>.card-title</code> class to add heading.</p>
-                                <p>Gingerbread brownie sweet roll cheesecake chocolate cake jelly beans marzipan gummies
-                                    dessert. Jelly beans sugar plum cheesecake cookie oat cake soufflé.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Container-fluid Ends-->
+     <div class="error-wrapper">
+         <div class="container">
+             <div class="error-page1">
+                 <div class="svg-wrraper mb-0">
+                     <svg class="svg-60" viewbox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+                         <g>
+                             <path class="warning-color"
+                                   d="M600.87,872H156a4,4,0,0,0-3.78,4.19h0a4,4,0,0,0,3.78,4.19H600.87a4,4,0,0,0,3.78-4.19h0A4,4,0,0,0,600.87,872Z"></path>
+                             <rect class="warning-color" height="8.39" rx="4.19" ry="4.19" width="513.38" x="680.91"
+                                   y="871.98"></rect>
+                             <path class="warning-color"
+                                   d="M1480,876.17h0c0,2.32,2.37,4.19,5.3,4.19h350.61c2.93,0,5.3-1.88,5.3-4.19h0c0-2.32-2.37-4.19-5.3-4.19H1485.26C1482.33,872,1480,873.86,1480,876.17Z"></path>
+                             <rect class="warning-color" height="8.39" rx="4.19" ry="4.19" width="249.8" x="492.21"
+                                   y="920.64"></rect>
+                             <path class="warning-color"
+                                   d="M1549.14,924.84h0a4.19,4.19,0,0,0-4.19-4.19H1067.46a14.66,14.66,0,0,1,.35,3.21v1A4.19,4.19,0,0,0,1072,929h472.94A4.19,4.19,0,0,0,1549.14,924.84Z"></path>
+                             <path class="warning-color"
+                                   d="M865.5,924.84h0a4.19,4.19,0,0,0,4.19,4.19h82.37a12.28,12.28,0,0,1-.19-2v-2.17a4.19,4.19,0,0,0-4.19-4.19h-78A4.19,4.19,0,0,0,865.5,924.84Z"></path>
+                             <rect class="warning-color" height="8.39" rx="4.19" ry="4.19" width="54.72" x="915.6"
+                                   y="981.47"></rect>
+                             <path class="warning-color"
+                                   d="M730.33,985.67h0c0,2.32,4.23,4.19,9.44,4.19h104.3c5.22,0,9.44-1.88,9.44-4.19h0c0-2.32-4.23-4.19-9.44-4.19H739.78C734.56,981.47,730.33,983.35,730.33,985.67Z"></path>
+                             <rect class="warning-color" height="8.39" rx="4.19" ry="4.19" width="78.11" x="997.06"
+                                   y="981.47"></rect>
+                             <g id="round-conf">
+                                 <path class="warning-color circle c1"
+                                       d="M536.41,155.14a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,536.41,155.14Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,536.41,183.81Z"></path>
+                                 <path class="warning-color circle c1"
+                                       d="M1345.09,82.44a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,1345.09,82.44Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,1345.09,111.12Z"></path>
+                                 <path class="warning-color circle c1"
+                                       d="M70.12,363A17.77,17.77,0,1,0,87.89,380.8,17.77,17.77,0,0,0,70.12,363Zm0,28.68A10.9,10.9,0,1,1,81,380.8,10.9,10.9,0,0,1,70.12,391.7Z"></path>
+                                 <path class="warning-color circle c1"
+                                       d="M170.47,751.82a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,170.47,751.82Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,170.47,780.5Z"></path>
+                                 <path class="warning-color circle c1"
+                                       d="M1457.34,762.73a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,1457.34,762.73Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,1457.34,791.4Z"></path>
+                                 <path class="warning-color circle c1"
+                                       d="M1829.15,407.49a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,1829.15,407.49Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,1829.15,436.17Z"></path>
+                             </g>
+                         </g>
+                         <g id="fortyfour" data-name="Layer 2">
+                             <g class="four a">
+                                 <rect class="primary-color" height="466.29" rx="57.1" ry="57.1"
+                                       transform="translate(918.39 330.19) rotate(90)" width="120.71" x="233.74"
+                                       y="391.14"></rect>
+                                 <rect class="primary-color" height="396.88" rx="60.36" ry="60.36" width="120.71"
+                                       x="333.83" y="475.1"></rect>
+                                 <rect class="primary-color" height="604.75" rx="60.36" ry="60.36"
+                                       transform="translate(290.49 -70.78) rotate(35)" width="120.71" x="197.13"
+                                       y="122.89"></rect>
+                             </g>
+                             <g class="four b">
+                                 <rect class="primary-color" height="466.29" rx="57.1" ry="57.1"
+                                       transform="translate(2244.26 -994.14) rotate(90)" width="120.71" x="1558.84"
+                                       y="391.91"></rect>
+                                 <rect class="primary-color" height="396.88" rx="60.36" ry="60.36" width="120.71"
+                                       x="1658.92" y="475.87"></rect>
+                                 <rect class="primary-color" height="604.75" rx="60.36" ry="60.36"
+                                       transform="translate(530.57 -830.68) rotate(35)" width="120.71" x="1522.22"
+                                       y="123.66"></rect>
+                             </g>
+                             <path class="primary-color" id="ou"
+                                   d="M956.54,168.2c-194.34,0-351.89,157.55-351.89,351.89S762.19,872,956.54,872s351.89-157.55,351.89-351.89S1150.88,168.2,956.54,168.2Zm0,584.49c-128.46,0-232.6-104.14-232.6-232.6s104.14-232.6,232.6-232.6,232.6,104.14,232.6,232.6S1085,752.69,956.54,752.69Z"></path>
+                         </g>
+                         <g class="bicycle" data-name="Layer 5">
+                             <path class="warning-color wheel"
+                                   d="M1139.82,780.44a76.59,76.59,0,1,0-57.9,91.53A76.59,76.59,0,0,0,1139.82,780.44Zm-28.12,6.33a47.59,47.59,0,0,1,.83,15.8c-30.14-6.28-47.68-21.65-54.39-52.52A47.73,47.73,0,0,1,1111.69,786.77Zm-70.46-30.9c10.35,26.88,10.14,50.4-13.73,70.77a47.67,47.67,0,0,1,13.73-70.77Zm34.35,88a47.55,47.55,0,0,1-34.94-5.62c16.8-20.36,41.71-25.94,67.09-19.46A47.66,47.66,0,0,1,1075.58,843.85Z"></path>
+                             <path class="warning-color wheel"
+                                   d="M864.89,789.69a76.59,76.59,0,1,0-66.13,85.78A76.59,76.59,0,0,0,864.89,789.69Zm-28.59,3.7a47.59,47.59,0,0,1-.64,15.81c-29.43-9-45.47-26-49.3-57.33A47.73,47.73,0,0,1,836.3,793.39ZM769,756.1c7.82,27.72,5.43,51.12-20.22,69.2A47.67,47.67,0,0,1,769,756.1Zm26.06,90.78a47.55,47.55,0,0,1-34.27-8.83c18.61-18.72,43.93-22,68.6-13.16A47.66,47.66,0,0,1,795.06,846.88Z"></path>
+                             <g>
+                                 <rect class="warning-color" height="53.21"
+                                       transform="translate(-165.97 273.38) rotate(-16.19)" width="12.87" x="871.39"
+                                       y="693.37"></rect>
+                                 <path class="secondary-color lighten-5"
+                                       d="M813.93,679.35c-3.72-5.2,2.24-18.5,9.16-16.13,33.43,11.46,73.85,10.45,73.85,10.45,8.84.15,14.44,10.34,7.27,15.48-14.36,8.79-33.13,17-56.35,9.76C830.17,693.41,819.83,687.6,813.93,679.35Z"></path>
+                                 <path class="secondary-color opacity-o4"
+                                       d="M813.93,679.35c-3.72-5.2,2.24-18.5,9.16-16.13,33.43,11.46,73.85,10.45,73.85,10.45,8.84.15,14.44,10.34,7.27,15.48-14.36,8.79-33.13,17-56.35,9.76C830.17,693.41,819.83,687.6,813.93,679.35Z"></path>
+                                 <path class="secondary-color lighten-5"
+                                       d="M817.15,680.06c-3.59-5,1.69-16.51,8.37-14.22,32.3,11.09,71.41,7.83,71.41,7.83,8.54.14,17.45,9.94,7.43,15.88-13.87,8.51-32,16.44-54.44,9.44C832.84,693.67,822.85,688,817.15,680.06Z"></path>
+                             </g>
+                             <g>
+                                 <circle class="warning-color" cx="1022.66" cy="599.55" r="11.57"
+                                         transform="translate(-4.86 8.38) rotate(-0.47)"></circle>
+                                 <path class="warning-color"
+                                       d="M1069.76,792.37l-34.89-96.74,1.93-.8-1.71-4.15-1.74.72-13.26-36.76,1.27-.42-2.25-6.76,5.94-2-2.57-7.72-9.7,3.22c-11.55-22.55,2-36.33,15-41.86l-5.57-8.81c-23,10.29-29.61,28.75-19.53,54l-9.38,3.12,2.56,7.72,5.47-1.82,2.25,6.76,2.36-.78,13.62,37.76-2.35,1,1.71,4.15,2.16-.89,34.65,96.09a7.47,7.47,0,0,0,9.56,4.49h0A7.47,7.47,0,0,0,1069.76,792.37Z"></path>
+                                 <circle class="secondary-color lighten-5" cx="1027.9" cy="587.94" r="12.99"
+                                         transform="translate(-4.77 8.42) rotate(-0.47)"></circle>
+                             </g>
+                             <path class="secondary-color lighten-5"
+                                   d="M1021.29,654l-17.73,6.15,1.72,5.59-31.41,82.36c-19.35,32.53-66.3,36.72-75.56,16.68l-7.09-21.5L879,747.1l3.28,10.09-94.65,33.95c-11.49,2.29-11.85,15.79-2.61,17.84,0,0,39.11,3.66,103,9.5a92.75,92.75,0,0,0,40.89-5.29c44.32-16.56,57.73-50.67,57.73-50.67l26.82-67.26a1.37,1.37,0,0,1,2.53,0l1.42,3.33,17.75-7.62Z"></path>
+                             <path class="secondary-color opacity-o4"
+                                   d="M1021.29,654l-17.73,6.15,1.72,5.59-31.41,82.36c-19.35,32.53-66.3,36.72-75.56,16.68l-7.09-21.5L879,747.1l3.28,10.09-94.65,33.95c-11.49,2.29-11.85,15.79-2.61,17.84,0,0,39.11,3.66,103,9.5a92.75,92.75,0,0,0,40.89-5.29c44.32-16.56,57.73-50.67,57.73-50.67l26.82-67.26a1.37,1.37,0,0,1,2.53,0l1.42,3.33,17.75-7.62Z"></path>
+                         </g>
+                     </svg>
+                 </div>
+                 <div class="col-md-8 offset-md-2">
+                     <h3>Oops! This Page is Not Found.</h3>
+                     <p class="sub-content">The page you are attempting to reach is currently not available. This may be
+                         because the page does not exist or has been moved.</p>
+                     <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/" up-back>
+                         BACK TO PREVIOUS PAGE
+                     </a>
+                 </div>
+             </div>
+         </div>
+     </div>
     </jsp:attribute>
-</layout:librarian>
+</layout:base>

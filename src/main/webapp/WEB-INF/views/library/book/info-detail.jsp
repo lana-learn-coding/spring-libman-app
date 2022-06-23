@@ -14,7 +14,7 @@
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.Book>"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.book.BookInfo"--%>
 
-<layout:modal>
+<layout:librarian>
     <jsp:attribute name="title">Book Info Detail</jsp:attribute>
     <jsp:attribute name="body">
         <div class="container-fluid">
@@ -27,13 +27,11 @@
                                 <a href="${pageContext.request.contextPath}/library/dashboard"
                                    up-follow up-instant>Home</a>
                             </li>
-                            <li class="breadcrumb-item">Books</li>
-                            <li class="breadcrumb-item">Tags</li>
                             <li class="breadcrumb-item">
-                                <a href="${pageContext.request.contextPath}/library/tags/${uri}"
-                                   up-follow up-instant>${title}
-                                </a>
+                                <a href="${pageContext.request.contextPath}/library/books/infos"
+                                   up-follow up-instant>Books</a>
                             </li>
+                            <li class="breadcrumb-item">Info</li>
                             <li class="breadcrumb-item active">${entity.name}</li>
                         </ol>
                     </div>
@@ -120,6 +118,10 @@
                             </c:if>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-header pb-0">
                             <h5>Books List</h5>
@@ -232,4 +234,4 @@
             </div>
         </div>
     </jsp:attribute>
-</layout:modal>
+</layout:librarian>

@@ -159,6 +159,7 @@
                                             <input id="file" name="file"
                                                    class="form-control ${status.error ? 'is-invalid' : ''}"
                                                    placeholder="Upload image" type="file" accept="image/*"/>
+                                            <form:input path="image" type="hidden"/>
                                             <form:errors path="image" cssClass="invalid-feedback"/>
                                         </div>
                                    </spring:bind>

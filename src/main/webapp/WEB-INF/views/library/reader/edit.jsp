@@ -141,6 +141,7 @@
                                             <input id="file" name="file"
                                                    class="form-control ${status.error ? 'is-invalid' : ''}"
                                                    placeholder="Upload avatar" type="file" accept="image/*"/>
+                                            <form:input path="account.avatar" type="hidden"/>
                                             <form:errors path="account.avatar" cssClass="invalid-feedback"/>
                                         </div>
                                    </spring:bind>

@@ -171,12 +171,13 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
     @PostMapping("{id}/delete")
-    public ModelAndView delete(@PathVariable String id) {
+    public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (StringUtils.equalsIgnoreCase(entity.getId(), "DEFAULT")) {
             ui.toast("Can't delete default item").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
         } else if (entity.getBooksCount() > 0) {
             ui.toast("Item have update during delete, please try again").warning();
         } else {
@@ -187,13 +188,14 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
     @PostMapping("{id}/force-delete")
-    public ModelAndView forceDelete(@PathVariable String id) {
+    public ModelAndView forceDelete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         auth.requireAnyAuthorities("ADMIN", "FORCE");
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_DELETE");
 
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (StringUtils.equalsIgnoreCase(entity.getId(), "DEFAULT")) {
             ui.toast("Can't delete default item").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
             return new ModelAndView("redirect:" + getIndexUri());
         }
 

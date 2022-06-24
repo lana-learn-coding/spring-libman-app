@@ -66,7 +66,9 @@
                                          alt="image">
                                 </div>
                                 <div class="mt-2 mt-sm-0">
-                                    <div class="mb-1">Title <span class="ms-2">${entity.title}</span></div>
+                                    <div class="mb-1">Title <span class="ms-2">${entity.title}</span>
+                                        <c:if test="${not empty entity.year}">(${entity.year})</c:if>
+                                    </div>
                                     <c:if test="${not empty entity.seriesName}">
                                         <div class="mb-1">Series
                                             <a class="ms-2" up-layer="new" up-size="large"

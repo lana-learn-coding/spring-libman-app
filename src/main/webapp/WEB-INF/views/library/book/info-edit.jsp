@@ -70,17 +70,32 @@
                                    <form:errors path="title" cssClass="invalid-feedback"/>
                                </div>
                                <div class="mb-3">
-                                   <label class="col-form-label pt-0" for="series">Book Series</label>
-                                   <form:select
-                                           data-placeholder="Select series"
-                                           data-allow-clear="true"
-                                           select2="${pageContext.request.contextPath}/library/tags/series/autocomplete"
-                                           path="series" cssClass="form-select" cssErrorClass="form-select is-invalid">
-                                       <c:if test="${not empty entity.seriesName}">
-                                           <option value="${entity.series.id}" selected>${entity.seriesName}</option>
-                                       </c:if>
-                                   </form:select>
-                                   <form:errors path="series" cssClass="invalid-feedback"/>
+                                   <div class="row">
+                                       <div class="col-12 col-sm-9">
+                                           <label class="col-form-label pt-0" for="series">Book Series</label>
+                                           <form:select
+                                                   data-placeholder="Select series"
+                                                   data-allow-clear="true"
+                                                   select2="${pageContext.request.contextPath}/library/tags/series/autocomplete"
+                                                   path="series" cssClass="form-select"
+                                                   cssErrorClass="form-select is-invalid">
+
+                                               <c:if test="${not empty entity.seriesName}">
+                                                   <option value="${entity.series.id}"
+                                                           selected>${entity.seriesName}</option>
+                                               </c:if>
+                                           </form:select>
+                                           <form:errors path="series" cssClass="invalid-feedback"/>
+                                       </div>
+                                       <div class="col-12 col-sm-3">
+                                           <label class="col-form-label pt-0" for="year">Release</label>
+                                           <form:input path="year" cssClass="form-control"
+                                                       cssErrorClass="form-control is-invalid"
+                                                       placeholder="Enter release year" min="0"
+                                                       step="1"/>
+                                           <form:errors path="year" cssClass="invalid-feedback"/>
+                                       </div>
+                                   </div>
                                </div>
                                <c:if test="${not edit}">
                                   <div class="mb-3 row">

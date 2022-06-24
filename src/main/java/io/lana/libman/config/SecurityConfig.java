@@ -30,7 +30,7 @@ class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/me/**/*", "/library/**/*").authenticated()
+                .antMatchers("/me/**/*", "/library/**/*", "/authorities/**/*").authenticated()
                 .anyRequest().permitAll()
 
                 .and()

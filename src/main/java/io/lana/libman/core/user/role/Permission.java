@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +22,7 @@ import static io.lana.libman.core.user.role.Authorities.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "`permission`")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Permission extends DescriptiveEntity implements GrantedAuthority {
     @ManyToMany(mappedBy = "permissions")

@@ -124,6 +124,39 @@
                             <i data-feather="package"></i><span>Shelf</span>
                         </a>
                     </li>
+
+                    <sec:authorize access="hasAnyAuthority('ROLE_READ', 'USER_READ', 'PERMISSION_READ', 'ADMIN')">
+                        <li class="sidebar-main-title">
+                            <div>
+                                <h6>Admin</h6>
+                            </div>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasAnyAuthority('USER_READ', 'ADMIN')">
+                        <li>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/authorities/users"
+                               up-follow up-alias="${pageContext.request.contextPath}/authorities/users">
+                                <i data-feather="user-check"></i><span>Users</span>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasAnyAuthority('ROLE_READ', 'ADMIN')">
+                        <li>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/authorities/roles"
+                               up-follow up-alias="${pageContext.request.contextPath}/authorities/roles">
+                                <i data-feather="users"></i><span>Roles</span>
+                            </a>
+                        </li>
+                    </sec:authorize>
+                    <sec:authorize access="hasAnyAuthority('PERMISSION_READ', 'ADMIN')">
+                        <li>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/authorities/permissions"
+                               up-follow up-alias="${pageContext.request.contextPath}/authorities/permissions">
+                                <i data-feather="check-circle"></i><span>Permissions</span>
+                            </a>
+                        </li>
+                    </sec:authorize>
+
                 </ul>
             </div>
         </div>

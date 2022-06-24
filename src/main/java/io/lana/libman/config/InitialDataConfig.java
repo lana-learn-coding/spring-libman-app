@@ -115,6 +115,12 @@ class InitialDataConfig implements ApplicationRunner {
             librarianPerms.addAll(Permission.forReadWrite(BookBorrow.class.getSimpleName()));
             librarianPerms.addAll(Permission.forReadWrite(Reader.class.getSimpleName()));
             roleRepo.saveAll(List.of(Role.admin(), Role.force(), librarian));
+
+            final Set<Permission> amPerms = new HashSet<>();
+            amPerms.addAll(Permission.forReadWrite(User.class.getSimpleName()));
+            amPerms.addAll(Permission.forReadWrite(Role.class.getSimpleName()));
+            amPerms.addAll(Permission.forReadWrite(Permission.class.getSimpleName()));
+            roleRepo.save(Role.ofName("AM", amPerms));
         }
     }
 
@@ -127,7 +133,8 @@ class InitialDataConfig implements ApplicationRunner {
                 User.system(),
                 User.newInstance("admin@admin", "admin", password, Collections.singleton(Role.admin()), SYSTEM),
                 User.newInstance("librarian@librarian", "librarian", password, Collections.singleton(Role.librarian()), SYSTEM),
-                User.newInstance("reader@reader", "reader", password, Collections.emptyList(), SYSTEM)
+                User.newInstance("reader@reader", "reader", password, Collections.emptyList(), SYSTEM),
+                User.newInstance("am@am", "am", password, Collections.singleton(Role.ofName("AM", Collections.emptyList())), Role.admin().getName())
         ));
 
         Stream.generate(() -> faker.internet().emailAddress())

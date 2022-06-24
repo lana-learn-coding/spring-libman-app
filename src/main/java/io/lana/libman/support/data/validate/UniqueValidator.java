@@ -62,6 +62,15 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         if (messages.length == 0) {
             messages = new String[properties.length];
             messages[0] = unique.message();
+            return;
+        }
+        if (messages.length < properties.length) {
+            messages = new String[properties.length];
+            final var last = unique.messages()[unique.messages().length - 1];
+            for (int i = 0; i < properties.length; i++) {
+                final var message = i < unique.messages().length ? unique.messages()[i] : last;
+                messages[i] = message;
+            }
         }
     }
 }

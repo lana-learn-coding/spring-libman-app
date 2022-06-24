@@ -22,7 +22,7 @@
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h3>${op} Book Info</h3>
+                        <h3>${op} Reader</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="${pageContext.request.contextPath}/library/dashboard"
@@ -52,7 +52,7 @@
                            </div>
                        </div>
                        <div class="card-header pb-0">
-                           <h5>${op} Book Info</h5>
+                           <h5>${op} Reader</h5>
                            <c:if test="${edit}">
                                <span>Editing ${entity.account.name}</span>
                            </c:if>
@@ -62,6 +62,7 @@
                        </div>
                        <div class="card-body">
                            <div class="theme-form" style="max-width: 1000px">
+                               <jsp:include page="/WEB-INF/presets/datepicker.head.jsp"/>
                                <div class="mb-3">
                                    <label class="col-form-label pt-0" for="account.email">Email</label>
                                    <form:input path="account.email" cssClass="form-control"
@@ -123,6 +124,15 @@
                                            <form:errors path="borrowLimit" cssClass="invalid-feedback"/>
                                        </div>
                                    </div>
+                               </div>
+                               <div class="mb-3">
+                                   <helper:format-date date="${entity.account.dateOfBirth}" var="birth"/>
+                                   <label class="col-form-label pt-0">Date of Birth</label>
+                                   <form:input path="account.dateOfBirth" cssClass="datepicker-here form-control digits"
+                                               cssErrorClass="datepicker-here form-control digits is-invalid"
+                                               readonly="true"
+                                               placeholder="Select birthdate" type="text" value="${birth}"/>
+                                   <form:errors path="account.dateOfBirth" cssClass="invalid-feedback"/>
                                </div>
                                <div class="mb-4">
                                    <label class="col-form-label pt-0"

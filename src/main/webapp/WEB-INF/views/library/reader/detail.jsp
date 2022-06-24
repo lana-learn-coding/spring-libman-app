@@ -100,7 +100,9 @@
                                     </div>
                                     <c:if test="${not empty entity.account.dateOfBirth}">
                                         <div class="mb-1">Birthdate
-                                            <span class="ms-2 txt-primary">${entity.account.dateOfBirth}</span>
+                                            <span class="ms-2 txt-primary">
+                                                <helper:format-date date="${entity.account.dateOfBirth}"/>
+                                            </span>
                                         </div>
                                     </c:if>
                                 </div>

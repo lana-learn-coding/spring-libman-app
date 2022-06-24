@@ -76,12 +76,14 @@
                                             values="account.email;account.firstName;account.lastName;borrowingBooksCount,desc;overDueBooksCount,desc;borrowLimit,desc;updatedAt,desc;updatedBy,id"/>
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
-                                    <button up-href="${pageContext.request.contextPath}/library/readers/create"
-                                            class="btn btn-primary" up-instant up-layer="new"
-                                            up-dismissable="button">
-                                        <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                        Create
-                                    </button>
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">
+                                        <button up-href="${pageContext.request.contextPath}/library/readers/create"
+                                                class="btn btn-primary" up-instant up-layer="new"
+                                                up-dismissable="button">
+                                            <i class="fa fa-plus-square-o fa-lg pe-2"></i>
+                                            Create
+                                        </button>
+                                    </sec:authorize>
                                 </div>
                             </div>
                             <div class="table-responsive">

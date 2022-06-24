@@ -16,8 +16,4 @@ public interface TaggedRepo<T extends AuditableEntity & Tagged & Named> extends 
 
     @Override
     List<T> findAll();
-
-    boolean existsByNameIgnoreCaseAndIdNot(String name, String id);
-
-    boolean existsByNameIgnoreCase(String name);
 }

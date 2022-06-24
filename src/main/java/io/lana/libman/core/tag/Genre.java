@@ -17,6 +17,6 @@ public class Genre extends TaggedEntity {
     @ManyToMany(mappedBy = "genres")
     private Set<BookInfo> books = new LinkedHashSet<>();
 
-    @Formula("(SELECT COUNT(DISTINCT b.id) FROM book_info b RIGHT JOIN book_info_genres g WHERE g.genre_id = id)")
+    @Formula("(SELECT COUNT(DISTINCT g.book_info_id) FROM book_info_genres g WHERE g.genre_id = id)")
     private int booksCount;
 }

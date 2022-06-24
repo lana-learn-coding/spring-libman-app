@@ -1,7 +1,7 @@
 package io.lana.libman.core.user.role;
 
 import io.lana.libman.core.user.User;
-import io.lana.libman.support.data.NamedEntity;
+import io.lana.libman.support.data.DescriptiveEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +19,7 @@ import static io.lana.libman.core.user.role.Authorities.*;
 @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Role extends NamedEntity {
-    private String description;
-
+public class Role extends DescriptiveEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_permission",

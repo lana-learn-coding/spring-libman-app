@@ -2,7 +2,7 @@ package io.lana.libman.core.tag;
 
 import io.lana.libman.core.book.BookInfo;
 import io.lana.libman.support.data.AuditableEntity;
-import io.lana.libman.support.data.validate.DateBeforeNow;
+import io.lana.libman.support.validate.DateBeforeNow;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;

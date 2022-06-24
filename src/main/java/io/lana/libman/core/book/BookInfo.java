@@ -8,7 +8,7 @@ import io.lana.libman.core.tag.Series;
 import io.lana.libman.support.data.AuditableEntity;
 import io.lana.libman.support.data.Named;
 import io.lana.libman.support.data.NamedEntity;
-import io.lana.libman.support.data.validate.Unique;
+import io.lana.libman.support.validate.Unique;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;

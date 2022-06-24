@@ -17,7 +17,7 @@ import java.time.Instant;
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class AuditableEntity extends IdentifiedEntity {
+public abstract class AuditableEntity extends IdentifiedEntity implements Auditable {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     protected Instant createdAt = Instant.now();

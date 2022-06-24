@@ -1,6 +1,6 @@
 package io.lana.libman.support.data;
 
-import io.lana.libman.support.data.validate.Unique;
+import io.lana.libman.support.validate.Unique;
 import lombok.Getter;
 import lombok.Setter;
 

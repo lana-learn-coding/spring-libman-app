@@ -1,4 +1,4 @@
-package io.lana.libman.support.data.validate;
+package io.lana.libman.support.validate;
 
 import org.apache.commons.lang3.StringUtils;
 

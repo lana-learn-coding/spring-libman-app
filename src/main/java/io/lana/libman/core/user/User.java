@@ -1,5 +1,6 @@
 package io.lana.libman.core.user;
 
+import io.lana.libman.core.reader.Reader;
 import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.core.user.role.Permission;
 import io.lana.libman.core.user.role.Role;
@@ -9,6 +10,7 @@ import io.lana.libman.support.data.Named;
 import io.lana.libman.support.security.AuthUser;
 import io.lana.libman.support.validate.DateBeforeNow;
 import io.lana.libman.support.validate.PhoneNumber;
+import io.lana.libman.support.validate.StrongPassword;
 import io.lana.libman.support.validate.Unique;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,6 +44,7 @@ public class User extends AuditableEntity implements AuthUser, Named {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @StrongPassword
     private String password;
 
     private String avatar;
@@ -62,6 +65,9 @@ public class User extends AuditableEntity implements AuthUser, Named {
     @NotNull
     @Enumerated
     private Gender gender = Gender.UNSPECIFIED;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
+    private Reader reader;
 
     @DateBeforeNow
     @Column(name = "date_of_birth")
@@ -95,6 +101,9 @@ public class User extends AuditableEntity implements AuthUser, Named {
         return getAuthorities().contains(Permission.internal());
     }
 
+    public boolean isReader() {
+        return reader != null;
+    }
 
     public void setEmail(String email) {
         this.email = email;

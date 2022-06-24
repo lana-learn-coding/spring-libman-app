@@ -44,7 +44,7 @@
                             <h5>${title} Manage</h5>
                             <span>Manage list of ${title}</span>
                         </div>
-                        <form class="card-body row" up-target="#table table, nav .pagination" method="get">
+                        <form class="card-body row" up-target="#table, nav .pagination" method="get">
                             <helper:inherit-param excludes="query"/>
                             <div class="input-group">
                                 <span class="input-group-text bg-primary"><i class="icon-search"></i></span>

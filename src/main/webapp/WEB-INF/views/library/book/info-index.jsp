@@ -37,7 +37,7 @@
                             <h5>Book Info Manage</h5>
                             <span>Manage list of book metadata and information</span>
                         </div>
-                        <form class="card-body row" up-target="#table table, nav .pagination" method="get">
+                        <form class="card-body row" up-target="#table, nav .pagination" method="get">
                             <helper:inherit-param excludes="query,genreId"/>
                             <div class="col-12 col-sm-6 col-md-8 col-lg-9 mb-2">
                                 <div class="input-group">

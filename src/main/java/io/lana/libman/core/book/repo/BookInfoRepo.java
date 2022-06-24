@@ -23,10 +23,11 @@ public interface BookInfoRepo extends PagingAndSortingRepository<BookInfo, Strin
 
     boolean existsByTitleIgnoreCase(String name);
 
-    @Query(value = "select b from BookInfo b " +
-            "join fetch b.author a join fetch b.publisher p join fetch b.series s join b.genres g " +
-            "where (:query is null or lower(b.title) like lower(:query) or lower(a.name) like lower(:query) or lower(p.name) like lower(:query) or lower(s.name) like lower(:query)) " +
-            "and (:genreId is null or g.id like :genreId)",
+    @Query(
+            value = "select b from BookInfo b " +
+                    "join fetch b.author a join fetch b.publisher p join fetch b.series s join b.genres g " +
+                    "where (:query is null or lower(b.title) like lower(:query) or lower(a.name) like lower(:query) or lower(p.name) like lower(:query) or lower(s.name) like lower(:query)) " +
+                    "and (:genreId is null or g.id like :genreId)",
             countQuery = "select count(b.id) from BookInfo b " +
                     "join b.author a join b.publisher p join b.series s join b.genres g " +
                     "where (:query is null or lower(b.title) like lower(:query) or lower(a.name) like lower(:query) or lower(p.name) like lower(:query) or lower(s.name) like lower(:query)) " +

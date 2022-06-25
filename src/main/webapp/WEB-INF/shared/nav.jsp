@@ -56,124 +56,123 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/library/dashboard">
-                            <i data-feather="bar-chart-2"></i><span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
                         <a class="nav-link" href="${pageContext.request.contextPath}/home">
                             <i data-feather="home"></i><span>Home</span>
                         </a>
                     </li>
-                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ', 'READER_READ')">
+                    <sec:authorize access="hasAuthority('LIBRARIAN')">
                         <li class="sidebar-main-title">
                             <div>
-                                <h6>Borrow</h6>
-                            </div>
-                        </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/readers"
-                               up-alias="${pageContext.request.contextPath}/library/readers/*"
-                               up-follow up-instant>
-                                <i data-feather="user-check"></i><span>Reader</span>
-                            </a>
-                        </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/borrow/borrow">
-                                <i data-feather="calendar"></i><span>Borrow</span>
-                            </a>
-                        </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('LIBRARIAN')">
-                        <li class="sidebar-main-title">
-                            <div>
-                                <h6>Book</h6>
+                                <h6>Librarian</h6>
                             </div>
                         </li>
                         <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/books/infos"
-                               up-alias="${pageContext.request.contextPath}/library/books/infos/*"
-                               up-follow up-instant>
-                                <i data-feather="book"></i><span>Book Info</span>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/library/dashboard">
+                                <i data-feather="bar-chart-2"></i><span>Dashboard</span>
                             </a>
                         </li>
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/books/books">
-                                <i data-feather="book-open"></i><span>Books</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/series"
-                               up-alias="${pageContext.request.contextPath}/library/tags/series/*"
-                               up-follow up-instant>
-                                <i data-feather="layers"></i><span>Book Series</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/authors"
-                               up-alias="${pageContext.request.contextPath}/library/tags/authors/*"
-                               up-follow up-instant>
-                                <i data-feather="user"></i><span>Authors</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/publishers"
-                               up-alias="${pageContext.request.contextPath}/library/tags/publishers/*"
-                               up-follow up-instant>
-                                <i data-feather="user"></i><span>Publisher</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/genres"
-                               up-alias="${pageContext.request.contextPath}/library/tags/genres/*"
-                               up-follow up-instant>
-                                <i data-feather="tag"></i><span>Genres</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/shelf"
-                               up-alias="${pageContext.request.contextPath}/library/tags/shelf/*"
-                               up-follow up-instant>
-                                <i data-feather="package"></i><span>Shelf</span>
-                            </a>
-                        </li>
+                        <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/readers"
+                                   up-alias="${pageContext.request.contextPath}/library/readers/*"
+                                   up-follow up-instant>
+                                    <i data-feather="user-check"></i><span>Reader</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/borrow/borrow">
+                                    <i data-feather="calendar"></i><span>Borrow</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('LIBRARIAN')">
+                            <li class="sidebar-main-title">
+                                <div>
+                                    <h6>Book</h6>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/books/infos"
+                                   up-alias="${pageContext.request.contextPath}/library/books/infos/*"
+                                   up-follow up-instant>
+                                    <i data-feather="book"></i><span>Book Info</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/books/books">
+                                    <i data-feather="book-open"></i><span>Books</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/series"
+                                   up-alias="${pageContext.request.contextPath}/library/tags/series/*"
+                                   up-follow up-instant>
+                                    <i data-feather="layers"></i><span>Book Series</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/authors"
+                                   up-alias="${pageContext.request.contextPath}/library/tags/authors/*"
+                                   up-follow up-instant>
+                                    <i data-feather="user"></i><span>Authors</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/publishers"
+                                   up-alias="${pageContext.request.contextPath}/library/tags/publishers/*"
+                                   up-follow up-instant>
+                                    <i data-feather="user"></i><span>Publisher</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/genres"
+                                   up-alias="${pageContext.request.contextPath}/library/tags/genres/*"
+                                   up-follow up-instant>
+                                    <i data-feather="tag"></i><span>Genres</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/tags/shelf"
+                                   up-alias="${pageContext.request.contextPath}/library/tags/shelf/*"
+                                   up-follow up-instant>
+                                    <i data-feather="package"></i><span>Shelf</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('ROLE_READ', 'USER_READ', 'PERMISSION_READ', 'ADMIN')">
+                            <li class="sidebar-main-title">
+                                <div>
+                                    <h6>Admin</h6>
+                                </div>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('USER_READ', 'ADMIN')">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/authorities/users"
+                                   up-follow up-alias="${pageContext.request.contextPath}/authorities/users">
+                                    <i data-feather="user-check"></i><span>Users</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('ROLE_READ', 'ADMIN')">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/authorities/roles"
+                                   up-follow up-alias="${pageContext.request.contextPath}/authorities/roles">
+                                    <i data-feather="users"></i><span>Roles</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('PERMISSION_READ', 'ADMIN')">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/authorities/permissions"
+                                   up-follow up-alias="${pageContext.request.contextPath}/authorities/permissions">
+                                    <i data-feather="check-circle"></i><span>Permissions</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
                     </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('ROLE_READ', 'USER_READ', 'PERMISSION_READ', 'ADMIN')">
-                        <li class="sidebar-main-title">
-                            <div>
-                                <h6>Admin</h6>
-                            </div>
-                        </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('USER_READ', 'ADMIN')">
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/authorities/users"
-                               up-follow up-alias="${pageContext.request.contextPath}/authorities/users">
-                                <i data-feather="user-check"></i><span>Users</span>
-                            </a>
-                        </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('ROLE_READ', 'ADMIN')">
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/authorities/roles"
-                               up-follow up-alias="${pageContext.request.contextPath}/authorities/roles">
-                                <i data-feather="users"></i><span>Roles</span>
-                            </a>
-                        </li>
-                    </sec:authorize>
-                    <sec:authorize access="hasAnyAuthority('PERMISSION_READ', 'ADMIN')">
-                        <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/authorities/permissions"
-                               up-follow up-alias="${pageContext.request.contextPath}/authorities/permissions">
-                                <i data-feather="check-circle"></i><span>Permissions</span>
-                            </a>
-                        </li>
-                    </sec:authorize>
-
                 </ul>
             </div>
         </div>

@@ -1,6 +1,7 @@
 package io.lana.libman.config;
 
 import io.lana.libman.core.user.UserRepo;
+import io.lana.libman.core.user.role.Authorities;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -30,7 +31,10 @@ class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/me/**/*", "/library/**/*", "/authorities/**/*").authenticated()
+                .antMatchers("/library/**/*", "/authorities/**/*")
+                .hasAuthority(Authorities.LIBRARIAN)
+                .antMatchers("/me/**/*")
+                .authenticated()
                 .anyRequest().permitAll()
 
                 .and()

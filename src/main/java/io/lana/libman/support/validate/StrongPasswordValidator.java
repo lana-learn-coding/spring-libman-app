@@ -19,19 +19,19 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
                     .addConstraintViolation();
             return false;
         }
-        if (password.matches("[a-z]")) {
+        if (!password.matches(".*[a-z].*")) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("Passwords must contain a minimum of 1 lower case letter [a-z]")
                     .addConstraintViolation();
             return false;
         }
-        if (password.matches("[A-Z]")) {
+        if (!password.matches(".*[A-Z].*")) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("Passwords must contain a minimum of 1 upper case letter [A-Z]")
                     .addConstraintViolation();
             return false;
         }
-        if (password.matches("\\d")) {
+        if (!password.matches(".*\\d.*")) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("Passwords must contain a minimum of 1 numeric character [0-9]")
                     .addConstraintViolation();

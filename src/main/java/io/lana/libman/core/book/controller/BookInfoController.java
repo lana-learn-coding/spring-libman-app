@@ -209,6 +209,7 @@ class BookInfoController {
                 .forEach(b -> {
                     final var detail = new SimpleBookDetail();
                     BeanUtils.copyProperties(entity, detail);
+                    b.setBook(null);
                     b.setBookDetail(detail);
                     borrowRepo.save(b);
                 });

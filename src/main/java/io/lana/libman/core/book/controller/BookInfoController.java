@@ -1,7 +1,6 @@
 package io.lana.libman.core.book.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookInfo;
 import io.lana.libman.core.book.controller.dto.CreateBookInfoDto;
@@ -12,6 +11,7 @@ import io.lana.libman.core.tag.Shelf;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -43,8 +43,6 @@ class BookInfoController {
     private final BookRepo bookRepo;
 
     private final ImageService imageService;
-
-    private final ObjectMapper objectMapper;
 
     private final UIFacade ui;
 
@@ -136,7 +134,8 @@ class BookInfoController {
             return model;
         }
 
-        final var entity = objectMapper.convertValue(form, BookInfo.class);
+        final var entity = new BookInfo();
+        BeanUtils.copyProperties(form, entity);
         repo.save(entity);
         for (int i = 0; i < form.getNumberOfBooks(); i++) {
             final var related = new Book();

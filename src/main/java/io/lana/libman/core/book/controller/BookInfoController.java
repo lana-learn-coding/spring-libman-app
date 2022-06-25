@@ -63,6 +63,18 @@ class BookInfoController {
         ));
     }
 
+    @GetMapping("{id}/history")
+    public ModelAndView history(@PathVariable String id, @RequestParam(required = false) String query,
+                                @PageableDefault(5) @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
+        final var page = borrowRepo.findAllByBookInfoIdAndQuery(id, query, pageable);
+        return new ModelAndView("/library/book/info-history", Map.of(
+                "entity", entity,
+                "data", page
+        ));
+    }
+
     @GetMapping
     public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String genreId,
                               @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {

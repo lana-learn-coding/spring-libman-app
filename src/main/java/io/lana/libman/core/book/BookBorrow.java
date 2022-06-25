@@ -51,7 +51,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @Delegate(types = BookDetails.class)
     public BookDetails getBookDetail() {
-        if (book.getInfo() != null) return book;
+        if (book != null) return book;
         return bookDetail;
     }
 }

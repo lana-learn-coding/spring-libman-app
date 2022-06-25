@@ -13,5 +13,7 @@ public interface BookDetails {
 
     String getGenresName();
 
+    Integer getReleaseYear();
+
     Set<String> getGenresSet();
 }

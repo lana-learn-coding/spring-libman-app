@@ -133,9 +133,9 @@
                             <div class="row">
                                 <div class="col-12 mb-3 d-flex justify-content-end">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
-                                        <button up-href="${pageContext.request.contextPath}/library/books/books/create"
+                                        <button up-href="${pageContext.request.contextPath}/library/books/infos/${id}/history"
                                                 class="btn btn-primary me-2" up-instant up-layer="new" up-size="large"
-                                                up-dismissable="button">
+                                                up-dismissable="button" up-history="false">
                                             <i class="fa fa-clock-o fa-lg pe-2"></i>
                                             Borrow History
                                         </button>

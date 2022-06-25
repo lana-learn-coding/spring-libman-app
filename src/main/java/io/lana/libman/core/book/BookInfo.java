@@ -105,6 +105,11 @@ public class BookInfo extends AuditableEntity implements Named, BookDetails {
     }
 
     @Override
+    public Integer getReleaseYear() {
+        return getYear();
+    }
+
+    @Override
     public Set<String> getGenresSet() {
         return genres.stream().map(NamedEntity::getName).collect(Collectors.toUnmodifiableSet());
     }

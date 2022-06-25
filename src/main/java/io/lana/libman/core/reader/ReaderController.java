@@ -48,12 +48,25 @@ class ReaderController {
     @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_READ')")
     public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query,
-                               @PageableDefault(8) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+                               @PageableDefault(8) @SortDefault(value = "dueDate") Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         final var page = StringUtils.isBlank(query)
                 ? borrowRepo.findAllBorrowingByReaderId(id, pageable)
                 : borrowRepo.findAllBorrowingByReaderIdAndQuery(id, "%" + query + "%", pageable);
         return new ModelAndView("/library/reader/detail", Map.of(
+                "entity", entity,
+                "data", page
+        ));
+    }
+
+
+    @GetMapping("{id}/history")
+    public ModelAndView history(@PathVariable String id, @RequestParam(required = false) String query,
+                                @PageableDefault(5) @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
+        final var page = borrowRepo.findAllByReaderIdAndQuery(id, query, pageable);
+        return new ModelAndView("/library/reader/history", Map.of(
                 "entity", entity,
                 "data", page
         ));

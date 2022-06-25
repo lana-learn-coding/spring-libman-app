@@ -19,6 +19,8 @@ public class SimpleBookDetail implements BookDetails {
 
     private String seriesName;
 
+    private Integer releaseYear;
+
     private Set<String> genresSet = new HashSet<>();
 
     @Override

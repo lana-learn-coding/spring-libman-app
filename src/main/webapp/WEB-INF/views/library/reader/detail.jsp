@@ -125,13 +125,25 @@
                             <span>List borrowing books of: ${entity.account.email} (Total of ${entity.borrowingBooksCount})</span>
                         </div>
                         <div class="card-body" id="table">
+                            <div class="row">
+                                <div class="col-12 mb-3 d-flex justify-content-end">
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
+                                        <button up-href="${pageContext.request.contextPath}/library/readers/${entity.id}/history"
+                                                class="btn btn-primary me-2" up-instant up-size="large" up-layer="new"
+                                                up-dismissable="button" up-history="false">
+                                            <i class="fa fa-clock-o fa-lg pe-2"></i>
+                                            Borrow History
+                                        </button>
+                                    </sec:authorize>
+                                </div>
+                            </div>
                             <div class="row justify-content-between mb-3">
                                 <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                     <component:sorting
                                             target="#table, [comp=sorting]"
                                             up="up-scroll='#table' up-transition='cross-fade'"
                                             labels="Title;Borrow Date;Due Date;Updated At;Updated By;Id"
-                                            values="book.info.title,borrowDate,desc;dueDate,desc;updatedAt,desc;updatedBy,id"/>
+                                            values="book.info.title,borrowDate,desc;dueDate,asc;updatedAt,desc;updatedBy,id"/>
                                 </div>
                                 <form class="col-xs-12 col-md-6 my-1"
                                       up-target="#table, nav .pagination" up-transition='cross-fade' method="get">

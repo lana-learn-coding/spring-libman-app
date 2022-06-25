@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @Convert(converter = BookDetailConverter.class)
-    @Column(name = "book_detail")
+    @Column(name = "book_detail", columnDefinition = "TEXT")
     private BookDetails bookDetail;
 
     @ManyToOne

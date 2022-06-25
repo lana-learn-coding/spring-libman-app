@@ -141,7 +141,7 @@
                                         </button>
                                     </sec:authorize>
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_CREATE')">
-                                        <button up-href="${pageContext.request.contextPath}/library/books/books/create"
+                                        <button up-href="${pageContext.request.contextPath}/library/books/books/create?parentId=${id}"
                                                 class="btn btn-primary" up-instant up-layer="new"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
@@ -257,7 +257,7 @@
                                                     </a>
                                                 </sec:authorize>
                                                 <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_DELETE')">
-                                                    <a href="${pageContext.request.contextPath}/library/books/books/delete"
+                                                    <a href="${pageContext.request.contextPath}/library/books/books/${item.id}/delete"
                                                        up-history="false" up-layer="new" up-instant
                                                        up-dismissable="button"
                                                        class="txt-danger">

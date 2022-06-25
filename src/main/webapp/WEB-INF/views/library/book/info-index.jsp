@@ -162,7 +162,7 @@
                                                     </a>
                                                 </sec:authorize>
                                                 <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_INFO_DELETE')">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/delete"
+                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/delete"
                                                        up-history="false" up-layer="new" up-instant
                                                        up-dismissable="button"
                                                        class="txt-danger">

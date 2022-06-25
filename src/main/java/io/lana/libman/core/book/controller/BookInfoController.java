@@ -4,8 +4,10 @@ package io.lana.libman.core.book.controller;
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookInfo;
 import io.lana.libman.core.book.controller.dto.CreateBookInfoDto;
+import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookInfoRepo;
 import io.lana.libman.core.book.repo.BookRepo;
+import io.lana.libman.core.book.support.SimpleBookDetail;
 import io.lana.libman.core.file.ImageService;
 import io.lana.libman.core.tag.Shelf;
 import io.lana.libman.support.ui.UIFacade;
@@ -41,6 +43,8 @@ class BookInfoController {
     private final BookInfoRepo repo;
 
     private final BookRepo bookRepo;
+
+    private final BookBorrowRepo borrowRepo;
 
     private final ImageService imageService;
 
@@ -163,4 +167,56 @@ class BookInfoController {
                 "results", data
         ));
     }
+
+    @GetMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_DELETE')")
+    public ModelAndView confirmDelete(@PathVariable String id) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return new ModelAndView("/library/book/info-delete", Map.of(
+                "entity", entity,
+                "id", id
+        ));
+    }
+
+    @PostMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_DELETE')")
+    public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.getBooksCount() > 0) {
+            ui.toast("Info related to " + entity.getBooksCount() + " books. Cannot delete").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:/library/books/infos");
+        }
+
+        repo.delete(entity);
+        ui.toast("Book info delete succeed").success();
+        return new ModelAndView("redirect:/library/books/infos");
+    }
+
+    @PostMapping("{id}/force-delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_DELETE') && hasAnyAuthority('ADMIN','FORCE')")
+    public ModelAndView forceDelete(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.getBooks().stream().anyMatch(b -> !b.getTicket().isEmpty())) {
+            ui.toast("Related book is borrowed").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:/library/books/infos");
+        }
+
+        entity.getBooks()
+                .stream()
+                .flatMap(book -> book.getBorrows().stream())
+                .forEach(b -> {
+                    final var detail = new SimpleBookDetail();
+                    BeanUtils.copyProperties(entity, detail);
+                    b.setBookDetail(detail);
+                    borrowRepo.save(b);
+                });
+
+        bookRepo.deleteAll(entity.getBooks());
+        repo.delete(entity);
+        ui.toast("Book info and related book delete succeed").success();
+        return new ModelAndView("redirect:/library/books/infos");
+    }
+
 }

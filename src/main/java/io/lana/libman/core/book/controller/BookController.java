@@ -2,12 +2,15 @@ package io.lana.libman.core.book.controller;
 
 
 import io.lana.libman.core.book.Book;
+import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookInfoRepo;
 import io.lana.libman.core.book.repo.BookRepo;
+import io.lana.libman.core.book.support.SimpleBookDetail;
 import io.lana.libman.core.file.ImageService;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
@@ -32,6 +35,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 class BookController {
     private final BookInfoRepo infoRepo;
+
+    private final BookBorrowRepo borrowRepo;
 
     private final BookRepo repo;
 
@@ -136,6 +141,36 @@ class BookController {
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Item created successfully").success();
+        return new ModelAndView("redirect:/library/books/books");
+    }
+
+    @GetMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_DELETE')")
+    public ModelAndView confirmDelete(@PathVariable String id) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return new ModelAndView("/library/book/book-delete", Map.of(
+                "entity", entity,
+                "id", id
+        ));
+    }
+
+    @PostMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_DELETE')")
+    public ModelAndView delete(@PathVariable String id) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.getTicket().size() > 0) {
+            ui.toast("Book was borrowed. Cannot delete").error();
+            return new ModelAndView("redirect:/library/books/books");
+        }
+
+        entity.getBorrows().forEach(b -> {
+            final var detail = new SimpleBookDetail();
+            BeanUtils.copyProperties(entity, detail);
+            b.setBookDetail(detail);
+            borrowRepo.save(b);
+        });
+        repo.delete(entity);
+        ui.toast("Book delete succeed").success();
         return new ModelAndView("redirect:/library/books/books");
     }
 }

@@ -130,6 +130,26 @@
                             <span>List books of: ${entity.name} (Total of ${entity.booksCount})</span>
                         </div>
                         <div class="card-body" id="table">
+                            <div class="row">
+                                <div class="col-12 mb-3 d-flex justify-content-end">
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
+                                        <button up-href="${pageContext.request.contextPath}/library/books/books/create"
+                                                class="btn btn-primary me-2" up-instant up-layer="new" up-size="large"
+                                                up-dismissable="button">
+                                            <i class="fa fa-clock-o fa-lg pe-2"></i>
+                                            Borrow History
+                                        </button>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_CREATE')">
+                                        <button up-href="${pageContext.request.contextPath}/library/books/books/create"
+                                                class="btn btn-primary" up-instant up-layer="new"
+                                                up-dismissable="button">
+                                            <i class="fa fa-plus-square-o fa-lg pe-2"></i>
+                                            Create
+                                        </button>
+                                    </sec:authorize>
+                                </div>
+                            </div>
                             <div class="row justify-content-between mb-3">
                                 <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                      <component:sorting
@@ -161,6 +181,7 @@
                                         <th scope="col">#</th>
                                         <th scope="col">Id</th>
                                         <th scope="col">Image</th>
+                                        <th scope="col">Shelf</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Borrow</th>
                                         <th scope="col">Updated At</th>
@@ -174,16 +195,21 @@
                                         <tr>
                                             <th scope="row" <component:table-higlight
                                                     test="${isHighlight}"/>>${loop.index + 1}</th>
-                                            <th scope="row" <component:table-higlight
-                                                    test="${isHighlight}"/>>
-                                                <component:index pageMeta="${data}" i="${loop.index}"/>
-                                            </th>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
+                                                <div style="max-width: 120px">
+                                                        ${ item.id }
+                                                </div>
+                                            </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <img class="round-box mx-auto" style="width: 70px"
                                                      src="${(empty item.image ? '/static/images/book-default.png' : item.image)}"
                                                      alt="book cover">
                                             </td>
+                                            <th scope="row" <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                    ${item.shelf.name}
+                                            </th>
                                             <td <component:table-higlight test="${isHighlight}"/>>
                                                 <c:if test="${item.status == 'AVAILABLE'}">
                                                     <span class="badge badge-success">${item.status}</span>
@@ -215,7 +241,30 @@
                                                 <div>
                                                     by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
-                                            <td></td>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
+                                                <a href="${pageContext.request.contextPath}/library/books/books/${item.id}/detail"
+                                                   up-instant up-layer="new" class="mr-1 txt-primary">
+                                                    <i data-feather="external-link"
+                                                       style="width: 20px; height: 20px"></i>
+                                                </a>
+                                                <sec:authorize
+                                                        access="hasAnyAuthority('ADMIN', 'BOOK_UPDATE')">
+                                                    <a href="${pageContext.request.contextPath}/library/books/books/${item.id}/update"
+                                                       class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-dismissable="button">
+                                                        <i data-feather="edit"
+                                                           style="width: 20px; height: 20px"></i>
+                                                    </a>
+                                                </sec:authorize>
+                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_DELETE')">
+                                                    <a href="${pageContext.request.contextPath}/library/books/books/delete"
+                                                       up-history="false" up-layer="new" up-instant
+                                                       up-dismissable="button"
+                                                       class="txt-danger">
+                                                        <i data-feather="trash" style="width: 20px; height: 20px"></i>
+                                                    </a>
+                                                </sec:authorize>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>

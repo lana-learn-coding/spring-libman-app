@@ -22,6 +22,12 @@ public interface BookRepo extends PagingAndSortingRepository<Book, String> {
                     "where bi.id = :id and (lower(a.email) like lower(:query) or lower(bi.title) like lower(:query) or lower(s.name) like lower(:query))")
     Page<Book> findAllByInfoIdAndQuery(String id, String query, Pageable pageable);
 
+    @Query(value = "select b from Book b left join fetch b.info i left join i.series s left join fetch b.ticket t left join fetch b.shelf sh " +
+            "where (:query is null or lower(i.title) like lower(:query) or lower(s.name) like lower(:query)) and (:shelfId is null or sh.id = :shelfId)",
+            countQuery = "select count(b.id) from Book b left join b.info i left join i.series s left join b.shelf sh " +
+                    "where (:query is null or lower(i.title) like lower(:query) or lower(s.name) like lower(:query)) and (:shelfId is null or sh.id = :shelfId)")
+    Page<Book> findAllByQueryAndShelfId(String query, String shelfId, Pageable pageable);
+
     Page<Book> findAllByInfoId(String id, Pageable pageable);
 
     @Override

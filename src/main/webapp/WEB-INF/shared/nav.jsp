@@ -101,7 +101,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="nav-link" href="${pageContext.request.contextPath}/library/books/books">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/books/books"
+                                   up-alias="${pageContext.request.contextPath}/library/books/books/*"
+                                   up-follow up-instant>
                                     <i data-feather="book-open"></i><span>Books</span>
                                 </a>
                             </li>

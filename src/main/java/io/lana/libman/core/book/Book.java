@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -29,6 +30,7 @@ public class Book extends AuditableEntity implements Named, BookDetails {
     @Column(name = "status", nullable = false)
     private Status status = Status.AVAILABLE;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "shelf_id", foreignKeyDefinition = "FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE SET NULL"))
     private Shelf shelf;
@@ -40,6 +42,7 @@ public class Book extends AuditableEntity implements Named, BookDetails {
     @OneToMany(mappedBy = "book")
     private Set<BookBorrow> borrows = new LinkedHashSet<>();
 
+    @NotNull
     @Delegate(types = BookDetails.class)
     @ManyToOne(optional = false)
     @JoinColumn(name = "book_info_id")

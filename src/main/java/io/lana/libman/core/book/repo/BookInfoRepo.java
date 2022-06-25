@@ -29,4 +29,5 @@ public interface BookInfoRepo extends PagingAndSortingRepository<BookInfo, Strin
                     "and (:genreId is null or g.id like :genreId)")
     Page<BookInfo> findAllByQuery(String query, String genreId, Pageable pageable);
 
+    Page<BookInfo> findAllByTitleLikeIgnoreCase(String title, Pageable pageable);
 }

@@ -1,21 +1,16 @@
 package io.lana.libman.core.book.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.lana.libman.core.book.Book;
-import io.lana.libman.core.book.BookInfo;
-import io.lana.libman.core.book.controller.dto.CreateBookInfoDto;
 import io.lana.libman.core.book.repo.BookInfoRepo;
 import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.file.ImageService;
-import io.lana.libman.core.tag.Shelf;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,68 +23,97 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Validated
 @Controller
-@RequestMapping("/library/books/infos")
+@RequestMapping("/library/books/books")
 @RequiredArgsConstructor
-class BookInfoController {
-    private final BookInfoRepo repo;
+class BookController {
+    private final BookInfoRepo infoRepo;
 
-    private final BookRepo bookRepo;
+    private final BookRepo repo;
 
     private final ImageService imageService;
-
-    private final ObjectMapper objectMapper;
 
     private final UIFacade ui;
 
     @GetMapping("{id}/detail")
     public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        final var page = StringUtils.isBlank(query)
-                ? bookRepo.findAllByInfoId(id, pageable)
-                : bookRepo.findAllByInfoIdAndQuery(id, "%" + query + "%", pageable);
-        return new ModelAndView("/library/book/info-detail", Map.of(
-                "entity", entity,
-                "data", page
+        return new ModelAndView("/library/book/book-detail", Map.of(
+                "entity", entity
         ));
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String genreId, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String shelfId, Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
-        genreId = StringUtils.trimToNull(genreId);
-        final var page = StringUtils.isAllBlank(query, genreId)
+        shelfId = StringUtils.trimToNull(shelfId);
+        final var page = StringUtils.isAllBlank(query, shelfId)
                 ? repo.findAll(pageable)
-                : repo.findAllByQuery(query, genreId, pageable);
-        return new ModelAndView("/library/book/info-index", Map.of("data", page));
+                : repo.findAllByQueryAndShelfId(query, shelfId, pageable);
+        return new ModelAndView("/library/book/book-index", Map.of("data", page));
     }
 
     @GetMapping("{id}/update")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_UPDATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_UPDATE')")
     public ModelAndView update(@PathVariable String id) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return new ModelAndView("/library/book/info-edit", Map.of(
+        return new ModelAndView("/library/book/book-edit", Map.of(
                 "entity", entity,
                 "edit", true
         ));
     }
 
     @GetMapping("create")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
-    public ModelAndView create() {
-        return new ModelAndView("/library/book/info-edit", Map.of(
-                "entity", new CreateBookInfoDto(),
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_CREATE')")
+    public ModelAndView create(@RequestParam(required = false) String parentId) {
+        final var book = new Book();
+        if (StringUtils.isNotBlank(parentId)) {
+            infoRepo.findById(parentId).ifPresent(book::setInfo);
+        }
+
+        return new ModelAndView("/library/book/book-edit", Map.of(
+                "entity", book,
                 "edit", false
         ));
     }
 
     @PostMapping(path = "{id}/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_UPDATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_UPDATE')")
     public ModelAndView update(@RequestPart(required = false) MultipartFile file,
-                               @Validated @ModelAttribute("entity") BookInfo entity,
+                               @Validated @ModelAttribute("entity") Book book,
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        final var entity = repo.findById(book.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.getTicket().size() > 0 && !StringUtils.equals(book.getInfo().getId(), entity.getInfo().getId())) {
+            bindingResult.rejectValue("info", "", "Cannot change info of currently borrowing book (origin: " + entity.getInfo().getTitle() + ")");
+        }
+
+        if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
+            final var image = imageService.crop(file, 200, 200);
+            book.setImage(imageService.save(image).getUri());
+        }
+
+        if (bindingResult.hasErrors()) {
+            final var model = new ModelAndView("/library/book/book-edit", Map.of(
+                    "entity", book,
+                    "edit", true
+            ));
+            model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
+            return model;
+        }
+
+        repo.save(book);
+        redirectAttributes.addFlashAttribute("highlight", book.getId());
+        redirectAttributes.addAttribute("sort", "updatedAt,desc");
+        ui.toast("Item updated successfully").success();
+        return new ModelAndView("redirect:/library/books/books");
+    }
+
+    @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
+    public ModelAndView create(@RequestPart(required = false) MultipartFile file,
+                               @Validated @ModelAttribute("entity") Book entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
@@ -97,66 +121,18 @@ class BookInfoController {
         }
 
         if (bindingResult.hasErrors()) {
-            final var model = new ModelAndView("/library/book/info-edit", Map.of(
+            final var model = new ModelAndView("/library/book/book-edit", Map.of(
                     "entity", entity,
-                    "edit", true
-            ));
-            model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
-            return model;
-        }
-
-        repo.save(entity);
-        redirectAttributes.addFlashAttribute("highlight", entity.getId());
-        redirectAttributes.addAttribute("sort", "updatedAt,desc");
-        ui.toast("Item updated successfully").success();
-        return new ModelAndView("redirect:/library/books/infos");
-    }
-
-    @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
-    public ModelAndView create(@RequestPart(required = false) MultipartFile file,
-                               @Validated @ModelAttribute("entity") CreateBookInfoDto form,
-                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
-            final var image = imageService.crop(file, 200, 200);
-            form.setImage(imageService.save(image).getUri());
-        }
-
-        if (bindingResult.hasErrors()) {
-            final var model = new ModelAndView("/library/book/info-edit", Map.of(
-                    "entity", form,
                     "edit", false
             ));
             model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
             return model;
         }
 
-        final var entity = objectMapper.convertValue(form, BookInfo.class);
         repo.save(entity);
-        for (int i = 0; i < form.getNumberOfBooks(); i++) {
-            final var related = new Book();
-            related.setInfo(entity);
-            related.setShelf(Shelf.storage());
-            bookRepo.save(related);
-        }
-
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Item created successfully").success();
-        return new ModelAndView("redirect:/library/books/infos");
-    }
-
-    @GetMapping("autocomplete")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> autocomplete(@RequestParam(required = false, name = "q") String query) {
-        final var page = StringUtils.isBlank(query)
-                ? repo.findAll(Pageable.ofSize(6))
-                : repo.findAllByTitleLikeIgnoreCase("%" + query + "%", Pageable.ofSize(6));
-        final var data = page.stream()
-                .map(t -> Map.of("id", t.getId(), "text", t.getName()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(Map.of(
-                "results", data
-        ));
+        return new ModelAndView("redirect:/library/books/books");
     }
 }

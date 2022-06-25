@@ -8,6 +8,8 @@ import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +54,8 @@ class UserController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER_READ')")
-    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String type, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String type,
+                              @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
         final var page = repo.findAllByQuery(query, StringUtils.equals(type, Authorities.LIBRARIAN), pageable);
         return new ModelAndView("/auth/user/index", Map.of("data", page));

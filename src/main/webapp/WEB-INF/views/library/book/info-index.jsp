@@ -121,7 +121,7 @@
                                                 <c:if test="${not empty item.seriesName}">
                                                      <small class="small">
                                                          In Series: <a
-                                                             href="${pageContext.request.contextPath}/library/tags/series/${item.series.id}/detail?size=5"
+                                                             href="${pageContext.request.contextPath}/library/tags/series/${item.series.id}/detail"
                                                              up-layer="new" up-size="large">
                                                              ${ item.seriesName }
                                                      </a>
@@ -133,7 +133,7 @@
                                                 <c:if test="${not empty item.publisherName}"><div>${ item.publisherName }</div></c:if>
                                                 <c:if test="${not empty item.authorName}">
                                                     <div>Written by <a
-                                                            href="${pageContext.request.contextPath}/library/tags/authors/${item.author.id}/detail?size=5"
+                                                            href="${pageContext.request.contextPath}/library/tags/authors/${item.author.id}/detail"
                                                             up-layer="new" up-size="large">${ item.authorName }</a>
                                                     </div>
                                                 </c:if>

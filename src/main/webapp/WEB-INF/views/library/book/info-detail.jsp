@@ -72,7 +72,7 @@
                                     <c:if test="${not empty entity.seriesName}">
                                         <div class="mb-1">Series
                                             <a class="ms-2" up-layer="new" up-size="large"
-                                               href="${pageContext.request.contextPath}/library/tags/series/${entity.series.id}/detail?size=5">
+                                               href="${pageContext.request.contextPath}/library/tags/series/${entity.series.id}/detail">
                                                     ${entity.seriesName}
                                             </a>
                                         </div>
@@ -80,7 +80,7 @@
                                     <c:if test="${not empty entity.authorName}">
                                         <div class="mb-1">Author
                                             <a class="ms-2" up-layer="new" up-size="large"
-                                               href="${pageContext.request.contextPath}/library/tags/authors/${entity.author.id}/detail?size=5">
+                                               href="${pageContext.request.contextPath}/library/tags/authors/${entity.author.id}/detail">
                                                     ${entity.authorName}
                                             </a>
                                         </div>
@@ -90,7 +90,7 @@
                                             <div class="ms-2 d-inline">
                                                 <c:forEach items="${entity.genres}" var="genre">
                                                     <span class="badge badge-primary"
-                                                          up-href="${pageContext.request.contextPath}/library/tags/genres/${genre.id}/detail?size=5"
+                                                          up-href="${pageContext.request.contextPath}/library/tags/genres/${genre.id}/detail"
                                                           up-layer="new" up-size="large"
                                                           up-clickable>${genre.name}</span>
                                                 </c:forEach>
@@ -105,7 +105,7 @@
                                     <c:if test="${not empty entity.publisherName}">
                                         <div class="mb-1">Publisher
                                             <a class="ms-2" up-layer="new" up-size="large"
-                                               href="/library/tags/publishers/${entity.publisher.id}/detail?size=5">
+                                               href="/library/tags/publishers/${entity.publisher.id}/detail">
                                                     ${entity.publisherName}
                                             </a>
                                         </div>
@@ -222,7 +222,7 @@
                                                 <c:if test="${not empty item.ticket}">
                                                     <div>Borrowed by
                                                         <a up-follow up-instant class="ms-1"
-                                                           href="${pageContext.request.contextPath}/library/readers/${item.ticket[0].reader.id}/detail?size=8">
+                                                           href="${pageContext.request.contextPath}/library/readers/${item.ticket[0].reader.id}/detail">
                                                                 ${item.ticket[0].reader.account.email}</a>
                                                     </div>
                                                     <div>From <span class="ms-1">

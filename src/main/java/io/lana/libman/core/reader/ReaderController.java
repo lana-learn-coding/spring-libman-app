@@ -8,6 +8,9 @@ import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,7 +47,8 @@ class ReaderController {
 
     @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_READ')")
-    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query,
+                               @PageableDefault(8) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         final var page = StringUtils.isBlank(query)
                 ? borrowRepo.findAllBorrowingByReaderId(id, pageable)
@@ -57,7 +61,8 @@ class ReaderController {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_READ')")
-    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String email, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String email,
+                              @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
         email = StringUtils.isBlank(email) ? null : "%" + email + "%";
 

@@ -14,6 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -56,7 +59,8 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
     @GetMapping("{id}/detail")
-    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query,
+                               @PageableDefault(6) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         final var page = getRelationsPage(id, query, pageable);
         return new ModelAndView("/library/tag/detail", Map.of(
@@ -67,7 +71,8 @@ abstract class TaggedCrudController<T extends AuditableEntity & Tagged & Named, 
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query,
+                              @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         final var page = StringUtils.isBlank(query)
                 ? repo.findAll(pageable)
                 : repo.findAllByNameLikeIgnoreCase("%" + query + "%", pageable);

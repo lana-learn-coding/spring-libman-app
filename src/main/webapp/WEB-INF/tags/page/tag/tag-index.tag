@@ -114,7 +114,7 @@
                                                      <td <component:table-higlight
                                                              test="${isHighlight}"/>>${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</td>
                                                      <td <component:table-higlight test="${isHighlight}"/>>
-                                                         <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail?size=5"
+                                                         <a href="${pageContext.request.contextPath}/library/tags/${uri}/${item.id}/detail"
                                                             class="mr-1 txt-primary" up-layer="new" up-size="large"
                                                             up-instant>
                                                              <i data-feather="external-link"

@@ -13,6 +13,9 @@ import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +49,8 @@ class BookInfoController {
     private final UIFacade ui;
 
     @GetMapping("{id}/detail")
-    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query,
+                               @PageableDefault(6) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         final var page = StringUtils.isBlank(query)
                 ? bookRepo.findAllByInfoId(id, pageable)
@@ -58,7 +62,8 @@ class BookInfoController {
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String genreId, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String genreId,
+                              @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
         genreId = StringUtils.trimToNull(genreId);
         final var page = StringUtils.isAllBlank(query, genreId)

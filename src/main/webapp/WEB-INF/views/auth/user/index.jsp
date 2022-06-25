@@ -122,7 +122,7 @@
                                                 <c:if test="${item.isReader()}">
                                                     <span class="badge badge-success"
                                                           up-follow
-                                                          up-href="${pageContext.request.contextPath}/library/readers/${item.getReader().id}/detail?size=6">
+                                                          up-href="${pageContext.request.contextPath}/library/readers/${item.getReader().id}/detail">
                                                         Reader
                                                     </span>
                                                 </c:if>

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -68,7 +70,8 @@ abstract class AuthoritiesCrudController<T extends NamedEntity> {
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query,
+                              @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         auth.requireAnyAuthorities("ADMIN", getAuthority() + "_READ");
         final var page = StringUtils.isBlank(query)
                 ? repo.findAll(pageable)

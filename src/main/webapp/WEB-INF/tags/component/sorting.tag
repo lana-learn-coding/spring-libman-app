@@ -19,14 +19,14 @@ ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') }>
     </c:forEach>
     <select class="form-select" name="sort"
             aria-label="Sort">
-        <option value="" <c:if test="${empty param.sort}">selected</c:if>>
-            No Sort
-        </option>
         <c:forEach items="${_labels}" varStatus="loop">
             <option value="${_values[loop.index]}"
                     <c:if test="${_values[loop.index] == param.sort}">selected</c:if>>
                     ${_labels[loop.index]}
             </option>
         </c:forEach>
+        <option value="" <c:if test="${empty param.sort}">selected</c:if>>
+            No Sort
+        </option>
     </select>
 </form>

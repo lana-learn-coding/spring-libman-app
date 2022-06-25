@@ -73,7 +73,7 @@
                                     <c:if test="${not empty entity.seriesName}">
                                         <div class="mb-1">Series
                                             <a class="ms-2" up-layer="new" up-size="large"
-                                               href="${pageContext.request.contextPath}/library/tags/series/${entity.info.series.id}/detail?size=5">
+                                               href="${pageContext.request.contextPath}/library/tags/series/${entity.info.series.id}/detail">
                                                     ${entity.seriesName}
                                             </a>
                                         </div>
@@ -81,7 +81,7 @@
                                     <c:if test="${not empty entity.authorName}">
                                         <div class="mb-1">Author
                                             <a class="ms-2" up-layer="new" up-size="large"
-                                               href="${pageContext.request.contextPath}/library/tags/authors/${entity.info.author.id}/detail?size=5">
+                                               href="${pageContext.request.contextPath}/library/tags/authors/${entity.info.author.id}/detail">
                                                     ${entity.authorName}
                                             </a>
                                         </div>
@@ -89,7 +89,7 @@
                                     <c:if test="${not empty entity.shelf}">
                                         <div class="mb-1">Shelf
                                             <a class="ms-2" up-layer="new" up-size="large"
-                                               href="${pageContext.request.contextPath}/library/tags/shelf/${entity.shelf.id}/detail?size=5">
+                                               href="${pageContext.request.contextPath}/library/tags/shelf/${entity.shelf.id}/detail">
                                                     ${entity.shelf.name}
                                             </a>
                                         </div>

@@ -136,7 +136,7 @@
                                                 <c:if test="${not empty item.ticket}">
                                                     <div>Borrowed by
                                                         <a up-follow up-instant class="ms-1"
-                                                           href="${pageContext.request.contextPath}/library/readers/${item.ticket[0].reader.id}/detail?size=8">
+                                                           href="${pageContext.request.contextPath}/library/readers/${item.ticket[0].reader.id}/detail">
                                                                 ${item.ticket[0].reader.account.email}</a>
                                                     </div>
                                                     <div>From <span class="ms-1">

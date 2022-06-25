@@ -9,6 +9,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -58,7 +61,8 @@ class AuthorController extends TaggedCrudController<Author, BookInfo> {
 
     @Override
     @GetMapping("{id}/detail")
-    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query,
+                               @PageableDefault(6) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         final var modelAndView = super.detail(id, query, pageable);
         modelAndView.setViewName("/library/tag/author/detail");
         return modelAndView;

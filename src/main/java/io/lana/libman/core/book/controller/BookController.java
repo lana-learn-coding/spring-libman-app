@@ -9,6 +9,8 @@ import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +40,7 @@ class BookController {
     private final UIFacade ui;
 
     @GetMapping("{id}/detail")
-    public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+    public ModelAndView detail(@PathVariable String id) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return new ModelAndView("/library/book/book-detail", Map.of(
                 "entity", entity
@@ -46,7 +48,8 @@ class BookController {
     }
 
     @GetMapping
-    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String shelfId, Pageable pageable) {
+    public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String shelfId,
+                              @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
         shelfId = StringUtils.trimToNull(shelfId);
         final var page = StringUtils.isAllBlank(query, shelfId)

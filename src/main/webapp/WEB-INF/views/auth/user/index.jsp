@@ -146,16 +146,16 @@
                                                 </c:if>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
-                                                <div><helper:format-instant date="${item.updatedAt}"/></div>
-                                                <div>
-                                                    by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
-                                            </td>
-                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <c:forEach items="${item.roles}" var="role">
                                                     <span class="badge badge-primary">
                                                             ${role.name}
                                                     </span>
                                                 </c:forEach>
+                                            </td>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
+                                                <div><helper:format-instant date="${item.updatedAt}"/></div>
+                                                <div>
+                                                    by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
                                                 <a href="${pageContext.request.contextPath}/authorities/users/${item.id}/detail"
@@ -173,7 +173,7 @@
                                                     </a>
                                                 </sec:authorize>
                                                 <sec:authorize access="hasAnyAuthority('ADMIN', 'USER_DELETE')">
-                                                    <a href="${pageContext.request.contextPath}/authorities/users/delete"
+                                                    <a href="${pageContext.request.contextPath}/authorities/users/${item.id}/delete"
                                                        up-history="false" up-layer="new" up-instant
                                                        up-dismissable="button"
                                                        class="txt-danger">

@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 public class Reader extends AuditableEntity {
     @Valid
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
     @PrimaryKeyJoinColumn
     private User account;
 

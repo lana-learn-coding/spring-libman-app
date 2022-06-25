@@ -3,6 +3,7 @@ package io.lana.libman.core.reader;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.file.ImageService;
 import io.lana.libman.core.user.UserRepo;
+import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -117,7 +118,7 @@ class ReaderController {
         user.setPhone(entity.getAccount().getPhone());
         user.setPassword(entity.getAccount().getPassword());
         user.setUsername(entity.getAccount().getUsername());
-
+        userRepo.save(user);
         repo.save(reader);
         redirectAttributes.addFlashAttribute("highlight", reader.getId());
         redirectAttributes.addAttribute("sort", "updatedAt,desc");
@@ -149,10 +150,42 @@ class ReaderController {
         final var random = UUID.randomUUID().toString();
         user.setPassword(passwordEncoder.encode(random));
         user.setId(reader.getId());
+        userRepo.save(user);
         repo.save(reader);
         redirectAttributes.addFlashAttribute("highlight", reader.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Reader created successfully").success();
+        return new ModelAndView("redirect:/library/readers");
+    }
+
+    @GetMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','READER_DELETE')")
+    public ModelAndView confirmDelete(@PathVariable String id) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return new ModelAndView("/library/reader/delete", Map.of(
+                "entity", entity,
+                "id", id
+        ));
+    }
+
+    @PostMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','READER_DELETE')")
+    public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.getBorrowingBooksCount() > 0) {
+            ui.toast("Reader is borrowing book. Cannot delete").error();
+            return new ModelAndView("redirect:/library/readers");
+        }
+
+        if (StringUtils.equalsIgnoreCase(entity.getAccount().getId(), Authorities.User.SYSTEM)) {
+            ui.toast("Cannot delete default system user").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:/library/readers");
+        }
+
+        repo.delete(entity);
+        if (!entity.getAccount().isInternal()) userRepo.delete(entity.getAccount());
+        ui.toast("Reader delete succeed").success();
         return new ModelAndView("redirect:/library/readers");
     }
 }

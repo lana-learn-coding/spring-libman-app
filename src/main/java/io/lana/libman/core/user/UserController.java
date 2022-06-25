@@ -21,6 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 
@@ -176,10 +178,70 @@ class UserController {
         final var reader = new Reader();
         reader.setAccount(entity);
         readerRepo.save(reader);
+
+        entity.setUpdatedAt(Instant.now());
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "updatedAt,desc");
         ui.toast("User linked to new reader account successfully").success();
+        return new ModelAndView("redirect:/authorities/users");
+    }
+
+    @GetMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER_DELETE')")
+    public ModelAndView confirmDelete(@PathVariable String id) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return new ModelAndView("/auth/user/delete", Map.of(
+                "entity", entity,
+                "id", id
+        ));
+    }
+
+    @PostMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER_DELETE')")
+    public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (StringUtils.equalsIgnoreCase(entity.getId(), Authorities.User.SYSTEM)) {
+            ui.toast("Cannot delete default system user").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:/authorities/users");
+        }
+
+        if (entity.isReader() && entity.getReader().getBorrowingBooksCount() > 0) {
+            final var isInternal = entity.isInternal();
+            final var modelAndView = revoke(entity, redirectAttributes);
+            if (isInternal) {
+                ui.toast("User is borrowing book. Revoke to normal reader instead of delete").warning();
+            } else {
+                ui.toast("User is borrowing book. Cannot delete").error();
+            }
+            return modelAndView;
+        }
+
+        if (entity.isReader()) readerRepo.delete(entity.getReader());
+        repo.delete(entity);
+        ui.toast("Reader delete succeed").success();
+        return new ModelAndView("redirect:/authorities/users");
+    }
+
+    @PostMapping("{id}/revoke")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER_DELETE')")
+    public ModelAndView revoke(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (StringUtils.equalsIgnoreCase(entity.getId(), Authorities.User.SYSTEM)) {
+            ui.toast("Cannot update default system user").error();
+            return new ModelAndView("redirect:/authorities/users");
+        }
+
+        return revoke(entity, redirectAttributes);
+    }
+
+    private ModelAndView revoke(User entity, RedirectAttributes redirectAttributes) {
+        entity.setRoles(new HashSet<>());
+        repo.save(entity);
+        redirectAttributes.addFlashAttribute("highlight", entity.getId());
+        redirectAttributes.addAttribute("sort", "updatedAt,desc");
+        ui.toast("User permissions revoked successfully").success();
         return new ModelAndView("redirect:/authorities/users");
     }
 }

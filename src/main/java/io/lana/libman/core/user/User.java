@@ -66,7 +66,7 @@ public class User extends AuditableEntity implements AuthUser, Named {
     @Enumerated
     private Gender gender = Gender.UNSPECIFIED;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
+    @OneToOne(mappedBy = "account")
     private Reader reader;
 
     @DateBeforeNow

@@ -121,14 +121,21 @@
                                                      alt="avatar">
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
-                                                <c:if test="${not empty item.account.firstName}">
+                                                <div>
+                                                    <c:if test="${not empty item.account.firstName}">
                                                     <span class="me-1">${item.account.firstName}</span>
                                                 </c:if>
-                                                <c:if test="${not empty item.account.lastName}">
+                                                    <c:if test="${not empty item.account.lastName}">
                                                     <span>${item.account.lastName}</span>
                                                 </c:if>
-                                                <c:if test="${empty item.account.lastName and empty item.account.firstName}">
-                                                    <div>Unknown</div>
+                                                    <c:if test="${empty item.account.lastName and empty item.account.firstName}">
+                                                    <span>Unknown</span>
+                                                </c:if>
+                                                </div>
+                                                <c:if test="${item.account.isInternal()}">
+                                                    <span class="badge badge-primary">
+                                                        Librarian
+                                                    </span>
                                                 </c:if>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
@@ -165,7 +172,7 @@
                                                     </a>
                                                 </sec:authorize>
                                                 <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_DELETE')">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/delete"
+                                                    <a href="${pageContext.request.contextPath}/library/readers/${item.id}/delete"
                                                        up-history="false" up-layer="new" up-instant
                                                        up-dismissable="button"
                                                        class="txt-danger">

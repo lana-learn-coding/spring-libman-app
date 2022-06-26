@@ -27,7 +27,7 @@ public interface BookBorrowRepo extends PagingAndSortingRepository<BookBorrow, S
     Page<BookBorrow> findAllByReaderIdAndQuery(String id, String query, Pageable pageable);
 
 
-    @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info i left join fetch b.reader r left join fetch r.account a  left join fetch b.ticket t " +
+    @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info i left join fetch b.reader r left join fetch r.account a " +
             "where i.id = :id and (:query is null or lower(a.email) like lower(:query) or lower(a.firstName) like lower(:query) or lower(a.lastName) like lower(:query) or lower(a.phone) like lower(:query))",
             countQuery = "select count(b.id) from BookBorrow b left join b.book bo left join bo.info i left join b.reader r left join r.account a " +
                     "where i.id = :id and (:query is null or lower(a.email) like lower(:query) or lower(a.firstName) like lower(:query) or lower(a.lastName) like lower(:query) or lower(a.phone) like lower(:query))")

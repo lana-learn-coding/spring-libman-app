@@ -6,6 +6,7 @@
 <%@ attribute name="values" required="true" type="java.lang.String" %>
 <%@ attribute name="target" required="false" type="java.lang.String" %>
 <%@ attribute name="up" required="false" type="java.lang.String" %>
+<c:set var="target" value="[comp=sorting], ${not empty target ? target : ''}"/>
 
 <c:set var="_labels" value="${fn:split(labels, ';')}"/>
 <c:set var="_values" value="${fn:split(values, ';')}"/>

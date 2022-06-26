@@ -34,7 +34,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <h5>Borrow Ticket Manage</h5>
-                            <span>Manage borrow tickets and history. Choose batch mode for multiple ticket at once</span>
+                            <span>Manage borrow tickets and history (<component:total pageMeta="${data}"/>)</span>
                         </div>
                         <form class="card-body row" up-target="#table, nav .pagination" method="get">
                             <helper:inherit-param excludes="query,reader"/>
@@ -92,7 +92,7 @@
                                     <div class="row justify-content-between">
                                         <div class="col-6 col-md-3 col-lg-2 mb-3">
                                     <component:sorting
-                                            target="#table, [comp=sorting]"
+                                            target="#table"
                                             up="up-scroll='layer' up-transition='cross-fade'"
                                             labels="Email;Borrowed Date;Due Date;Title;Updated At;Updated By;Id"
                                             values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy;id,desc"/>
@@ -232,9 +232,12 @@
                                         </table>
                                         <c:if test="${empty content}"><component:empty/></c:if>
                                     </div>
-                                    <nav class="d-flex justify-content-start mt-3">
-                                    <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
-                                                          up="up-scroll='layer' up-transition='cross-fade'"/>
+                                    <nav class="d-flex justify-content-between mt-3">
+                                        <component:pagination pageMeta="${data}" target="#table"
+                                                              up="up-scroll='layer' up-transition='cross-fade'"/>
+                                        <div class="d-none d-md-block pt-2">
+                                            <component:total pageMeta="${data}" verbose="true"/>
+                                        </div>
                                     </nav>
                                 </div>
                             </div>

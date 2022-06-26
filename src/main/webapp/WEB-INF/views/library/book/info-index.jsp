@@ -35,7 +35,8 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <h5>Book Info Manage</h5>
-                            <span>Manage list of book metadata and information</span>
+                            <span>Manage list of book metadata and information (<component:total
+                                    pageMeta="${data}"/>)</span>
                         </div>
                         <form class="card-body row" up-target="#table, nav .pagination" method="get">
                             <helper:inherit-param excludes="query,genreId"/>
@@ -68,7 +69,7 @@
                             <div class="row justify-content-between">
                                 <div class="col-6 col-md-3 col-lg-2 mb-3">
                                     <component:sorting
-                                            target="#table, [comp=sorting]" up="up-scroll='layer'"
+                                            target="#table" up="up-scroll='layer'"
                                             labels="Newest;Title;Total Book;Available Book;Updated At;Updated By;Id"
                                             values="createdAt,desc;title;booksCount,desc;availableBooksCount,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
@@ -178,9 +179,12 @@
                                             <component:empty/>
                                         </c:if>
                             </div>
-                            <nav class="d-flex justify-content-start mt-3">
-                                <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
+                            <nav class="d-flex justify-content-between mt-3">
+                                <component:pagination pageMeta="${data}" target="#table"
                                                       up="up-scroll='layer' up-transition='cross-fade'"/>
+                                <div class="d-none d-md-block pt-2">
+                                    <component:total pageMeta="${data}" verbose="true"/>
+                                </div>
                             </nav>
                         </div>
                     </div>

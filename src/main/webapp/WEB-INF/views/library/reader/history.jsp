@@ -39,13 +39,14 @@
                     <div class="card modal-m-0">
                         <div class="card-header pb-0">
                             <h5>Reader Borrow History</h5>
-                            <span>Borrow history of reader: ${entity.account.email}</span>
+                            <span>Borrow history of reader: ${entity.account.email} (<component:total
+                                    pageMeta="${data}"/>)</span>
                         </div>
                         <div class="card-body" id="table">
                             <div class="row justify-content-between mb-3">
                                 <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                      <component:sorting
-                                             target="#table, [comp=sorting]"
+                                             target="#table"
                                              up="up-scroll='#table' up-transition='cross-fade'"
                                              labels="Title;Borrow Date;Due Date;Updated At;Updated By;Id"
                                              values="book.info.title,borrowDate,desc;dueDate,desc;updatedAt,desc;updatedBy;id,desc"/>
@@ -141,11 +142,14 @@
                                 </table>
                                 <c:if test="${empty content}"><component:empty/></c:if>
                             </div>
-                            <nav class="d-flex justify-content-start mt-3">
+                            <nav class="d-flex justify-content-between mt-3">
                                 <component:pagination
                                         href="${pageContext.request.contextPath}/library/readers/${entity.id}/history"
-                                        pageMeta="${data}" target="#table, [comp=pagination]"
+                                        pageMeta="${data}" target="#table"
                                         up="up-scroll='layer' up-transition='cross-fade'"/>
+                                <div class="d-none d-md-block pt-2">
+                                    <component:total pageMeta="${data}" verbose="true"/>
+                                </div>
                             </nav>
                         </div>
                     </div>

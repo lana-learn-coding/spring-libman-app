@@ -7,7 +7,7 @@
 <%@ attribute name="href" required="false" type="java.lang.String" %>
 
 <c:set var="href" value="${not empty href ? href : ''}"/>
-
+<c:set var="target" value="[comp=total], [comp=pagination], ${not empty target ? target : ''}"/>
 <c:url var="url" value="">
     <c:forEach items="${param}" var="entry">
         <c:if test="${entry.key != 'page'}">

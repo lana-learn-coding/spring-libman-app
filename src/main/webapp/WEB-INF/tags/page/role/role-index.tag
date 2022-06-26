@@ -42,7 +42,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <h5>${title} Manage</h5>
-                            <span>Manage list of ${title}</span>
+                            <span>Manage list of ${title} (<component:total pageMeta="${data}"/>)</span>
                         </div>
                         <form class="card-body row" up-target="#table, nav .pagination" method="get">
                             <helper:inherit-param excludes="query"/>
@@ -63,7 +63,7 @@
                             <div class="row justify-content-between">
                                 <div class="col-6 col-md-3 col-lg-2 mb-3">
                                     <component:sorting
-                                            target="#table, [comp=sorting]" up="up-scroll='layer'"
+                                            target="#table" up="up-scroll='layer'"
                                             labels="Newest;Name;Updated At;Updated By;Id"
                                             values="createdAt,desc;name;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
@@ -154,9 +154,12 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            <nav class="d-flex justify-content-start mt-3">
-                                <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
+                            <nav class="d-flex justify-content-between mt-3">
+                                <component:pagination pageMeta="${data}" target="#table"
                                                       up="up-scroll='#table' up-transition='cross-fade'"/>
+                                <div class="d-none d-md-block pt-2">
+                                    <component:total pageMeta="${data}" verbose="true"/>
+                                </div>
                             </nav>
                         </div>
                     </div>

@@ -92,7 +92,7 @@
                                              target="#table, [comp=sorting]"
                                              up="up-scroll='#table' up-transition='cross-fade'"
                                              labels="Updated At;Updated By;Id"
-                                             values="updatedAt,desc;updatedBy,id"/>
+                                             values="updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <form class="col-xs-12 col-md-6 my-1"
                                       up-target="#table, nav .pagination" method="get">

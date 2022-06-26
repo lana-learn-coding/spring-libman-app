@@ -73,7 +73,7 @@
                                             target="#table, [comp=sorting]"
                                             up="up-scroll='layer' up-transition='cross-fade'"
                                             labels="Email;First Name;Last Name;Book Borrowed;Book Overdue;Limit;Updated At;Updated By;Id"
-                                            values="account.email;account.firstName;account.lastName;borrowingBooksCount,desc;overDueBooksCount,desc;borrowLimit,desc;updatedAt,desc;updatedBy,id"/>
+                                            values="account.email;account.firstName;account.lastName;borrowingBooksCount,desc;overDueBooksCount,desc;borrowLimit,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">

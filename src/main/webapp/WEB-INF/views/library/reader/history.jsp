@@ -48,7 +48,7 @@
                                              target="#table, [comp=sorting]"
                                              up="up-scroll='#table' up-transition='cross-fade'"
                                              labels="Title;Borrow Date;Due Date;Updated At;Updated By;Id"
-                                             values="book.info.title,borrowDate,desc;dueDate,desc;updatedAt,desc;updatedBy,id"/>
+                                             values="book.info.title,borrowDate,desc;dueDate,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <form class="col-xs-12 col-md-6 my-1"
                                       up-target="#table, nav .pagination" method="get">

@@ -68,7 +68,7 @@
                                             target="#table, [comp=sorting]"
                                             up="up-scroll='layer' up-transition='cross-fade'"
                                             labels="Email;First Name;Last Name;is Reader;Updated At;Updated By;Id"
-                                            values="email;firstName;lastName;reader.id;updatedAt,desc;updatedBy,id"/>
+                                            values="email;firstName;lastName;reader.id;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'USER_CREATE')">

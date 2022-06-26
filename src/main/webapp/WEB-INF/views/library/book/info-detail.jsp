@@ -173,7 +173,7 @@
                                              target="#table, [comp=sorting]"
                                              up="up-scroll='#table' up-transition='cross-fade'"
                                              labels="Available;Status;Borrow Date;Due Date;Updated At;Updated By;Id"
-                                             values="status;status,desc;ticket.borrowDate,desc;ticket.dueDate,desc;updatedAt,desc;updatedBy,id"/>
+                                             values="status;status,desc;ticket.borrowDate,desc;ticket.dueDate,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <form class="col-xs-12 col-md-6 my-1"
                                       up-target="#table, nav .pagination" up-transition='cross-fade' method="get">

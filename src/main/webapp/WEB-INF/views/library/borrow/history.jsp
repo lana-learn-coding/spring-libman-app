@@ -95,7 +95,7 @@
                                             target="#table, [comp=sorting]"
                                             up="up-scroll='layer' up-transition='cross-fade'"
                                             labels="Email;Borrowed Date;Due Date;Title;Updated At;Updated By;Id"
-                                            values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy,id"/>
+                                            values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy;id,desc"/>
                                         </div>
                                         <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">

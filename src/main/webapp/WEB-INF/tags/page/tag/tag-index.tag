@@ -66,7 +66,7 @@
                                     <component:sorting
                                             target="#table, [comp=sorting]" up="up-scroll='layer'"
                                             labels="Newest;Name;Books Count;Updated At;Updated By;Id"
-                                            values="createdAt,desc;name;booksCount,desc;updatedAt,desc;updatedBy,id"/>
+                                            values="createdAt,desc;name;booksCount,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <button up-href="${pageContext.request.contextPath}/library/tags/${uri}/create"

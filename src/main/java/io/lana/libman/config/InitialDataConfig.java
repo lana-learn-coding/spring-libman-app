@@ -4,9 +4,11 @@ import com.github.javafaker.Faker;
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookBorrow;
 import io.lana.libman.core.book.BookInfo;
+import io.lana.libman.core.book.Ticket;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookInfoRepo;
 import io.lana.libman.core.book.repo.BookRepo;
+import io.lana.libman.core.book.repo.TicketRepo;
 import io.lana.libman.core.reader.Reader;
 import io.lana.libman.core.reader.ReaderRepo;
 import io.lana.libman.core.tag.*;
@@ -18,7 +20,6 @@ import io.lana.libman.core.user.role.PermissionRepo;
 import io.lana.libman.core.user.role.Role;
 import io.lana.libman.core.user.role.RoleRepo;
 import io.lana.libman.support.data.Gender;
-import io.lana.libman.support.data.IdUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -65,6 +66,8 @@ class InitialDataConfig implements ApplicationRunner {
     private final ReaderRepo readerRepo;
 
     private final BookBorrowRepo bookBorrowRepo;
+
+    private final TicketRepo ticketRepo;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -295,21 +298,27 @@ class InitialDataConfig implements ApplicationRunner {
                 .filter(User::isInternal)
                 .collect(Collectors.toList());
 
-        for (int i = 0; i < 300; i++) {
-            final var borrow = new BookBorrow();
-            borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
-            borrow.setReader(faker.options().nextElement(readers));
-            borrow.setBook(faker.options().nextElement(books));
-            borrow.setTicketId(IdUtils.newTimeSortableId());
+        for (int i = 0; i < 80; i++) {
+            final var ticket = new Ticket();
+            ticketRepo.save(ticket);
             final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            borrow.setBorrowDate(borrowDate);
-            borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
-            borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
-            borrow.setDueDate(faker.date().past(60, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            borrow.setReturned(true);
-            borrow.setReturnDate(faker.date().past(120, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
-            bookBorrowRepo.save(borrow);
+
+            final var numberOfBorrow = faker.number().numberBetween(1, 5);
+            for (int j = 0; j < numberOfBorrow; j++) {
+                final var borrow = new BookBorrow();
+                borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
+                borrow.setReader(faker.options().nextElement(readers));
+                borrow.setBook(faker.options().nextElement(books));
+                borrow.setTicket(ticket);
+                borrow.setBorrowDate(borrowDate);
+                borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+                borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+                borrow.setDueDate(faker.date().past(60, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                borrow.setReturned(true);
+                borrow.setReturnDate(faker.date().past(120, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
+                bookBorrowRepo.save(borrow);
+            }
         }
 
         // generate borrowing ticket
@@ -323,24 +332,26 @@ class InitialDataConfig implements ApplicationRunner {
                     final var numberOfTickets = faker.number().numberBetween(1, borrowLimit);
 
                     for (int i = 0; i < numberOfTickets; i++) {
-                        final var ticketId = IdUtils.newTimeSortableId();
+                        final var ticket = new Ticket();
+                        ticketRepo.save(ticket);
+
                         final var borrowDate = faker.date().past(20, 2, TimeUnit.DAYS)
                                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         final var dueDate = faker.number().numberBetween(0, 10) < 1
                                 ? faker.date().past(2, 1, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                                 : faker.date().future(10, 1, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                        final var note = faker.howIMetYourMother().quote();
+
                         final var numberOfBorrow = faker.number().numberBetween(1, borrowLimit);
                         for (int j = 0; j < numberOfBorrow; j++) {
                             final var borrow = new BookBorrow();
                             borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
                             borrow.setReader(reader);
-                            borrow.setTicketId(ticketId);
+                            borrow.setTicket(ticket);
                             borrow.setBorrowDate(borrowDate);
                             borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
                             borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
                             borrow.setDueDate(dueDate);
-                            borrow.setNote(note);
+                            borrow.setNote(faker.howIMetYourMother().quote());
 
                             final var book = faker.options().nextElement(books);
                             book.setStatus(Book.Status.BORROWED);

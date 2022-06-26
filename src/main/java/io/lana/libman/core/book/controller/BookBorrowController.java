@@ -4,6 +4,7 @@ import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookBorrow;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookRepo;
+import io.lana.libman.core.book.repo.TicketRepo;
 import io.lana.libman.core.reader.ReaderRepo;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ import java.util.Map;
 @RequestMapping("/library/borrows")
 @RequiredArgsConstructor
 class BookBorrowController {
+    private final TicketRepo ticketRepo;
+
     private final BookBorrowRepo repo;
 
     private final BookRepo bookRepo;
@@ -60,7 +63,6 @@ class BookBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
     public ModelAndView create() {
         final var borrow = new BookBorrow();
-        borrow.setTicketId(borrow.getId());
         return new ModelAndView("/library/borrow/borrow-edit", Map.of(
                 "entity", borrow,
                 "edit", false
@@ -72,10 +74,6 @@ class BookBorrowController {
     public ModelAndView create(@Validated @ModelAttribute("entity") BookBorrow entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         validateBorrow(entity, bindingResult);
-
-        if (repo.existsByTicketId(entity.getTicketId())) {
-            bindingResult.rejectValue("ticket", "ticket.unique", "The ticket was already taken");
-        }
 
         if (bindingResult.hasErrors()) {
             final var model = new ModelAndView("/library/borrow/borrow-edit", Map.of(
@@ -89,6 +87,8 @@ class BookBorrowController {
         final var book = entity.getBook();
         book.setStatus(Book.Status.BORROWED);
         bookRepo.save(book);
+
+        ticketRepo.save(entity.getTicket());
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");
@@ -102,6 +102,11 @@ class BookBorrowController {
                                BindingResult bindingResult, RedirectAttributes redirectAttributes,
                                @RequestHeader String referer) {
         final var entity = repo.findById(borrow.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!entity.getDueDate().equals(borrow.getDueDate()) && LocalDate.now().isAfter(borrow.getDueDate())) {
+            bindingResult.rejectValue("dueDate", "", "The due date must not before now");
+        }
+
         if (entity.isReturned()) {
             ui.toast("The borrow is already returned").error();
             return new ModelAndView("redirect:/library/borrows");
@@ -188,6 +193,8 @@ class BookBorrowController {
         book.setStatus(Book.Status.AVAILABLE);
         bookRepo.save(book);
 
+        final var ticket = entity.getTicket();
+        if (ticket.getBorrowsCount() == 1) ticketRepo.delete(ticket);
         repo.delete(entity);
         ui.toast("Borrow ticket deleted successfully").success();
         return new ModelAndView("redirect:/library/borrows");
@@ -225,6 +232,14 @@ class BookBorrowController {
     }
 
     private void validateBorrow(BookBorrow borrow, BindingResult bindingResult) {
+        if (LocalDate.now().isAfter(borrow.getDueDate())) {
+            bindingResult.rejectValue("dueDate", "", "The due date must not before now");
+        }
+
+        if (repo.existsByTicketName(borrow.getTicket().getName())) {
+            bindingResult.rejectValue("ticket.name", "ticket.name.unique", "The ticket was already taken");
+        }
+
         final var book = bookRepo.findById(borrow.getBook().getId());
         if (book.isEmpty()) bindingResult.rejectValue("book", "", "Book not exist");
         book.ifPresent(b -> {

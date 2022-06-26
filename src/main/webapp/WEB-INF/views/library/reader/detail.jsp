@@ -211,7 +211,7 @@
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <div style="max-width: 120px">
-                                                        ${ item.ticketId }
+                                                        ${ item.ticket.name }
                                                 </div>
                                             </td>
                                             <td <component:table-higlight

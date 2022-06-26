@@ -9,10 +9,9 @@
 <%--@elvariable id="entity" type="io.lana.libman.core.tag.Author"--%>
 <p:tag-edit title="${title}" entity="${entity}" edit="${edit}" enctype="multipart/form-data">
     <jsp:attribute name="form">
-        <jsp:include page="/WEB-INF/presets/datepicker.head.jsp"/>
-        <div class="mb-3">
-            <label class="col-form-label pt-0" for="name">Name</label>
-            <form:input path="name" cssClass="form-control"
+                <div class="mb-3">
+                    <label class="col-form-label pt-0" for="name">Name</label>
+                    <form:input path="name" cssClass="form-control"
                         cssErrorClass="form-control is-invalid"
                         placeholder="Enter the name" required="true"/>
             <form:errors path="name" cssClass="invalid-feedback"/>

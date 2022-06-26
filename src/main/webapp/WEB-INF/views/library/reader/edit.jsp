@@ -62,7 +62,6 @@
                        </div>
                        <div class="card-body">
                            <div class="theme-form" style="max-width: 1000px">
-                               <jsp:include page="/WEB-INF/presets/datepicker.head.jsp"/>
                                <div class="mb-3">
                                    <label class="col-form-label pt-0" for="account.email">Email</label>
                                    <form:input path="account.email" cssClass="form-control"

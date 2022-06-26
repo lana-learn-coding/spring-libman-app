@@ -41,9 +41,9 @@
        <div class="container-fluid">
            <div class="row">
                <div class="col-12 modal-p-0">
-                   <jsp:include page="/WEB-INF/presets/datepicker.head.jsp"/>
-                   <form:form class="card text-start modal-m-0" method="post" up-submit="true"
-                              modelAttribute="entity" enctype="multipart/form-data" up-layer="parent root">
+                                      <form:form class="card text-start modal-m-0" method="post" up-submit="true"
+                                                 modelAttribute="entity" enctype="multipart/form-data"
+                                                 up-layer="parent root">
                        <sec:csrfInput/>
                        <form:input type="hidden" path="id"/>
                        <div class="up-active-overlay">

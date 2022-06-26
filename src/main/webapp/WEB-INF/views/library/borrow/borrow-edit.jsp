@@ -46,12 +46,11 @@
                    <form:form class="card text-start modal-m-0" method="post" up-submit="true"
                               modelAttribute="entity" up-layer="parent root">
                        <sec:csrfInput/>
-                       <jsp:include page="/WEB-INF/presets/datepicker.head.jsp"/>
-                       <div class="up-active-overlay">
-                           <div class="loader-box">
-                               <div class="loader-3"></div>
-                           </div>
-                       </div>
+                                              <div class="up-active-overlay">
+                                                  <div class="loader-box">
+                                                      <div class="loader-3"></div>
+                                                  </div>
+                                              </div>
                        <div class="card-header pb-0">
                            <h5>${op} Borrow</h5>
                            <c:if test="${edit}">

@@ -100,13 +100,11 @@ up.compiler('[select2]', (el) => {
   };
 });
 
-
 up.compiler('input.datepicker-here', (el) => {
+  $(el).datepicker({ gotoCurrent: true });
   return () => {
-    if (window.$ && window.$.fn.datepicker) {
-      const data = $(el).data('datepicker');
-      if (data) data.destroy();
-    }
+    const data = $(el).data('datepicker');
+    if (data) data.destroy();
   };
 });
 

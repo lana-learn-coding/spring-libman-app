@@ -24,7 +24,7 @@
             <form:input path="dateOfBirth" cssClass="datepicker-here form-control digits"
                         cssErrorClass="datepicker-here form-control digits is-invalid"
                         placeholder="Select birth of date" type="text" readonly="true"
-                        data-max-date="${now}"
+                        data-max-date="${now}" data-start-date="${birth}"
                         value="${birth}"/>
             <form:errors path="dateOfBirth" cssClass="invalid-feedback"/>
         </div>
@@ -34,7 +34,7 @@
             <form:input path="dateOfDeath" cssClass="datepicker-here form-control digits"
                         cssErrorClass="datepicker-here form-control digits is-invalid"
                         placeholder="Select birth of date" type="text" readonly="true"
-                        data-max-date="${now}"
+                        data-max-date="${now}" data-start-date="${death}"
                         value="${death}"/>
             <form:errors path="dateOfDeath" cssClass="invalid-feedback"/>
         </div>

@@ -114,9 +114,8 @@
         $body = $('body');
       }
 
-      if (!this.opts.startDate) {
-        this.opts.startDate = new Date();
-      }
+      if (!this.opts.startDate) this.opts.startDate = new Date();
+      if (typeof this.opts.startDate === 'string') this.opts.startDate = new Date(this.opts.startDate);
 
       if (this.el.nodeName == 'INPUT') {
         this.elIsInput = true;

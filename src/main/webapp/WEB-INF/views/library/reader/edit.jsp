@@ -130,7 +130,7 @@
                                    <label class="col-form-label pt-0">Date of Birth</label>
                                    <form:input path="account.dateOfBirth" cssClass="datepicker-here form-control digits"
                                                cssErrorClass="datepicker-here form-control digits is-invalid"
-                                               readonly="true"
+                                               readonly="true" data-start-date="${birth}"
                                                placeholder="Select birthdate" type="text" value="${birth}"/>
                                    <form:errors path="account.dateOfBirth" cssClass="invalid-feedback"/>
                                </div>

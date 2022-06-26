@@ -119,7 +119,7 @@ class BookController {
     }
 
     @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_CREATE')")
     public ModelAndView create(@RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") Book entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {

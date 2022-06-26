@@ -87,7 +87,7 @@ class BookInfoController {
     }
 
     @GetMapping("{id}/update")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_UPDATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_UPDATE')")
     public ModelAndView update(@PathVariable String id) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return new ModelAndView("/library/book/info-edit", Map.of(
@@ -97,7 +97,7 @@ class BookInfoController {
     }
 
     @GetMapping("create")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_CREATE')")
     public ModelAndView create() {
         return new ModelAndView("/library/book/info-edit", Map.of(
                 "entity", new CreateBookInfoDto(),
@@ -106,7 +106,7 @@ class BookInfoController {
     }
 
     @PostMapping(path = "{id}/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_UPDATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_UPDATE')")
     public ModelAndView update(@RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") BookInfo entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -132,7 +132,7 @@ class BookInfoController {
     }
 
     @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_CREATE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_CREATE')")
     public ModelAndView create(@RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") CreateBookInfoDto form,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -181,7 +181,7 @@ class BookInfoController {
     }
 
     @GetMapping("{id}/delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_DELETE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_DELETE')")
     public ModelAndView confirmDelete(@PathVariable String id) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return new ModelAndView("/library/book/info-delete", Map.of(
@@ -191,7 +191,7 @@ class BookInfoController {
     }
 
     @PostMapping("{id}/delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_DELETE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_DELETE')")
     public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.getBooksCount() > 0) {
@@ -206,7 +206,7 @@ class BookInfoController {
     }
 
     @PostMapping("{id}/force-delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_INFO_DELETE') && hasAnyAuthority('ADMIN','FORCE')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKINFO_DELETE') && hasAnyAuthority('ADMIN','FORCE')")
     public ModelAndView forceDelete(@PathVariable String id, RedirectAttributes redirectAttributes) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.getBooks().stream().anyMatch(b -> !b.getTicket().isEmpty())) {

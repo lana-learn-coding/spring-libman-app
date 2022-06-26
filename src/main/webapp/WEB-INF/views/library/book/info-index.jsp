@@ -153,7 +153,7 @@
                                                        style="width: 20px; height: 20px"></i>
                                                 </a>
                                                 <sec:authorize
-                                                        access="hasAnyAuthority('ADMIN', 'BOOK_INFO_UPDATE')">
+                                                        access="hasAnyAuthority('ADMIN', 'BOOKINFO_UPDATE')">
                                                     <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
                                                        up-size="large" up-dismissable="button">
@@ -161,7 +161,7 @@
                                                            style="width: 20px; height: 20px"></i>
                                                     </a>
                                                 </sec:authorize>
-                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_INFO_DELETE')">
+                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKINFO_DELETE')">
                                                     <a href="${pageContext.request.contextPath}/library/books/infos/${item.id}/delete"
                                                        up-history="false" up-layer="new" up-instant
                                                        up-dismissable="button"

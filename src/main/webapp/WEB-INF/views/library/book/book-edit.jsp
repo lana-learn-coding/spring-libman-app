@@ -75,6 +75,16 @@
                                            </form:select>
                                    <form:errors path="info" cssClass="invalid-feedback"/>
                                </div>
+                               <c:if test="${not edit}">
+                                   <div class="mb-3">
+                                       <label class="col-form-label pt-0" for="id">Id</label>
+                                       <form:input path="id" cssClass="form-control"
+                                                   placeholder="Enter book id"
+                                                   required="true"
+                                                   cssErrorClass="form-control is-invalid"/>
+                                       <form:errors path="id" cssClass="invalid-feedback"/>
+                                   </div>
+                               </c:if>
                                <div class="mb-3">
                                    <label class="col-form-label pt-0" for="info">Shelf</label>
                                    <form:select

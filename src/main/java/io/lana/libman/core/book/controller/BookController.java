@@ -89,10 +89,11 @@ class BookController {
 
     @PostMapping(path = "{id}/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_UPDATE')")
-    public ModelAndView update(@RequestPart(required = false) MultipartFile file,
+    public ModelAndView update(@PathVariable String id,
+                               @RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") Book book,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        final var entity = repo.findById(book.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.getTicket().size() > 0 && !StringUtils.equals(book.getInfo().getId(), entity.getInfo().getId())) {
             bindingResult.rejectValue("info", "", "Cannot change info of currently borrowing book (origin: " + entity.getInfo().getTitle() + ")");
         }
@@ -111,6 +112,7 @@ class BookController {
             return model;
         }
 
+        book.setId(id);
         repo.save(book);
         redirectAttributes.addFlashAttribute("highlight", book.getId());
         redirectAttributes.addAttribute("sort", "updatedAt,desc");
@@ -123,6 +125,10 @@ class BookController {
     public ModelAndView create(@RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") Book entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (repo.existsById(entity.getId())) {
+            bindingResult.rejectValue("id", "id.unique", "The id was already taken");
+        }
+
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
             final var image = imageService.crop(file, 200, 200);
             entity.setImage(imageService.save(image).getUri());

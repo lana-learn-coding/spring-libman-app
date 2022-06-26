@@ -41,7 +41,7 @@ class ShelfController extends TaggedCrudController<Shelf, Book> {
     protected Page<Book> getRelationsPage(String id, String query, Pageable pageable) {
         return StringUtils.isBlank(query)
                 ? bookRepo.findAllByShelfId(id, pageable)
-                : bookRepo.findAllByShelfIdAndInfoTitleLike(id, "%" + query + "%", pageable);
+                : bookRepo.findAllByShelfIdAndInfoTitleLikeIgnoreCase(id, "%" + query + "%", pageable);
     }
 
     @Override

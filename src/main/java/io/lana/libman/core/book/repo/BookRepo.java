@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepo extends PagingAndSortingRepository<Book, String> {
-    Page<Book> findAllByShelfIdAndInfoTitleLike(String shelfId, String infoName, Pageable pageable);
+    Page<Book> findAllByShelfIdAndInfoTitleLikeIgnoreCase(String shelfId, String infoName, Pageable pageable);
 
     Page<Book> findAllByShelfId(String shelfId, Pageable pageable);
 

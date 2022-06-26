@@ -35,7 +35,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     private Book book;
 
     @NotBlank
-    private String ticket = IdUtils.newTimeSortableId();
+    private String ticketId = IdUtils.newTimeSortableId();
 
     @Column(columnDefinition = "TEXT")
     private String note;

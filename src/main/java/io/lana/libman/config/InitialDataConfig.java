@@ -300,7 +300,7 @@ class InitialDataConfig implements ApplicationRunner {
             borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
             borrow.setReader(faker.options().nextElement(readers));
             borrow.setBook(faker.options().nextElement(books));
-            borrow.setTicket(IdUtils.newTimeSortableId());
+            borrow.setTicketId(IdUtils.newTimeSortableId());
             final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             borrow.setBorrowDate(borrowDate);
             borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
@@ -335,7 +335,7 @@ class InitialDataConfig implements ApplicationRunner {
                             final var borrow = new BookBorrow();
                             borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
                             borrow.setReader(reader);
-                            borrow.setTicket(ticketId);
+                            borrow.setTicketId(ticketId);
                             borrow.setBorrowDate(borrowDate);
                             borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
                             borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));

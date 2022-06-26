@@ -16,7 +16,7 @@
                         <i data-feather="alert-triangle" class="txt-warning"
                            style="width: 100px; height: 100px; stroke-width: 1"></i>
                         <h3 class="f-w-600 mt-3">Delete history</h3>
-                        <span>#${entity.ticket}</span>
+                        <span>#${entity.ticketId}</span>
                     </div>
                     <div class="modal-footer">
                         <a href="${pageContext.request.contextPath}/library/borrows/history"

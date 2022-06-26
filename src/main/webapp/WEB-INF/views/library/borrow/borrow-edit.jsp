@@ -65,7 +65,7 @@
                                <c:if test="${edit}">
                                    <input type="hidden" name="book" value="${entity.book.id}">
                                    <input type="hidden" name="reader" value="${entity.reader.id}">
-                                   <input type="hidden" name="ticket" value="${entity.ticket}">
+                                   <input type="hidden" name="ticket" value="${entity.ticketId}">
                                </c:if>
                                <c:if test="${not edit}">
                                    <div class="mb-3">
@@ -108,11 +108,11 @@
                                    </div>
                                    <div class="mb-3">
                                        <label class="col-form-label pt-0" for="ticket">Ticket Id</label>
-                                       <form:input path="ticket" cssClass="form-control"
+                                       <form:input path="ticketId" cssClass="form-control"
                                                    placeholder="Enter ticket id"
                                                    required="true" readonly="${edit}"
                                                    cssErrorClass="form-control is-invalid"/>
-                                       <form:errors path="ticket" cssClass="invalid-feedback"/>
+                                       <form:errors path="ticketId" cssClass="invalid-feedback"/>
                                        <c:if test="${edit}">
                                            <small class="form-text text-muted">Borrow is associated with
                                                ticket</small>

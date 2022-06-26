@@ -60,7 +60,7 @@ class BookBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
     public ModelAndView create() {
         final var borrow = new BookBorrow();
-        borrow.setTicket(borrow.getId());
+        borrow.setTicketId(borrow.getId());
         return new ModelAndView("/library/borrow/borrow-edit", Map.of(
                 "entity", borrow,
                 "edit", false
@@ -73,7 +73,7 @@ class BookBorrowController {
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         validateBorrow(entity, bindingResult);
 
-        if (repo.existsByTicket(entity.getTicket())) {
+        if (repo.existsByTicketId(entity.getTicketId())) {
             bindingResult.rejectValue("ticket", "ticket.unique", "The ticket was already taken");
         }
 

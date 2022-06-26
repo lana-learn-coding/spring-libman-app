@@ -15,6 +15,11 @@ public interface BookRepo extends PagingAndSortingRepository<Book, String> {
 
     Page<Book> findAllByShelfId(String shelfId, Pageable pageable);
 
+    Page<Book> findAllByInfoTitleLikeIgnoreCase(String title, Pageable pageable);
+
+    Page<Book> findAllByInfoTitleLikeIgnoreCaseAndStatusEquals(String title, Book.Status status, Pageable pageable);
+
+    Page<Book> findAllByStatusEquals(Book.Status status, Pageable pageable);
 
     @Query(value = "select b from Book b left join fetch b.info bi left join bi.series s left join fetch b.ticket t left join fetch t.reader r left join fetch r.account a " +
             "where bi.id = :id and (lower(a.email) like lower(:query) or lower(bi.title) like lower(:query) or lower(s.name) like lower(:query))",

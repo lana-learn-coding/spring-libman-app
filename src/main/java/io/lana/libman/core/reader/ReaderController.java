@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Validated
 @Controller
@@ -81,7 +83,7 @@ class ReaderController {
 
         final var page = StringUtils.isAllBlank(query, email)
                 ? repo.findAll(pageable)
-                : repo.findAllByQueryOrEmail(query, email, pageable);
+                : repo.findAllByQueryAndEmail(query, email, pageable);
         return new ModelAndView("/library/reader/index", Map.of("data", page));
     }
 
@@ -205,5 +207,20 @@ class ReaderController {
         if (!entity.getAccount().isInternal()) userRepo.delete(entity.getAccount());
         ui.toast("Reader delete succeed").success();
         return new ModelAndView("redirect:/library/readers");
+    }
+
+    @GetMapping("autocomplete")
+    @PreAuthorize("hasAnyAuthority('ADMIN','READER_READ')")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> availableAutocomplete(@RequestParam(required = false, name = "q") String query) {
+        final var page = StringUtils.isBlank(query)
+                ? repo.findAll(Pageable.ofSize(6))
+                : repo.findAllByQuery("%" + query + "%", Pageable.ofSize(6));
+        final var data = page.stream()
+                .map(t -> Map.of("id", t.getId(), "text", t.getAccount().getEmail()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(Map.of(
+                "results", data
+        ));
     }
 }

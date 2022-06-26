@@ -49,14 +49,36 @@ up.macro('[select2]', (el) => {
 up.compiler('[select2]', (el) => {
   if (!window.$ || !window.$.fn.select2) return;
   const $el = $(el);
-  const $modal = $el.parents('up-modal-content');
-  if (!$modal.length) {
-    $el.select2();
-  } else {
-    $el.select2({
-      dropdownParent: $modal,
-    });
+
+  function formatState(showId) {
+    return (state) => {
+      if (!showId || !state.id) {
+        return state.text;
+      }
+      return $(
+        '<span class="d-block">' + state.text + '</span>' +
+        '<span class="txt-info" style="font-size: .8rem">#' + state.id + '</span>',
+      );
+    };
   }
+
+  function formatSelection(showId) {
+    return (state) => {
+      if (!showId || !state.id) {
+        return state.text;
+      }
+      return state.text + ' - #' + state.id;
+    };
+  }
+
+  const options = {
+    templateResult: formatState($el.attr('data-option-show-id')),
+    templateSelection: formatSelection($el.attr('data-selection-show-id')),
+  };
+  const $modal = $el.parents('up-modal-content');
+  if ($modal.length) options.dropdownParent = $modal;
+  $el.select2(options);
+
   if ($el.attr('up-autosubmit') != null) {
     $el.on('select2:select', () => {
       const $form = $el.closest('form');

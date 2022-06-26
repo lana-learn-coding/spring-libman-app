@@ -5,6 +5,7 @@ import io.lana.libman.core.book.support.BookDetails;
 import io.lana.libman.core.reader.Reader;
 import io.lana.libman.support.data.AuditableEntity;
 import io.lana.libman.support.data.IdUtils;
+import io.lana.libman.support.validate.DateAfterNow;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
@@ -23,10 +24,12 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @Column(name = "book_detail", columnDefinition = "TEXT")
     private BookDetails bookDetail;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "reader_id", foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE SET NULL"))
     private Reader reader;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "book_id", foreignKeyDefinition = "FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL"))
     private Book book;
@@ -41,6 +44,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @Column(name = "borrow_date", nullable = false)
     private LocalDate borrowDate = LocalDate.now();
 
+    @DateAfterNow
     @NotNull
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate = LocalDate.now();

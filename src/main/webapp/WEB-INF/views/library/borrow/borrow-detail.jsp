@@ -46,7 +46,7 @@
                     <div class="card text-start modal-m-0">
                         <div class="card-header pb-0">
                             <h5>Borrow <c:if test="${entity.returned}">History</c:if> Detail</h5>
-                            <span>Detail of ticket #${entity.ticket}</span>
+                            <span>Detail of #${entity.id}</span>
                         </div>
                         <div class="card-body pt-1">
                             <div class="mb-4 text-muted">
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 mt-sm-0">
-                                    <div class="mb-1">Ticket <span class="small ms-2">${entity.id}</span></div>
+                                    <div class="mb-1">Ticket <span class="small ms-2">${entity.ticket}</span></div>
                                     <div class="mb-1">Title
                                         <c:if test="${empty entity.book}">
                                             <span class="ms-2">${entity.title}</span>

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Validated
 @Controller
@@ -178,5 +180,33 @@ class BookController {
         repo.delete(entity);
         ui.toast("Book delete succeed").success();
         return new ModelAndView("redirect:/library/books/books");
+    }
+
+    @GetMapping("autocomplete")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> autocomplete(@RequestParam(required = false, name = "q") String query) {
+        final var page = StringUtils.isBlank(query)
+                ? repo.findAll(Pageable.ofSize(6))
+                : repo.findAllByInfoTitleLikeIgnoreCase("%" + query + "%", Pageable.ofSize(6));
+        final var data = page.stream()
+                .map(t -> Map.of("id", t.getId(), "text", t.getName()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(Map.of(
+                "results", data
+        ));
+    }
+
+    @GetMapping("available/autocomplete")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> availableAutocomplete(@RequestParam(required = false, name = "q") String query) {
+        final var page = StringUtils.isBlank(query)
+                ? repo.findAllByStatusEquals(Book.Status.AVAILABLE, Pageable.ofSize(6))
+                : repo.findAllByInfoTitleLikeIgnoreCaseAndStatusEquals("%" + query + "%", Book.Status.AVAILABLE, Pageable.ofSize(6));
+        final var data = page.stream()
+                .map(t -> Map.of("id", t.getId(), "text", t.getName()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(Map.of(
+                "results", data
+        ));
     }
 }

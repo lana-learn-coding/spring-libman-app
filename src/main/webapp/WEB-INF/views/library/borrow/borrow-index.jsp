@@ -1,4 +1,5 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags/page/tag" %>
 <%@taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -98,9 +99,9 @@
                                             values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy,id"/>
                                         </div>
                                         <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
-                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">
-                                        <button up-href="${pageContext.request.contextPath}/library/readers/create"
-                                                class="btn btn-primary" up-instant up-layer="new"
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BORROW_CREATE')">
+                                        <button up-href="${pageContext.request.contextPath}/library/borrows/create"
+                                                class="btn btn-primary" up-instant up-layer="new" up-size="large"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                             Create
@@ -180,17 +181,15 @@
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>+ <span class="ms-1">
+                                                <div
+                                                        <c:if test="${LocalDate.now().isAfter(item.dueDate)}">class="txt-danger"</c:if>>
+                                                    <div>+ <span class="ms-1">
                                                         <helper:format-date date="${item.borrowDate}"/></span>
-                                                </div>
-                                                <div>+ <span class="ms-1">
+                                                    </div>
+                                                    <div>+ <span class="ms-1">
                                                         <helper:format-date date="${item.dueDate}"/></span>
+                                                    </div>
                                                 </div>
-                                                <c:if test="${not empty item.returnDate}">
-                                                     <div><span class="txt-primary">
-                                                        <helper:format-date date="${item.returnDate}"/></span>
-                                                     </div>
-                                                </c:if>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
@@ -201,20 +200,27 @@
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
                                                 <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/detail"
-                                                   up-instant up-layer="new" class="mr-1 txt-primary">
+                                                   up-instant up-layer="new" up-history="false"
+                                                   class="mr-1 txt-primary">
                                                     <i data-feather="external-link"
                                                        style="width: 20px; height: 20px"></i>
                                                 </a>
                                                 <sec:authorize
-                                                        access="hasAnyAuthority('ADMIN', 'READER_UPDATE')">
-                                                    <a href="${pageContext.request.contextPath}/library/readers/${item.id}/update"
+                                                        access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
+                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/return"
+                                                       class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-history="false">
+                                                        <i data-feather="check-square"
+                                                           style="width: 20px; height: 20px"></i>
+                                                    </a>
+                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
                                                        up-dismissable="button">
                                                         <i data-feather="edit"
                                                            style="width: 20px; height: 20px"></i>
                                                     </a>
                                                 </sec:authorize>
-                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_DELETE')">
+                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')">
                                                     <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/delete"
                                                        up-history="false" up-layer="new" up-instant
                                                        up-dismissable="button"

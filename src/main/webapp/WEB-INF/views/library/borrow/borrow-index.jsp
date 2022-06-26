@@ -215,6 +215,7 @@
                                                     </a>
                                                     <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-history="false"
                                                        up-dismissable="button">
                                                         <i data-feather="edit"
                                                            style="width: 20px; height: 20px"></i>

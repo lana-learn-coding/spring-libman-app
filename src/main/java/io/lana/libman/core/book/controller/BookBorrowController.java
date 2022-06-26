@@ -99,7 +99,8 @@ class BookBorrowController {
     @PostMapping("{id}/update")
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE')")
     public ModelAndView update(@Validated @ModelAttribute("entity") BookBorrow borrow,
-                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                               @RequestHeader String referer) {
         final var entity = repo.findById(borrow.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.isReturned()) {
             ui.toast("The borrow is already returned").error();
@@ -119,9 +120,8 @@ class BookBorrowController {
         entity.setNote(borrow.getNote());
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", borrow.getId());
-        redirectAttributes.addAttribute("sort", "updatedAt,desc");
         ui.toast("Borrow ticket updated successfully").success();
-        return new ModelAndView("redirect:/library/borrows");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @GetMapping("{id}/return")

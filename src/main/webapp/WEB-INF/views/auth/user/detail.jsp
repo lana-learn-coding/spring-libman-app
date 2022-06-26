@@ -66,7 +66,8 @@
                                         <c:if test="${entity.isReader()}">
                                             <span class="badge badge-success">Reader</span>
                                         </c:if>
-                                        <c:if test="${!entity.isReader()}">
+                                        <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">
+                                            <c:if test="${!entity.isReader()}">
                                             <form action="${pageContext.request.contextPath}/authorities/users/${entity.id}/link-reader"
                                                   method="post" up-submit up-layer="parent root">
                                                 <sec:csrfInput/>
@@ -74,6 +75,7 @@
                                                 </button>
                                             </form>
                                         </c:if>
+                                        </sec:authorize>
                                     </div>
                                 </div>
                                 <div class="mt-2 mt-sm-0">

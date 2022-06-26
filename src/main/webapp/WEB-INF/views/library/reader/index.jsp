@@ -78,7 +78,7 @@
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">
                                         <button up-href="${pageContext.request.contextPath}/library/readers/create"
-                                                class="btn btn-primary" up-instant up-layer="new"
+                                                class="btn btn-primary" up-instant up-layer="new" up-size="large"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                             Create
@@ -173,7 +173,7 @@
                                                 </sec:authorize>
                                                 <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_DELETE')">
                                                     <a href="${pageContext.request.contextPath}/library/readers/${item.id}/delete"
-                                                       up-history="false" up-layer="new" up-instant
+                                                       up-history="false" up-layer="new" up-instant up-size="large"
                                                        up-dismissable="button"
                                                        class="txt-danger">
                                                         <i data-feather="trash" style="width: 20px; height: 20px"></i>

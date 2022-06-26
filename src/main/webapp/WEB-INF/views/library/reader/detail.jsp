@@ -114,6 +114,23 @@
                                 </div>
                             </c:if>
                         </div>
+                        <div class="card-footer">
+                            <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_UPDATE')">
+                                <button up-href="${pageContext.request.contextPath}/library/readers/${id}/update"
+                                        class="btn btn-primary me-2" up-instant up-layer="new" up-size="large"
+                                        up-dismissable="button" up-history="false">
+                                    Update
+                                </button>
+                            </sec:authorize>
+                            <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_DELETE')">
+                                <button up-href="${pageContext.request.contextPath}/library/readers/${id}/delete"
+                                        class="btn btn-danger me-2" up-instant up-layer="new" up-history="false">
+                                    Delete
+                                </button>
+                            </sec:authorize>
+                            <a href="${pageContext.request.contextPath}/library/readers"
+                               up-follow up-instant class="btn btn-light me-2">Manage</a>
+                        </div>
                     </div>
                 </div>
             </div>

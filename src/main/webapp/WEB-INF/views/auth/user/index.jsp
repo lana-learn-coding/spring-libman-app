@@ -73,7 +73,7 @@
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'USER_CREATE')">
                                         <button up-href="${pageContext.request.contextPath}/authorities/users/create"
-                                                class="btn btn-primary" up-instant up-layer="new"
+                                                class="btn btn-primary" up-instant up-layer="new" up-size="large"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                             Create
@@ -167,6 +167,7 @@
                                                         access="hasAnyAuthority('ADMIN', 'USER_UPDATE')">
                                                     <a href="${pageContext.request.contextPath}/authorities/users/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-size="large"
                                                        up-dismissable="button">
                                                         <i data-feather="edit"
                                                            style="width: 20px; height: 20px"></i>

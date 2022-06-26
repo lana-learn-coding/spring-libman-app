@@ -64,6 +64,7 @@ class BookInfoController {
     }
 
     @GetMapping("{id}/history")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_READ')")
     public ModelAndView history(@PathVariable String id, @RequestParam(required = false) String query,
                                 @PageableDefault(5) @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

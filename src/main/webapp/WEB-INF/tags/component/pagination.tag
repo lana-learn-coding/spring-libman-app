@@ -4,6 +4,9 @@
 <%@ attribute name="pageMeta" required="true" type="org.springframework.data.domain.Page" %>
 <%@ attribute name="target" required="false" type="java.lang.String" %>
 <%@ attribute name="up" required="false" type="java.lang.String" %>
+<%@ attribute name="href" required="false" type="java.lang.String" %>
+
+<c:set var="href" value="${not empty href ? href : ''}"/>
 
 <c:url var="url" value="">
     <c:forEach items="${param}" var="entry">
@@ -19,7 +22,7 @@
         <a class="page-link"
         ${up} up-history="true"
         ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') } up-follow up-instant
-           href="${(empty url ? "?page=" : url.concat("&page=")).concat(pageMeta.pageable.pageNumber - 1)}"
+           href="${href}${(empty url ? "?page=" : url.concat("&page=")).concat(pageMeta.pageable.pageNumber - 1)}"
            aria-label="Previous">&laquo;</a>
     </li>
     <c:forEach var="i" begin="0" end="${totalPages}">
@@ -29,7 +32,7 @@
                     <a class="page-link"
                         ${up} up-history="true"
                         ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') } up-follow up-instant
-                       href="${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
+                       href="${href}${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
                 </li>
             </c:when>
 
@@ -38,7 +41,7 @@
                     <a class="page-link"
                         ${up} up-history="true"
                         ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') } up-follow up-instant
-                       href="${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
+                       href="${href}${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
                 </li>
             </c:when>
 
@@ -47,7 +50,7 @@
                     <a class="page-link"
                         ${up} up-history="true"
                         ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') } up-follow up-instant
-                       href="${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
+                       href="${href}${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
                 </li>
             </c:when>
 
@@ -56,7 +59,7 @@
                     <a class="page-link"
                         ${up} up-history="true"
                         ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') } up-follow up-instant
-                       href="${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
+                       href="${href}${(empty url ? "?page=" : url.concat("&page=")).concat(i)}">${i + 1}</a>
                 </li>
             </c:when>
 
@@ -71,7 +74,7 @@
         <a class="page-link"
         ${up} up-history="true"
         ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') } up-follow up-instant
-           href="${(empty url ? "?page=" : url.concat("&page=")).concat(pageMeta.pageable.pageNumber + 1)}"
+           href="${href}${(empty url ? "?page=" : url.concat("&page=")).concat(pageMeta.pageable.pageNumber + 1)}"
            aria-label="Next">
             &raquo;
         </a>

@@ -142,8 +142,10 @@
                                 <c:if test="${empty content}"><component:empty/></c:if>
                             </div>
                             <nav class="d-flex justify-content-start mt-3">
-                                <component:pagination pageMeta="${data}" target="#table, [comp=pagination]"
-                                                      up="up-scroll='layer' up-transition='cross-fade'"/>
+                                <component:pagination
+                                        href="${pageContext.request.contextPath}/library/readers/${entity.id}/history"
+                                        pageMeta="${data}" target="#table, [comp=pagination]"
+                                        up="up-scroll='layer' up-transition='cross-fade'"/>
                             </nav>
                         </div>
                     </div>

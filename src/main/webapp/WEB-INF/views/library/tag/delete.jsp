@@ -36,7 +36,7 @@
                            class="btn btn-light" up-dismiss>Back</a>
                         <c:if test="${entity.booksCount == 0}">
                                                 <form action="${pageContext.request.contextPath}/library/tags/${uri}/${id}/delete"
-                                                      method="post" up-layer="parent root">
+                                                      method="post" up-layer="parent root" up-scroll="false">
                                                     <sec:csrfInput/>
                                                     <button type="submit" class="btn btn-warning">Delete</button>
                                                 </form>
@@ -44,7 +44,7 @@
 
                         <c:if test="${entity.booksCount > 0 && canForce}">
                                                 <form action="${pageContext.request.contextPath}/library/tags/${uri}/${id}/force-delete"
-                                                      method="post" up-layer="parent root">
+                                                      method="post" up-layer="parent root" up-scroll="false">
                                                     <sec:csrfInput/>
                                                     <button type="submit" class="btn btn-danger">Force Delete</button>
                                                 </form>

@@ -29,7 +29,7 @@
 
                         <c:if test="${entity.ticket.size() == 0}">
                              <form action="${pageContext.request.contextPath}/library/books/books/${id}/delete"
-                                   method="post" up-layer="parent root">
+                                   method="post" up-layer="parent root" up-scroll="false">
                                  <sec:csrfInput/>
                                  <button type="submit" class="btn btn-danger">Delete</button>
                              </form>

@@ -25,14 +25,14 @@
 
                         <c:if test="${entity.isReader() && entity.isInternal()}">
                              <form action="${pageContext.request.contextPath}/authorities/users/${id}/revoke"
-                                   method="post" up-layer="parent root">
+                                   method="post" up-layer="parent root" up-scroll="false">
                                  <sec:csrfInput/>
                                  <button type="submit" class="btn btn-warning">Revoke librarian</button>
                              </form>
                         </c:if>
 
                         <form action="${pageContext.request.contextPath}/authorities/users/${id}/delete"
-                              method="post" up-layer="parent root">
+                              method="post" up-layer="parent root" up-scroll="false">
                             <sec:csrfInput/>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>

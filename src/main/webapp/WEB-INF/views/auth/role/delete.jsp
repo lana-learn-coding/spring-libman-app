@@ -23,7 +23,7 @@
                         <a href="${pageContext.request.contextPath}/authorities/${uri}"
                            class="btn btn-light" up-dismiss up-follow>Back</a>
                         <form action="${pageContext.request.contextPath}/authorities/${uri}/${id}/delete"
-                              method="post" up-layer="parent root">
+                              method="post" up-layer="parent root" up-scroll="false">
                             <sec:csrfInput/>
                             <button type="submit" class="btn btn-warning">Delete</button>
                         </form>

@@ -91,7 +91,7 @@ class BookController {
 
     @PostMapping(path = "{id}/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_UPDATE')")
-    public ModelAndView update(@PathVariable String id,
+    public ModelAndView update(@PathVariable String id, @RequestHeader String referer,
                                @RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") Book book,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -115,11 +115,11 @@ class BookController {
         }
 
         book.setId(id);
+        book.setStatus(entity.getStatus());
         repo.save(book);
         redirectAttributes.addFlashAttribute("highlight", book.getId());
-        redirectAttributes.addAttribute("sort", "updatedAt,desc");
         ui.toast("Item updated successfully").success();
-        return new ModelAndView("redirect:/library/books/books");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @PostMapping(path = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -164,11 +164,11 @@ class BookController {
 
     @PostMapping("{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_DELETE')")
-    public ModelAndView delete(@PathVariable String id) {
+    public ModelAndView delete(@PathVariable String id, @RequestHeader String referer) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.getTicket().size() > 0) {
             ui.toast("Book was borrowed. Cannot delete").error();
-            return new ModelAndView("redirect:/library/books/books");
+            return new ModelAndView("redirect:" + referer);
         }
 
         entity.getBorrows().forEach(b -> {
@@ -179,7 +179,7 @@ class BookController {
         });
         repo.delete(entity);
         ui.toast("Book delete succeed").success();
-        return new ModelAndView("redirect:/library/books/books");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @GetMapping("autocomplete")

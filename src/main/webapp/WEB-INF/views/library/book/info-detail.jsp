@@ -235,7 +235,7 @@
                                                     <span class="badge badge-warning">${item.status}</span>
                                                 </c:if>
                                             </td>
-                                            <td>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <c:if test="${not empty item.ticket}">
                                                     <div>Borrowed by
                                                         <a up-follow up-instant class="ms-1"
@@ -253,12 +253,23 @@
                                                     NONE
                                                 </c:if>
                                             </td>
-                                            <td>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
                                                 <div><helper:format-instant date="${item.updatedAt}"/></div>
                                                 <div>
                                                     by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
+                                                <c:if test="${not empty item.ticket}">
+                                                    <sec:authorize
+                                                            access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
+                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.ticket[0].id}/return"
+                                                       class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-history="false">
+                                                        <i data-feather="check-square"
+                                                           style="width: 20px; height: 20px"></i>
+                                                    </a>
+                                                </sec:authorize>
+                                                </c:if>
                                                 <a href="${pageContext.request.contextPath}/library/books/books/${item.id}/detail"
                                                    up-instant up-layer="new" class="mr-1 txt-primary">
                                                     <i data-feather="external-link"
@@ -268,6 +279,7 @@
                                                         access="hasAnyAuthority('ADMIN', 'BOOK_UPDATE')">
                                                     <a href="${pageContext.request.contextPath}/library/books/books/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-history="false"
                                                        up-dismissable="button">
                                                         <i data-feather="edit"
                                                            style="width: 20px; height: 20px"></i>

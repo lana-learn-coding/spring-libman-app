@@ -28,7 +28,7 @@
                            class="btn btn-light" up-dismiss up-follow up-back>Back</a>
 
                         <form action="${pageContext.request.contextPath}/library/borrows/${id}/delete"
-                              method="post" up-layer="parent root" up-scroll="false">
+                              method="post" up-layer="root" up-scroll="false">
                             <sec:csrfInput/>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>

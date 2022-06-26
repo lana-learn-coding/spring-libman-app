@@ -135,7 +135,26 @@
                                                 <div>
                                                     by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
-                                            <td></td>
+                                            <td <component:table-higlight test="${isHighlight}"/>>
+                                                <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/detail?history=true"
+                                                   up-instant up-layer="new" class="mr-1 txt-primary"
+                                                   up-history="false">
+                                                    <i data-feather="external-link"
+                                                       style="width: 20px; height: 20px"></i>
+                                                </a>
+                                                <c:if test="${item.returned}">
+                                                    <sec:authorize
+                                                            access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')">
+                                                        <a href="${pageContext.request.contextPath}/library/borrows/history/${item.id}/delete"
+                                                           up-history="false" up-layer="new" up-instant
+                                                           up-dismissable="button"
+                                                           class="txt-danger">
+                                                            <i data-feather="trash"
+                                                               style="width: 20px; height: 20px"></i>
+                                                        </a>
+                                                    </sec:authorize>
+                                                </c:if>
+                                            </td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>

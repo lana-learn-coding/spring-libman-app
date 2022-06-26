@@ -33,7 +33,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header pb-0">
-                            <h5>Borrow Ticket Manage</h5>
+                            <h5>Borrow History Manage</h5>
                             <span>Manage borrow tickets and history (<component:total pageMeta="${data}"/>)</span>
                         </div>
                         <form class="card-body row" up-target="#table, nav .pagination" method="get">
@@ -209,7 +209,8 @@
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
                                                 <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/detail?history=true"
-                                                   up-instant up-layer="new" class="mr-1 txt-primary">
+                                                   up-instant up-layer="new" class="mr-1 txt-primary"
+                                                   up-history="false">
                                                     <i data-feather="external-link"
                                                        style="width: 20px; height: 20px"></i>
                                                 </a>

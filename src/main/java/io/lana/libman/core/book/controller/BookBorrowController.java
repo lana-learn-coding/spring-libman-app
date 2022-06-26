@@ -181,12 +181,12 @@ class BookBorrowController {
 
     @PostMapping("{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')")
-    public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes, @RequestHeader String referer) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.isReturned()) {
             ui.toast("Item already returned").error();
             redirectAttributes.addAttribute("sort", "updatedAt,desc");
-            return new ModelAndView("redirect:/library/borrows");
+            return new ModelAndView("redirect:" + referer);
         }
 
         final var book = entity.getBook();
@@ -197,7 +197,7 @@ class BookBorrowController {
         if (ticket.getBorrowsCount() == 1) ticketRepo.delete(ticket);
         repo.delete(entity);
         ui.toast("Borrow ticket deleted successfully").success();
-        return new ModelAndView("redirect:/library/borrows");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @GetMapping("history")
@@ -219,16 +219,16 @@ class BookBorrowController {
 
     @PostMapping("history/{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')")
-    public ModelAndView deleteHistory(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    public ModelAndView deleteHistory(@PathVariable String id, RedirectAttributes redirectAttributes, @RequestHeader String referer) {
         final var history = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (!history.isReturned()) {
             ui.toast("Item currently borrowed (not a history)").error();
             redirectAttributes.addAttribute("sort", "updatedAt,desc");
-            return new ModelAndView("redirect:/library/borrows/history");
+            return new ModelAndView("redirect:" + referer);
         }
         repo.delete(history);
         ui.toast("History deleted successfully").success();
-        return new ModelAndView("redirect:/library/borrows/history");
+        return new ModelAndView("redirect:" + referer);
     }
 
     private void validateBorrow(BookBorrow borrow, BindingResult bindingResult) {

@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.Delegate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -30,6 +31,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @JoinColumn(foreignKey = @ForeignKey(name = "book_id", foreignKeyDefinition = "FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL"))
     private Book book;
 
+    @NotBlank
     private String ticket = IdUtils.newTimeSortableId();
 
     @Column(columnDefinition = "TEXT")

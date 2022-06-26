@@ -71,7 +71,7 @@
                                 <i data-feather="bar-chart-2"></i><span>Dashboard</span>
                             </a>
                         </li>
-                        <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
+                        <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
                             <li>
                                 <a class="nav-link" href="${pageContext.request.contextPath}/library/readers"
                                    up-alias="${pageContext.request.contextPath}/library/readers/*"
@@ -80,9 +80,11 @@
                                 </a>
                             </li>
                         </sec:authorize>
-                        <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
+                        <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
                             <li>
-                                <a class="nav-link" href="${pageContext.request.contextPath}/library/borrow/borrow">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/borrows"
+                                   up-alias="${pageContext.request.contextPath}/library/borrows/*"
+                                   up-follow up-instant>
                                     <i data-feather="calendar"></i><span>Borrow</span>
                                 </a>
                             </li>

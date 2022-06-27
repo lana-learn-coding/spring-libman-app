@@ -76,8 +76,8 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                       href="${pageContext.request.contextPath}/library/borrows/tickets"
-                                       up-alias="${pageContext.request.contextPath}/library/borrows/tickets?*"
+                                       href="${pageContext.request.contextPath}/library/borrows/batch"
+                                       up-alias="${pageContext.request.contextPath}/library/borrows/batch?*"
                                        up-follow>Batch</a>
                                 </li>
                                 <li class="nav-item">

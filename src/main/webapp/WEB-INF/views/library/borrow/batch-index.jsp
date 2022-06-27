@@ -6,12 +6,12 @@
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookBorrow>"--%>
+<%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.reader.Reader>"--%>
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 
 
 <layout:librarian>
-    <jsp:attribute name="title">Borrow Ticket Manage</jsp:attribute>
+    <jsp:attribute name="title">Batch Ticket Manage</jsp:attribute>
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="page-header">
@@ -34,18 +34,18 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header pb-0">
-                            <h5>Borrow Ticket Manage</h5>
-                            <span>Manage borrow tickets and history (<component:total pageMeta="${data}"/>). Choose batch mode for group by reader</span>
+                            <h5>Batch Ticket Manage</h5>
+                            <span>Manage tickets (<component:total pageMeta="${data}"/>)</span>
                         </div>
                         <form class="card-body row" up-target="#table, nav .pagination" method="get">
                             <helper:inherit-param excludes="query,reader"/>
                             <div class="col-12 col-sm-6 mb-2">
                                 <div class="input-group">
-                                    <span class="input-group-text bg-primary"><i class="icon-book"></i></span>
+                                    <span class="input-group-text bg-primary"><i class="icon-bookmark-alt"></i></span>
                                     <input type="text"
                                            class="form-control form-control-lg"
                                            name="query"
-                                           placeholder="Search for book"
+                                           placeholder="Search for ticket"
                                            aria-label="query"
                                            value="${param.query}"
                                            up-autosubmit
@@ -95,16 +95,16 @@
                                     <component:sorting
                                             target="#table"
                                             up="up-scroll='layer' up-transition='cross-fade'"
-                                            labels="Email;Borrowed Date;Due Date;Title;Updated At;Updated By;Id"
-                                            values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy;id,desc"/>
+                                            labels="Borrow Count;Borrowing Count;Over Due;Updated At;Updated By;Id"
+                                            values="borrowsCount,desc;borrowingsCount,desc;overDuesCount,desc;updatedAt,desc;updatedBy;id,desc"/>
                                         </div>
                                         <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BORROW_CREATE')">
-                                        <button up-href="${pageContext.request.contextPath}/library/borrows/create"
+                                        <button up-href="${pageContext.request.contextPath}/library/borrows/tickets/create"
                                                 class="btn btn-primary" up-instant up-layer="new" up-size="large"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                            Create
+                                            Create Batch
                                         </button>
                                     </sec:authorize>
                                         </div>
@@ -115,8 +115,8 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Id</th>
-                                                <th scope="col">Full name</th>
                                                 <th scope="col">Contact</th>
+                                                <th scope="col">Limit</th>
                                                 <th scope="col">Borrow</th>
                                                 <th scope="col">Updated At</th>
                                                 <th scope="col">Action</th>
@@ -133,63 +133,39 @@
                                             </th>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div style="max-width: 120px">
+                                                <div style="max-width: 140px">
                                                         ${ item.id }
                                                 </div>
                                             </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <c:if test="${not empty item.book}">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail"
-                                                       up-follow>${item.title}
-                                                        <c:if test="${not empty item.releaseYear}">
-                                                        <span class="ms-1">(${item.releaseYear})</span>
-                                                    </c:if>
-                                                    </a>
-                                                </c:if>
-                                                <c:if test="${empty item.book}">
-                                                    <div up-follow>${item.title}
-                                                        <c:if test="${not empty item.releaseYear}">
-                                                            <span class="ms-1">(${item.releaseYear})</span>
-                                                        </c:if>
-                                                        <span class="ms-1">(Deleted)</span>
-                                                    </div>
-                                                </c:if>
-                                                <c:if test="${not empty item.seriesName}">
-                                                     <div class="small">
-                                                         In Series: ${ item.seriesName }
-                                                     </div>
-                                                </c:if>
-                                            </td>
-                                            <td  <component:table-higlight
-                                                    test="${isHighlight}"/>>
                                                 <div>
-                                                    <c:if test="${not empty item.reader.account.firstName}">
-                                                        <span class="me-1">${item.reader.account.firstName}</span>
+                                                    <c:if test="${not empty item.account.firstName}">
+                                                        <span class="me-1">${item.account.firstName}</span>
                                                     </c:if>
-                                                    <c:if test="${not empty item.reader.account.lastName}">
-                                                        <span>${item.reader.account.lastName}</span>
+                                                    <c:if test="${not empty item.account.lastName}">
+                                                        <span>${item.account.lastName}</span>
                                                     </c:if>
                                                 </div>
                                                 <a class="txt-primary" up-follow up-layer="parent root"
-                                                   href="${pageContext.request.contextPath}/library/readers/${item.reader.id}/detail">
-                                                        ${  item.reader.account.email }
+                                                   href="${pageContext.request.contextPath}/library/readers/${item.id}/detail">
+                                                        ${  item.account.email }
                                                 </a>
-                                                <c:if test="${not empty item.reader.account.phone}">
-                                                    <div>Phone: ${item.reader.account.phone}</div>
+                                                <c:if test="${not empty item.account.phone}">
+                                                        <div>Phone: ${item.account.phone}</div>
                                                 </c:if>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div
-                                                        <c:if test="${LocalDate.now().isAfter(item.dueDate)}">class="txt-danger"</c:if>>
-                                                    <div>+ <span class="ms-1">
-                                                        <helper:format-date date="${item.borrowDate}"/></span>
-                                                    </div>
-                                                    <div>+ <span class="ms-1">
-                                                        <helper:format-date date="${item.dueDate}"/></span>
-                                                    </div>
-                                                </div>
+                                                <span>${ item.borrowLimit }</span>
+                                            </td>
+                                            <td <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <span>${ item.borrowingBooksCount }</span>
+                                                /
+                                                <span>${ item.borrowLimit }</span>
+                                                -
+                                                <span class="txt-danger">${ item.overDueBooksCount }</span>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>

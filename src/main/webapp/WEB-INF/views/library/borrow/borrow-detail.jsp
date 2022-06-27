@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2 mt-sm-0">
-                                    <div class="mb-1">Ticket <span class="small ms-2">${entity.ticket.name}</span></div>
+                                    <div class="mb-1">Ticket <span class="small ms-2">${entity.ticketId}</span></div>
                                     <div class="mb-1">Title
                                         <c:if test="${empty entity.book}">
                                             <span class="ms-2">${entity.title}</span>

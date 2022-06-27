@@ -20,7 +20,7 @@
                             <span>#${entity.id}</span>
                             <span class="small mt-2">Reader: ${entity.reader.account.username}</span>
                             <span class="small">Book: ${entity.title}</span>
-                            <c:if test="${entity.ticket.borrowsCount > 1}">
+                            <c:if test="${entity.id != entity.ticketId}">
                                 <span class="mt-2 small txt-primary">Note: All others book in the same ticket will stay the same</span>
                             </c:if>
                         </c:if>

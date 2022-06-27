@@ -65,7 +65,7 @@
                                <c:if test="${edit}">
                                    <input type="hidden" name="book" value="${entity.book.id}">
                                    <input type="hidden" name="reader" value="${entity.reader.id}">
-                                   <input type="hidden" name="ticket.id" value="${entity.ticket.id}">
+                                   <input type="hidden" name="ticket" value="${entity.ticketId}">
                                </c:if>
                                <c:if test="${not edit}">
                                    <div class="mb-3">
@@ -106,19 +106,19 @@
                                        </c:if>
                                        <form:errors path="reader" cssClass="invalid-feedback"/>
                                    </div>
-                               </c:if>
-                               <div class="mb-3">
-                                   <label class="col-form-label pt-0" for="ticket.name">Ticket</label>
-                                   <form:input path="ticket.name" cssClass="form-control"
-                                               placeholder="Enter ticket id"
-                                               required="true" readonly="${edit}"
-                                               cssErrorClass="form-control is-invalid"/>
-                                   <form:errors path="ticket.name" cssClass="invalid-feedback"/>
-                                   <c:if test="${edit}">
+                                   <div class="mb-3">
+                                       <label class="col-form-label pt-0" for="ticketId">Ticket Id</label>
+                                       <form:input path="ticketId" cssClass="form-control"
+                                                   placeholder="Enter ticket id"
+                                                   required="true" readonly="${edit}"
+                                                   cssErrorClass="form-control is-invalid"/>
+                                       <form:errors path="ticketId" cssClass="invalid-feedback"/>
+                                       <c:if test="${edit}">
                                            <small class="form-text text-muted">Borrow is associated with
                                                ticket</small>
                                        </c:if>
-                               </div>
+                                   </div>
+                               </c:if>
                                <div class="mb-3">
                                    <label class="col-form-label pt-0">Due Date</label>
                                    <form:input path="dueDate" cssClass="datepicker-here form-control digits"
@@ -131,7 +131,7 @@
                                <div class="mb-3">
                                    <label class="col-form-label pt-0"
                                           for="note">Note</label>
-                                   <textarea class="form-control" id="note" name="note"
+                                   <textarea class="form-control" id="note"
                                              placeholder="note">${entity.note}</textarea>
                                </div>
                                <div class="mb-3">

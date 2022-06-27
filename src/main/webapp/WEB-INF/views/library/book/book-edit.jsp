@@ -104,7 +104,7 @@
                                <div class="mb-3">
                                    <label class="col-form-label pt-0"
                                           for="note">Note</label>
-                                   <textarea class="form-control" id="note"
+                                   <textarea class="form-control" id="note" name="note"
                                              placeholder="note">${entity.note}</textarea>
                                </div>
                                <div class="d-flex align-items-center mb-3">

@@ -4,14 +4,12 @@ import io.lana.libman.core.book.support.BookDetailConverter;
 import io.lana.libman.core.book.support.BookDetails;
 import io.lana.libman.core.reader.Reader;
 import io.lana.libman.support.data.AuditableEntity;
-import io.lana.libman.support.data.IdUtils;
 import io.lana.libman.support.validate.DateAfterNow;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -34,8 +32,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @JoinColumn(foreignKey = @ForeignKey(name = "book_id", foreignKeyDefinition = "FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL"))
     private Book book;
 
-    @NotBlank
-    private String ticketId = IdUtils.newTimeSortableId();
+    private String ticketId = id;
 
     @Column(columnDefinition = "TEXT")
     private String note;

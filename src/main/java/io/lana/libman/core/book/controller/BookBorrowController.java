@@ -60,7 +60,6 @@ class BookBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
     public ModelAndView create() {
         final var borrow = new BookBorrow();
-        borrow.setTicketId(borrow.getId());
         return new ModelAndView("/library/borrow/borrow-edit", Map.of(
                 "entity", borrow,
                 "edit", false
@@ -89,6 +88,8 @@ class BookBorrowController {
         final var book = entity.getBook();
         book.setStatus(Book.Status.BORROWED);
         bookRepo.save(book);
+
+        entity.setTicketId(entity.getId());
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");

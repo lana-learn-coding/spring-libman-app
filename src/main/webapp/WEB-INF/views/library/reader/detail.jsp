@@ -184,7 +184,6 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Id</th>
-                                        <th scope="col">Ticket</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Borrow</th>
@@ -206,12 +205,6 @@
                                                     test="${isHighlight}"/>>
                                                 <div style="max-width: 120px">
                                                         ${ item.id }
-                                                </div>
-                                            </td>
-                                            <td <component:table-higlight
-                                                    test="${isHighlight}"/>>
-                                                <div style="max-width: 120px">
-                                                        ${ item.ticketId }
                                                 </div>
                                             </td>
                                             <td <component:table-higlight

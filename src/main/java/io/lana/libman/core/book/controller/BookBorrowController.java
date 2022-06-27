@@ -239,7 +239,10 @@ class BookBorrowController {
         reader.ifPresent(r -> {
             borrow.setReader(r);
             if (r.getBorrowingBooksCount() >= r.getBorrowLimit()) {
-                bindingResult.rejectValue("reader", "", "Reader has reached borrow limit (" + r.getBorrowingBooks() + "/" + r.getBorrowLimit() + ")");
+                bindingResult.rejectValue("reader", "", "Reader has reached borrow limit (" + r.getBorrowingBooks().size() + "/" + r.getBorrowLimit() + ")");
+            }
+            if (r.getOverDueBooksCount() > 0) {
+                bindingResult.rejectValue("reader", "", "Reader has overdue book. Not allow to borrow book");
             }
         });
     }

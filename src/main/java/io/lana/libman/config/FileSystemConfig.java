@@ -6,7 +6,6 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileSystemManager;
 import org.apache.commons.vfs2.VFS;
 import org.apache.commons.vfs2.impl.DefaultFileSystemManager;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,18 +13,16 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 @Slf4j
 class FileSystemConfig {
-    @Value("${vfs.base-file}")
-    private final String baseFile;
 
     @Bean
-    public FileSystemManager fileSystemManager() {
+    public FileSystemManager fileSystemManager(ConfigFacade config) {
         try {
             final FileSystemManager manager = VFS.getManager();
             if (manager.getBaseFile() == null) {
-                final var baseDir = manager.resolveFile(baseFile);
+                final var baseDir = manager.resolveFile(config.getBaseVfsPath());
                 if (!baseDir.exists()) baseDir.createFolder();
                 if (baseDir.exists() && baseDir.isFile())
-                    throw new IllegalStateException("Configured file system is not a folder, please check ${vfs.base-file}: " + baseFile);
+                    throw new IllegalStateException("Configured file system is not a folder, please check ${config.vfs.base-path}: " + config.getBaseVfsPath());
                 ((DefaultFileSystemManager) manager).setBaseFile(baseDir);
             }
             return manager;

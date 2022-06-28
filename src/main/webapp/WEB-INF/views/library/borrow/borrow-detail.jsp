@@ -1,6 +1,5 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.time.LocalDate" %>
-<%@ page import="io.lana.libman.core.book.Book.Status" %>
 
 <%@ taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -147,18 +146,32 @@
                         <div class="card-footer">
                             <c:if test="${empty param.history}">
                                  <c:if test="${not entity.returned}">
-                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
-                                    <button up-href="${pageContext.request.contextPath}/library/borrows/${id}/return"
-                                            class="btn btn-primary me-2" up-instant up-layer="new" up-history="false">
-                                        Return
-                                    </button>
-                                    </sec:authorize>
-                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')">
-                                    <button up-href="${pageContext.request.contextPath}/library/borrows/${id}/delete"
-                                            class="btn btn-danger me-2" up-instant up-layer="new" up-history="false">
-                                        Delete
-                                    </button>
-                                    </sec:authorize>
+                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
+                                         <button up-href="${pageContext.request.contextPath}/library/borrows/${id}/return"
+                                                 class="btn btn-primary me-2" up-instant up-layer="new"
+                                                 up-history="false">
+                                             Return
+                                         </button>
+                                     </sec:authorize>
+                                     <c:if test="${LocalDate.now().isAfter(entity.borrowDate)}">
+                                         <sec:authorize
+                                                 access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')"><button
+                                                 up-href="${pageContext.request.contextPath}/library/borrows/${id}/delete"
+                                                 class="btn btn-danger me-2" up-instant up-layer="new"
+                                                 up-history="false">
+                                             Delete
+                                         </button>
+                                         </sec:authorize>
+                                     </c:if>
+                                     <c:if test="${!LocalDate.now().isAfter(entity.borrowDate)}">
+                                         <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')">
+                                             <button up-href="${pageContext.request.contextPath}/library/borrows/${id}/delete"
+                                                     class="btn btn-danger me-2" up-instant up-layer="new"
+                                                     up-history="false">
+                                                 Delete
+                                             </button>
+                                         </sec:authorize>
+                                     </c:if>
                                  </c:if>
                             </c:if>
                             <c:if test="${entity.returned}">

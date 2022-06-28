@@ -99,7 +99,7 @@
                                             values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy;id,desc"/>
                                         </div>
                                         <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
-                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BORROW_CREATE')">
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_CREATE')">
                                         <button up-href="${pageContext.request.contextPath}/library/borrows/create"
                                                 class="btn btn-primary" up-instant up-layer="new" up-size="large"
                                                 up-dismissable="button">
@@ -163,7 +163,8 @@
                                             </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>
+                                                <div
+                                                        <c:if test="${item.reader.overDueBooksCount > 0}">class="txt-danger"</c:if>>
                                                     <c:if test="${not empty item.reader.account.firstName}">
                                                         <span class="me-1">${item.reader.account.firstName}</span>
                                                     </c:if>
@@ -221,14 +222,30 @@
                                                            style="width: 20px; height: 20px"></i>
                                                     </a>
                                                 </sec:authorize>
-                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')">
-                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/delete"
-                                                       up-history="false" up-layer="new" up-instant
-                                                       up-dismissable="button"
-                                                       class="txt-danger">
-                                                        <i data-feather="trash" style="width: 20px; height: 20px"></i>
-                                                    </a>
-                                                </sec:authorize>
+                                                <c:if test="${LocalDate.now().isAfter(item.borrowDate)}">
+                                                    <sec:authorize
+                                                            access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')">
+                                                        <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/delete"
+                                                           up-history="false" up-layer="new" up-instant
+                                                           up-dismissable="button"
+                                                           class="txt-danger">
+                                                            <i data-feather="trash"
+                                                               style="width: 20px; height: 20px"></i>
+                                                        </a>
+                                                    </sec:authorize>
+                                                </c:if>
+                                                <c:if test="${!LocalDate.now().isAfter(item.borrowDate)}">
+                                                    <sec:authorize
+                                                            access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')">
+                                                        <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/delete"
+                                                           up-history="false" up-layer="new" up-instant
+                                                           up-dismissable="button"
+                                                           class="txt-danger">
+                                                            <i data-feather="trash"
+                                                               style="width: 20px; height: 20px"></i>
+                                                        </a>
+                                                    </sec:authorize>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>

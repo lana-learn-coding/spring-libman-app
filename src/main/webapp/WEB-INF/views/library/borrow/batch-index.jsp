@@ -139,7 +139,8 @@
                                             </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>
+                                                <div
+                                                        <c:if test="${item.overDueBooksCount > 0}">class="txt-danger"</c:if>>
                                                     <c:if test="${not empty item.account.firstName}">
                                                         <span class="me-1">${item.account.firstName}</span>
                                                     </c:if>

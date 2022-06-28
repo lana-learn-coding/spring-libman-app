@@ -5,6 +5,8 @@ import io.lana.libman.core.book.BookBorrow;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.reader.ReaderRepo;
+import io.lana.libman.support.security.AuthFacade;
+import io.lana.libman.support.security.AuthUser;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +38,8 @@ class BookBorrowController {
     private final ReaderRepo readerRepo;
 
     private final UIFacade ui;
+
+    private final AuthFacade<AuthUser> auth;
 
     @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
@@ -181,6 +185,12 @@ class BookBorrowController {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (entity.isReturned()) {
             ui.toast("Item already returned").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:" + referer);
+        }
+
+        if (LocalDate.now().isAfter(entity.getBorrowDate()) && !auth.hasAnyAuthorities("ADMIN", "FORCE")) {
+            ui.toast("You cant delete ticket after it was borrowed 1 days").error();
             redirectAttributes.addAttribute("sort", "updatedAt,desc");
             return new ModelAndView("redirect:" + referer);
         }

@@ -21,9 +21,10 @@
         <div class="left-menu-header col">
             <ul>
                 <li>
-                    <form class="form-inline search-form">
+                    <form class="form-inline search-form" method="get"
+                          action="${pageContext.request.contextPath}/search" up-submit>
                         <div class="search-bg"><i class="fa fa-search"></i>
-                            <input class="form-control-plaintext" placeholder="Search here.....">
+                            <input class="form-control-plaintext" placeholder="Search here....." name="search">
                         </div>
                     </form>
                     <span class="d-sm-none mobile-search search-bg"><i class="fa fa-search"></i></span>

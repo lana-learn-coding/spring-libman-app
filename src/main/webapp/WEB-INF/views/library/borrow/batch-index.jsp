@@ -188,27 +188,12 @@
                                                        style="width: 20px; height: 20px"></i>
                                                 </a>
                                                 <sec:authorize
-                                                        access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
-                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/return"
+                                                        access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN', 'FORCE')">
+                                                    <a href="${pageContext.request.contextPath}/library/borrows/batch/${item.id}/return"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
                                                        up-history="false">
                                                         <i data-feather="check-square"
                                                            style="width: 20px; height: 20px"></i>
-                                                    </a>
-                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/update"
-                                                       class="mr-1 txt-primary" up-instant up-layer="new"
-                                                       up-history="false"
-                                                       up-dismissable="button">
-                                                        <i data-feather="edit"
-                                                           style="width: 20px; height: 20px"></i>
-                                                    </a>
-                                                </sec:authorize>
-                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE')">
-                                                    <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/delete"
-                                                       up-history="false" up-layer="new" up-instant
-                                                       up-dismissable="button"
-                                                       class="txt-danger">
-                                                        <i data-feather="trash" style="width: 20px; height: 20px"></i>
                                                     </a>
                                                 </sec:authorize>
                                             </td>

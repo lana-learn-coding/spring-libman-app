@@ -1,8 +1,12 @@
 
 package io.lana.libman.core.book.controller;
 
+import io.lana.libman.core.book.Book;
+import io.lana.libman.core.book.BookBorrow;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
+import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.reader.ReaderRepo;
+import io.lana.libman.support.data.IdUtils;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -13,13 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @Validated
@@ -30,6 +33,8 @@ class BatchBorrowController {
     private final BookBorrowRepo repo;
 
     private final ReaderRepo readerRepo;
+
+    private final BookRepo bookRepo;
 
     private final UIFacade ui;
 
@@ -51,5 +56,39 @@ class BatchBorrowController {
 
         final var page = readerRepo.findAllByQueryOrTicket(reader, query, pageable);
         return new ModelAndView("/library/borrow/batch-index", Map.of("data", page));
+    }
+
+    @GetMapping("{id}/return")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN','FORCE')")
+    public ModelAndView returnBorrow(@PathVariable String id) {
+        final var entity = readerRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var cost = entity.getBorrowingBooks().stream().mapToDouble(BookBorrow::getTotalCost).sum();
+        return new ModelAndView("/library/borrow/batch-return", Map.of(
+                "entity", entity,
+                "cost", cost
+        ));
+    }
+
+    @PostMapping("{id}/return")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN','FORCE')")
+    public ModelAndView returnBorrow(@PathVariable String id, RedirectAttributes redirectAttributes,
+                                     @RequestHeader String referer) {
+        final var entity = readerRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var ticketId = IdUtils.newTimeSortableId();
+        entity.getBorrowingBooks()
+                .forEach(borrow -> {
+                    final var book = borrow.getBook();
+                    book.setStatus(Book.Status.AVAILABLE);
+                    bookRepo.save(book);
+
+                    borrow.setReturned(true);
+                    borrow.setTicketId(ticketId);
+                    borrow.setReturnDate(LocalDate.now());
+                    repo.save(borrow);
+                });
+
+
+        ui.toast("Borrow ticket returned successfully").success();
+        return new ModelAndView("redirect:" + referer);
     }
 }

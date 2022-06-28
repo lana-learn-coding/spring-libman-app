@@ -32,7 +32,7 @@ public class Reader extends AuditableEntity {
     @Formula("(SELECT COUNT(b.id) FROM book_borrow b WHERE b.returned is false and b.reader_id = id)")
     private int borrowingBooksCount;
 
-    @Formula("(SELECT COUNT(b.id) FROM book_borrow b WHERE b.returned is false and b.due_date < NOW() and b.reader_id = id)")
+    @Formula("(SELECT COUNT(b.id) FROM book_borrow b WHERE b.returned is false and b.due_date < CURRENT_DATE() and b.reader_id = id)")
     private int overDueBooksCount;
 
     @OneToMany(mappedBy = "reader")

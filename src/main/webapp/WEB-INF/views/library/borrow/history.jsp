@@ -74,12 +74,14 @@
                                        up-alias="${pageContext.request.contextPath}/library/borrows?*"
                                        up-follow>Individual</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                       href="${pageContext.request.contextPath}/library/borrows/batch"
-                                       up-alias="${pageContext.request.contextPath}/library/borrows/batch?*"
-                                       up-follow>Batch</a>
-                                </li>
+                                <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="${pageContext.request.contextPath}/library/borrows/batch"
+                                           up-alias="${pageContext.request.contextPath}/library/borrows/batch?*"
+                                           up-follow>Batch</a>
+                                    </li>
+                                </sec:authorize>
                                 <li class="nav-item">
                                     <a class="nav-link"
                                        href="${pageContext.request.contextPath}/library/borrows/history"

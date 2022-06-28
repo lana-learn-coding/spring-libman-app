@@ -129,21 +129,24 @@
                                 </button>
                             </sec:authorize>
                             <a href="${pageContext.request.contextPath}/library/readers"
-                               up-follow up-instant class="btn btn-light me-2">Manage</a>
+                               up-follow up-instant class="btn btn-light me-2 d-none d-lg-inline-block">Manage</a>
+                            <a href="${pageContext.request.contextPath}/library/readers"
+                               up-back class="btn btn-light me-2 d-none d-lg-inline-block">Back</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header pb-0">
-                            <h5>Borrowing Book</h5>
-                            <span>List borrowing books of: ${entity.account.email} (Total of ${entity.borrowingBooksCount})</span>
-                        </div>
-                        <div class="card-body" id="table">
-                            <div class="row">
-                                <div class="col-12 mb-3 d-flex justify-content-end">
+            <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header pb-0">
+                                <h5>Borrowing Book</h5>
+                                <span>List borrowing books of: ${entity.account.email} (Total of ${entity.borrowingBooksCount})</span>
+                            </div>
+                            <div class="card-body" id="table">
+                                <div class="row">
+                                    <div class="col-12 mb-3 d-flex justify-content-end">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
                                         <button up-href="${pageContext.request.contextPath}/library/readers/${entity.id}/history"
                                                 class="btn btn-primary me-2" up-instant up-size="large" up-layer="new"
@@ -152,48 +155,48 @@
                                             Borrow History
                                         </button>
                                     </sec:authorize>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row justify-content-between mb-3">
-                                <div class="col-xs-12 col-md-3 col-lg-2 my-1">
+                                <div class="row justify-content-between mb-3">
+                                    <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                     <component:sorting
                                             target="#table"
                                             up="up-scroll='#table' up-transition='cross-fade'"
                                             labels="Title;Borrow Date;Due Date;Updated At;Updated By;Id"
                                             values="book.info.title,borrowDate,desc;dueDate,asc;updatedAt,desc;updatedBy;id,desc"/>
-                                </div>
-                                <form class="col-xs-12 col-md-6 my-1"
-                                      up-target="#table, nav .pagination" up-transition='cross-fade' method="get">
-                                    <helper:inherit-param excludes="query"/>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
-                                        <input type="text"
-                                               class="form-control form-control-lg"
-                                               name="query"
-                                               placeholder="Search for item"
-                                               aria-label="query"
-                                               value="${param.query}"
-                                               up-autosubmit
-                                               up-delay="400">
                                     </div>
-                                </form>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Borrow</th>
-                                        <th scope="col">Updated At</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:set var="content" value="${empty data ? [] : data.content}"/>
-                                    <c:forEach var="item" items="${data.content}" varStatus="loop">
+                                    <form class="col-xs-12 col-md-6 my-1"
+                                          up-target="#table, nav .pagination" up-transition='cross-fade' method="get">
+                                        <helper:inherit-param excludes="query"/>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary"><i class="icon-search"></i></span>
+                                            <input type="text"
+                                                   class="form-control form-control-lg"
+                                                   name="query"
+                                                   placeholder="Search for item"
+                                                   aria-label="query"
+                                                   value="${param.query}"
+                                                   up-autosubmit
+                                                   up-delay="400">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Borrow</th>
+                                            <th scope="col">Updated At</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:set var="content" value="${empty data ? [] : data.content}"/>
+                                        <c:forEach var="item" items="${data.content}" varStatus="loop">
                                         <c:set var="isHighlight"
                                                value="${item.id == highlight}"/>
                                         <tr>
@@ -263,22 +266,23 @@
                                             </td>
                                         </tr>
                                         </c:forEach>
-                                    </tbody>
-                                </table>
-                                <c:if test="${empty content}"><component:empty/></c:if>
-                            </div>
-                            <nav class="d-flex justify-content-between mt-3">
+                                        </tbody>
+                                    </table>
+                                    <c:if test="${empty content}"><component:empty/></c:if>
+                                </div>
+                                <nav class="d-flex justify-content-between mt-3">
                                 <component:pagination pageMeta="${data}"
                                                       target="#table"
                                                       up="up-scroll='#table' up-transition='cross-fade'"/>
-                                <div class="d-none d-md-block pt-2">
-                                    <component:total pageMeta="${data}" verbose="true"/>
-                                </div>
-                            </nav>
+                                    <div class="d-none d-md-block pt-2">
+                                        <component:total pageMeta="${data}" verbose="true"/>
+                                    </div>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </sec:authorize>
         </div>
     </jsp:attribute>
 </layout:librarian>

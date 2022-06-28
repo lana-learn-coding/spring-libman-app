@@ -164,7 +164,7 @@ class BookBorrowController {
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
     public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String reader,
-                              @SortDefault(value = "dueDate", direction = Sort.Direction.ASC) Pageable pageable) {
+                              @SortDefault(value = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
         reader = StringUtils.isBlank(reader) ? null : "%" + reader + "%";
 

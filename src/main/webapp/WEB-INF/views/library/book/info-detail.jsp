@@ -134,7 +134,9 @@
                                 </button>
                             </sec:authorize>
                             <a href="${pageContext.request.contextPath}/library/books/infos"
-                               up-follow up-instant class="btn btn-light me-2">Manage</a>
+                               up-follow up-instant class="btn btn-light me-2 d-none d-lg-inline-block">Manage</a>
+                            <a href="${pageContext.request.contextPath}/library/books/infos"
+                               up-back class="btn btn-light me-2 d-none d-lg-inline-block">Back</a>
                         </div>
                     </div>
                 </div>

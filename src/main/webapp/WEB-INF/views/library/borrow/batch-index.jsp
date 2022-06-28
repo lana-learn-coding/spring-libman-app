@@ -75,12 +75,14 @@
                                        up-alias="${pageContext.request.contextPath}/library/borrows?*"
                                        up-follow>Individual</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                       href="${pageContext.request.contextPath}/library/borrows/batch"
-                                       up-alias="${pageContext.request.contextPath}/library/borrows/batch?*"
-                                       up-follow>Batch</a>
-                                </li>
+                                <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                           href="${pageContext.request.contextPath}/library/borrows/batch"
+                                           up-alias="${pageContext.request.contextPath}/library/borrows/batch?*"
+                                           up-follow>Batch</a>
+                                    </li>
+                                </sec:authorize>
                                 <li class="nav-item">
                                     <a class="nav-link"
                                        href="${pageContext.request.contextPath}/library/borrows/history"
@@ -158,7 +160,10 @@
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <span>${ item.borrowLimit }</span>
+                                                <span
+                                                        <c:if test="${item.borrowingBooksCount >= item.borrowLimit}">class="txt-warning"</c:if>>
+                                                        ${ item.borrowLimit }
+                                                </span>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
@@ -176,8 +181,8 @@
                                                     by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
-                                                <a href="${pageContext.request.contextPath}/library/borrows/${item.id}/detail"
-                                                   up-instant up-layer="new" up-history="false"
+                                                <a href="${pageContext.request.contextPath}/library/readers/${item.id}/detail#table"
+                                                   up-instant up-follow
                                                    class="mr-1 txt-primary">
                                                     <i data-feather="external-link"
                                                        style="width: 20px; height: 20px"></i>

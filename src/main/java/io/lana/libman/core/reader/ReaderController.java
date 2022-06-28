@@ -84,7 +84,7 @@ class ReaderController {
 
         final var page = StringUtils.isAllBlank(query, email)
                 ? repo.findAll(pageable)
-                : repo.findAllByQueryAndEmail(query, email, pageable);
+                : repo.findAllByQueryOrEmail(query, email, pageable);
         return new ModelAndView("/library/reader/index", Map.of("data", page));
     }
 

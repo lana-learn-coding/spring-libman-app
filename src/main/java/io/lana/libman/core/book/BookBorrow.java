@@ -14,6 +14,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 @Entity
@@ -105,7 +106,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @Transient
     public boolean canRefund() {
-        return ChronoUnit.HOURS.between(createdAt, LocalDateTime.now()) < 48;
+        return ChronoUnit.HOURS.between(createdAt.atZone(ZoneId.systemDefault()).toLocalDateTime(), LocalDateTime.now()) < 24;
     }
 
     @Transient

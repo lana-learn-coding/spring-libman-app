@@ -42,6 +42,15 @@
                         <a href="${pageContext.request.contextPath}/library/borrows"
                            class="btn btn-light" up-dismiss up-follow up-back>Back</a>
 
+                        <sec:authorize var="canForce" access="hasAnyAuthority('ADMIN', 'FORCE')"/>
+                        <c:if test="${entity.canRefund() || canForce}">
+                            <form action="${pageContext.request.contextPath}/library/borrows/${id}/refund"
+                                  method="post" up-layer="root" up-scroll="false">
+                                <sec:csrfInput/>
+                                <button type="submit" class="btn btn-danger">Refund</button>
+                            </form>
+                        </c:if>
+
                         <c:if test="${not entity.returned}">
                             <form action="${pageContext.request.contextPath}/library/borrows/${id}/return"
                                   method="post" up-layer="root" up-scroll="false">

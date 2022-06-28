@@ -180,6 +180,34 @@ class BookBorrowController {
         return new ModelAndView("redirect:" + referer);
     }
 
+    @PostMapping("{id}/refund")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE')")
+    public ModelAndView refundBorrow(@PathVariable String id, RedirectAttributes redirectAttributes,
+                                     @RequestHeader String referer) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.isReturned()) {
+            ui.toast("The borrow ticket is already returned").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:" + referer);
+        }
+        if (!entity.canRefund() && !auth.hasAnyAuthorities("ADMIN", "FORCE")) {
+            ui.toast("Cannot refund after 1 days").error();
+            redirectAttributes.addAttribute("sort", "updatedAt,desc");
+            return new ModelAndView("redirect:" + referer);
+        }
+
+        final var book = entity.getBook();
+        book.setStatus(Book.Status.AVAILABLE);
+        bookRepo.save(book);
+
+        entity.setTotalCost(0d);
+        entity.setReturned(true);
+        entity.setReturnDate(LocalDate.now());
+        repo.save(entity);
+        ui.toast("Borrow ticket returned successfully").success();
+        return new ModelAndView("redirect:" + referer);
+    }
+
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
     public ModelAndView index(@RequestParam(required = false) String query, @RequestParam(required = false) String reader,

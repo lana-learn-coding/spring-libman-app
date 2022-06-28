@@ -93,6 +93,20 @@ up.compiler('[select2]', (el) => {
       if ($form.length > 0) up.submit($form[0]);
     });
   }
+  if ($el.attr('up-validate') != null) {
+    $el.on('select2:select', () => {
+      const $form = $el.closest('form');
+      if ($form.length > 0) up.validate($form[0]);
+    });
+    $el.on('select2:unselect', () => {
+      const $form = $el.closest('form');
+      if ($el.attr('multiple') == null) {
+        $el.val('');
+        $el.trigger('change');
+      }
+      if ($form.length > 0) up.validate($form[0]);
+    });
+  }
   return () => {
     $el.select2('destroy');
     $el.off('select2:select');

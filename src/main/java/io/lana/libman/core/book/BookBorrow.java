@@ -4,7 +4,6 @@ import io.lana.libman.core.book.support.BookDetailConverter;
 import io.lana.libman.core.book.support.BookDetails;
 import io.lana.libman.core.reader.Reader;
 import io.lana.libman.support.data.AuditableEntity;
-import io.lana.libman.support.validate.DateAfterNow;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
@@ -55,7 +54,6 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     private Double totalCost;
 
-    @DateAfterNow
     @NotNull
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate = LocalDate.now();

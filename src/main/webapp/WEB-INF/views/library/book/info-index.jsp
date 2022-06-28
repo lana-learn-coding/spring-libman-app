@@ -5,6 +5,7 @@
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookInfo>"--%>
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 
@@ -70,8 +71,8 @@
                                 <div class="col-6 col-md-3 col-lg-2 mb-3">
                                     <component:sorting
                                             target="#table" up="up-scroll='layer'"
-                                            labels="Newest;Title;Total Book;Available Book;Updated At;Updated By;Id"
-                                            values="createdAt,desc;title;booksCount,desc;availableBooksCount,desc;updatedAt,desc;updatedBy;id,desc"/>
+                                            labels="Newest;Title;Total Book;Borrow Cost;Available Book;Updated At;Updated By;Id"
+                                            values="createdAt,desc;title;booksCount,desc;borrowCost,desc;availableBooksCount,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <button up-href="${pageContext.request.contextPath}/library/books/infos/create"
@@ -91,6 +92,7 @@
                                         <th scope="col">Image</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Publish</th>
+                                        <th scope="col">Cost</th>
                                         <th scope="col">Books</th>
                                         <th scope="col">Updated At</th>
                                         <th scope="col">Action</th>
@@ -138,6 +140,11 @@
                                                             up-layer="new" up-size="large">${ item.authorName }</a>
                                                     </div>
                                                 </c:if>
+                                            </td>
+                                            <td <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <fmt:formatNumber value="${item.borrowCost}" type="currency"
+                                                                  maxFractionDigits="2"/>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>

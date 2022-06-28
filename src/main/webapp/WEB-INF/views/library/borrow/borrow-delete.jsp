@@ -2,6 +2,7 @@
 <%@taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="id" type="java.lang.String"--%>
@@ -19,6 +20,10 @@
                         <span>#${entity.id}</span>
                         <span class="small mt-2">Reader: ${entity.reader.account.username}</span>
                         <span class="small">Book: ${entity.title}</span>
+                        <c:if test="${entity.totalCost > 0}">
+                            <h5 class="txt-danger mt-3">Current Cost <fmt:formatNumber type="currency"
+                                                                                       value="${entity.totalCost}"/></h5>
+                        </c:if>
                     </div>
                     <div class="modal-footer">
                         <a href="${pageContext.request.contextPath}/library/borrows"

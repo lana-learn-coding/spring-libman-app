@@ -2,6 +2,7 @@
 <%@taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="id" type="java.lang.String"--%>
@@ -20,9 +21,21 @@
                             <span>#${entity.id}</span>
                             <span class="small mt-2">Reader: ${entity.reader.account.username}</span>
                             <span class="small">Book: ${entity.title}</span>
+                            <div>
+                                <span class="small">Borrowed: ${entity.borrowedDays} days (<fmt:formatNumber
+                                        type="currency" value="${entity.totalBorrowCost}"/>)</span>
+                                <c:if test="${entity.isOverDue()}">
+                                    ,<span class="small txt-danger"> Overdue: ${entity.overDueDays} days (<fmt:formatNumber
+                                        type="currency" value="${entity.totalOverDueAdditionalCost}"/>)</span>
+                                </c:if>
+                            </div>
                         </c:if>
                         <c:if test="${entity.returned}">
                             <h3 class="f-w-600 mt-3">Already returned</h3>
+                        </c:if>
+                        <c:if test="${entity.totalCost > 0}">
+                            <h5 class="txt-warning mt-3">Cost <fmt:formatNumber type="currency"
+                                                                                value="${entity.totalCost}"/></h5>
                         </c:if>
                     </div>
                     <div class="modal-footer">

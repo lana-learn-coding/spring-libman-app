@@ -97,17 +97,27 @@
                                        </div>
                                    </div>
                                </div>
-                               <c:if test="${not edit}">
-                                  <div class="mb-3 row">
-                                      <div class="col-12 col-md-8 col-lg-6">
-                                          <label class="col-form-label pt-0" for="title">Number of Books</label>
-                                          <form:input path="numberOfBooks" cssClass="form-control"
-                                                      cssErrorClass="form-control is-invalid"
-                                                      placeholder="Enter number of books" required="true" min="0"/>
-                                          <form:errors path="numberOfBooks" cssClass="invalid-feedback"/>
-                                      </div>
-                                  </div>
-                               </c:if>
+                               <div class="mb-3 row">
+                                   <c:if test="${not edit}">
+                                       <div class="col-12 col-sm-6">
+                                           <label class="col-form-label pt-0" for="numberOfBooks">Number of
+                                               Books</label>
+                                           <form:input path="numberOfBooks" cssClass="form-control"
+                                                       cssErrorClass="form-control is-invalid"
+                                                       placeholder="Enter number of books" required="true" min="0"/>
+                                           <form:errors path="numberOfBooks" cssClass="invalid-feedback"/>
+                                       </div>
+                                   </c:if>
+                                   <div class="col-12 col-sm-6">
+                                       <label class="col-form-label pt-0" for="borrowCost">Borrow cost (per
+                                           day)</label>
+                                       <form:input path="borrowCost" cssClass="form-control"
+                                                   cssErrorClass="form-control is-invalid"
+                                                   placeholder="Enter borrow cost per day" required="true" min="0"
+                                                   step="0.02"/>
+                                       <form:errors path="borrowCost" cssClass="invalid-feedback"/>
+                                   </div>
+                               </div>
                                <div class="mb-3">
                                    <div class="row">
                                        <div class="col-12 col-sm-6">

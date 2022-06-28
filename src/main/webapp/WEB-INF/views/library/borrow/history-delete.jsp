@@ -2,6 +2,7 @@
 <%@taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="id" type="java.lang.String"--%>
@@ -17,6 +18,10 @@
                            style="width: 100px; height: 100px; stroke-width: 1"></i>
                         <h3 class="f-w-600 mt-3">Delete history</h3>
                         <span>#${entity.id}</span>
+                        <c:if test="${entity.totalCost > 0.0}">
+                            <span class="txt-danger fw-bold">This will affect cost report (<fmt:formatNumber
+                                    type="currency" value="${-1 * entity.totalCost}"/>)</span>
+                        </c:if>
                     </div>
                     <div class="modal-footer">
                         <a href="${pageContext.request.contextPath}/library/borrows/history"

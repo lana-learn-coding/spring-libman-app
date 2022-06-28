@@ -5,6 +5,7 @@
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookBorrow>"--%>
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 
@@ -100,14 +101,6 @@
                                             values="reader.account.email;borrowDate,desc;dueDate;book.info.title;updatedAt,desc;updatedBy;id,desc"/>
                                         </div>
                                         <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
-                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_CREATE')">
-                                        <button up-href="${pageContext.request.contextPath}/library/readers/create"
-                                                class="btn btn-primary" up-instant up-layer="new"
-                                                up-dismissable="button">
-                                            <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                            Create
-                                        </button>
-                                    </sec:authorize>
                                         </div>
                                     </div>
                                     <div class="table-responsive">
@@ -119,6 +112,7 @@
                                                 <th scope="col">Title</th>
                                                 <th scope="col">Contact</th>
                                                 <th scope="col">Borrow</th>
+                                                <th scope="col">Cost</th>
                                                 <th scope="col">Updated At</th>
                                                 <th scope="col">Action</th>
                                             </tr>
@@ -201,6 +195,11 @@
                                                         <helper:format-date date="${item.returnDate}"/></span>
                                                      </div>
                                                 </c:if>
+                                            </td>
+                                            <td <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <fmt:formatNumber value="${item.totalCost}" type="currency"
+                                                                  maxFractionDigits="2"/>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>

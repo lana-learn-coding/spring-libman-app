@@ -6,6 +6,7 @@
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookBorrow>"--%>
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 
@@ -117,9 +118,10 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Id</th>
-                                                <th scope="col">Full name</th>
+                                                <th scope="col">Book</th>
                                                 <th scope="col">Contact</th>
                                                 <th scope="col">Borrow</th>
+                                                <th scope="col">Cost</th>
                                                 <th scope="col">Updated At</th>
                                                 <th scope="col">Action</th>
                                             </tr>
@@ -185,7 +187,7 @@
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <div
-                                                        <c:if test="${LocalDate.now().isAfter(item.dueDate)}">class="txt-danger"</c:if>>
+                                                        <c:if test="${item.isOverDue()}">class="txt-danger"</c:if>>
                                                     <div>+ <span class="ms-1">
                                                         <helper:format-date date="${item.borrowDate}"/></span>
                                                     </div>
@@ -193,6 +195,11 @@
                                                         <helper:format-date date="${item.dueDate}"/></span>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <fmt:formatNumber value="${item.totalCost}" type="currency"
+                                                                  maxFractionDigits="2"/>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>

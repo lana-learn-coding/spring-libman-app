@@ -68,25 +68,6 @@
                                </c:if>
                                <c:if test="${not edit}">
                                    <div class="mb-3">
-                                       <label class="col-form-label pt-0" for="book">Book</label>
-                                       <form:select
-                                               data-placeholder="Select book to borrow"
-                                               select2="${pageContext.request.contextPath}/library/books/books/available/autocomplete"
-                                               path="book" cssClass="form-select" data-option-show-id="true"
-                                               data-selection-show-id="true"
-                                               required="true" disabled="${edit}"
-                                               cssErrorClass="form-select is-invalid">
-                                               <c:if test="${not empty entity.book}">
-                                                   <option value="${entity.book.id}"
-                                                           selected>${entity.book.title}</option>
-                                               </c:if>
-                                           </form:select>
-                                       <form:errors path="book" cssClass="invalid-feedback"/>
-                                       <c:if test="${edit}">
-                                        <small class="form-text text-muted">Cannot change reader after created</small>
-                                       </c:if>
-                                   </div>
-                                   <div class="mb-3">
                                        <label class="col-form-label pt-0" for="reader">Reader</label>
                                        <form:select
                                                data-placeholder="Select reader"
@@ -105,6 +86,26 @@
                                        </c:if>
                                        <form:errors path="reader" cssClass="invalid-feedback"/>
                                    </div>
+                                   <div class="mb-3">
+                                       <label class="col-form-label pt-0" for="book">Book</label>
+                                       <form:select
+                                               up-validate="true"
+                                               data-placeholder="Select book to borrow"
+                                               select2="${pageContext.request.contextPath}/library/books/books/available/autocomplete"
+                                               path="book" cssClass="form-select" data-option-show-id="true"
+                                               data-selection-show-id="true"
+                                               required="true" disabled="${edit}"
+                                               cssErrorClass="form-select is-invalid">
+                                               <c:if test="${not empty entity.book}">
+                                                   <option value="${entity.book.id}"
+                                                           selected>${entity.book.title}</option>
+                                               </c:if>
+                                           </form:select>
+                                       <form:errors path="book" cssClass="invalid-feedback"/>
+                                       <c:if test="${edit}">
+                                        <small class="form-text text-muted">Cannot change reader after created</small>
+                                       </c:if>
+                                   </div>
                                </c:if>
                                <div class="mb-3">
                                    <label class="col-form-label pt-0">Due Date</label>
@@ -114,6 +115,26 @@
                                                data-start-date="${entity.dueDate}"
                                                required="true" readonly="true"/>
                                    <form:errors path="dueDate" cssClass="invalid-feedback"/>
+                               </div>
+                               <div class="mb-3">
+                                   <div class="row">
+                                       <div class="col-12 col-sm-6">
+                                           <label class="col-form-label pt-0" for="borrowCost">
+                                               Cost per day
+                                           </label>
+                                           <form:input path="borrowCost" cssClass="form-control"
+                                                       cssErrorClass="form-control is-invalid"
+                                                       type="number" required="true" min="0" step="0.01"/>
+                                       </div>
+                                       <div class="col-12 col-sm-6">
+                                           <label class="col-form-label pt-0" for="overDueAdditionalCost">
+                                               Overdue penalty
+                                           </label>
+                                           <form:input path="overDueAdditionalCost" cssClass="form-control"
+                                                       cssErrorClass="form-control is-invalid"
+                                                       type="number" required="true" min="0" step="0.01"/>
+                                       </div>
+                                   </div>
                                </div>
                                <div class="mb-3">
                                    <label class="col-form-label pt-0"

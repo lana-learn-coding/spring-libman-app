@@ -1,5 +1,6 @@
 package io.lana.libman.core.book.controller;
 
+import io.lana.libman.config.ConfigFacade;
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookBorrow;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
@@ -41,6 +42,8 @@ class BookBorrowController {
 
     private final AuthFacade<AuthUser> auth;
 
+    private final ConfigFacade config;
+
     @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
     public ModelAndView detail(@PathVariable String id) {
@@ -64,6 +67,8 @@ class BookBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
     public ModelAndView create() {
         final var borrow = new BookBorrow();
+        borrow.setBorrowCost(0d);
+        borrow.setOverDueAdditionalCost(config.getOverDueDefaultCost());
         return new ModelAndView("/library/borrow/borrow-edit", Map.of(
                 "entity", borrow,
                 "edit", false
@@ -73,14 +78,22 @@ class BookBorrowController {
     @PostMapping("create")
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
     public ModelAndView create(@Validated @ModelAttribute("entity") BookBorrow entity,
-                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                               @RequestHeader(required = false, value = "X-Up-Validate") String validate) {
         validateBorrow(entity, bindingResult);
+
+        final boolean isValidate = StringUtils.isNotBlank(validate);
+        if (isValidate && !bindingResult.hasFieldErrors("book")) {
+            final var book = entity.getBook();
+            entity.setBorrowCost(book.getBorrowCost());
+            entity.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
+        }
 
         if (repo.existsByTicketId(entity.getTicketId())) {
             bindingResult.rejectValue("ticket", "ticket.unique", "The ticket was already taken");
         }
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() || isValidate) {
             final var model = new ModelAndView("/library/borrow/borrow-edit", Map.of(
                     "entity", entity,
                     "edit", false
@@ -112,6 +125,10 @@ class BookBorrowController {
             return new ModelAndView("redirect:/library/borrows");
         }
 
+        if (!entity.getDueDate().equals(borrow.getDueDate()) && LocalDate.now().isAfter(borrow.getDueDate())) {
+            bindingResult.rejectValue("dueDate", "", "The due date must not before now");
+        }
+
         if (bindingResult.hasErrors()) {
             final var model = new ModelAndView("/library/borrow/borrow-edit", Map.of(
                     "entity", borrow,
@@ -121,6 +138,8 @@ class BookBorrowController {
             return model;
         }
 
+        entity.setBorrowCost(borrow.getBorrowCost());
+        entity.setOverDueAdditionalCost(borrow.getOverDueAdditionalCost());
         entity.setDueDate(borrow.getDueDate());
         entity.setNote(borrow.getNote());
         repo.save(entity);
@@ -236,25 +255,33 @@ class BookBorrowController {
     }
 
     private void validateBorrow(BookBorrow borrow, BindingResult bindingResult) {
-        final var book = bookRepo.findById(borrow.getBook().getId());
-        if (book.isEmpty()) bindingResult.rejectValue("book", "", "Book not exist");
-        book.ifPresent(b -> {
-            borrow.setBook(b);
-            if (b.getTicket().size() > 0) {
-                bindingResult.rejectValue("book", "", "Book was borrowed");
-            }
-        });
+        if (borrow.getBook() != null) {
+            final var book = bookRepo.findById(borrow.getBook().getId());
+            if (book.isEmpty()) bindingResult.rejectValue("book", "", "Book not exist");
+            book.ifPresent(b -> {
+                borrow.setBook(b);
+                if (b.getTicket().size() > 0) {
+                    bindingResult.rejectValue("book", "", "Book was borrowed");
+                }
+            });
+        }
 
-        final var reader = readerRepo.findById(borrow.getReader().getId());
-        if (reader.isEmpty()) bindingResult.rejectValue("reader", "", "Reader not exist");
-        reader.ifPresent(r -> {
-            borrow.setReader(r);
-            if (r.getBorrowingBooksCount() >= r.getBorrowLimit()) {
-                bindingResult.rejectValue("reader", "", "Reader has reached borrow limit (" + r.getBorrowingBooks().size() + "/" + r.getBorrowLimit() + ")");
-            }
-            if (r.getOverDueBooksCount() > 0) {
-                bindingResult.rejectValue("reader", "", "Reader has overdue book. Not allow to borrow book");
-            }
-        });
+        if (borrow.getReader() != null) {
+            final var reader = readerRepo.findById(borrow.getReader().getId());
+            if (reader.isEmpty()) bindingResult.rejectValue("reader", "", "Reader not exist");
+            reader.ifPresent(r -> {
+                borrow.setReader(r);
+                if (r.getBorrowingBooksCount() >= r.getBorrowLimit()) {
+                    bindingResult.rejectValue("reader", "", "Reader has reached borrow limit (" + r.getBorrowingBooks().size() + "/" + r.getBorrowLimit() + ")");
+                }
+                if (r.getOverDueBooksCount() > 0) {
+                    bindingResult.rejectValue("reader", "", "Reader has overdue book. Not allow to borrow book");
+                }
+            });
+        }
+
+        if (LocalDate.now().isAfter(borrow.getDueDate())) {
+            bindingResult.rejectValue("dueDate", "", "The due date must not before now");
+        }
     }
 }

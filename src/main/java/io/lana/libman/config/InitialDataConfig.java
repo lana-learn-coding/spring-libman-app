@@ -40,7 +40,7 @@ import static io.lana.libman.core.user.role.Authorities.User.SYSTEM;
 @RequiredArgsConstructor
 @Slf4j
 class InitialDataConfig implements ApplicationRunner {
-    private final Faker faker = Faker.instance(new Locale("vi", "VN"));
+    private final Faker faker = Faker.instance();
 
     private final UserRepo userRepo;
 
@@ -68,6 +68,7 @@ class InitialDataConfig implements ApplicationRunner {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final ConfigFacade config;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -137,6 +138,7 @@ class InitialDataConfig implements ApplicationRunner {
                 User.newInstance("am@am", "am", password, Collections.singleton(Role.ofName("AM", Collections.emptyList())), Role.admin().getName())
         ));
 
+        final var vnFaker = Faker.instance(new Locale("vi", "VN"));
         Stream.generate(() -> faker.internet().emailAddress())
                 .distinct()
                 .limit(100)
@@ -148,7 +150,7 @@ class InitialDataConfig implements ApplicationRunner {
                     user.setEmail(email);
                     user.setFirstName(faker.name().firstName());
                     user.setLastName(faker.name().lastName());
-                    user.setPhone(faker.phoneNumber().phoneNumber());
+                    user.setPhone(vnFaker.phoneNumber().phoneNumber());
                     if (faker.bool().bool()) {
                         user.setAddress(faker.address().fullAddress());
                         user.setGender(faker.options().option(Gender.values()));
@@ -255,6 +257,7 @@ class InitialDataConfig implements ApplicationRunner {
                     info.setAbout(faker.backToTheFuture().quote());
                     info.setPublisher(faker.options().nextElement(publishers));
                     info.setCreatedBy(SYSTEM);
+                    info.setBorrowCost(faker.number().randomDouble(1, 0, 2));
                     if (faker.random().nextInt(1, 10) > 1) {
                         info.setAuthor(faker.options().nextElement(authors));
                     }
@@ -299,7 +302,6 @@ class InitialDataConfig implements ApplicationRunner {
             final var borrow = new BookBorrow();
             borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
             borrow.setReader(faker.options().nextElement(readers));
-            borrow.setBook(faker.options().nextElement(books));
             borrow.setTicketId(borrow.getId());
             final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             borrow.setBorrowDate(borrowDate);
@@ -308,6 +310,11 @@ class InitialDataConfig implements ApplicationRunner {
             borrow.setDueDate(faker.date().past(60, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             borrow.setReturned(true);
             borrow.setReturnDate(faker.date().past(120, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            final var book = faker.options().nextElement(books);
+            borrow.setBook(book);
+            borrow.setBorrowCost(book.getBorrowCost());
+            borrow.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
+            borrow.setBorrowCost(book.getInfo().getBorrowCost());
             if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
             bookBorrowRepo.save(borrow);
         }
@@ -347,6 +354,8 @@ class InitialDataConfig implements ApplicationRunner {
                             books.remove(book);
                             borrowedBook.add(book);
                             borrow.setBook(book);
+                            borrow.setBorrowCost(book.getBorrowCost());
+                            borrow.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
                             bookBorrowRepo.save(borrow);
                             borrowLimit--;
                             if (borrowLimit <= 0) break;

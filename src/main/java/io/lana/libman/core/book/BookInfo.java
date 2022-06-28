@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -34,6 +35,7 @@ public class BookInfo extends AuditableEntity implements Named, BookDetails {
     @Column(columnDefinition = "TEXT")
     private String about;
 
+    @Min(0)
     @Column(name = "`year`")
     private Integer year;
 
@@ -42,6 +44,10 @@ public class BookInfo extends AuditableEntity implements Named, BookDetails {
 
     @Formula("(SELECT COUNT(b.id) FROM book b WHERE b.book_info_id = id AND b.status = 'AVAILABLE')")
     private int availableBooksCount;
+
+    @Min(0)
+    @Column(name = "borrow_cost", nullable = false)
+    private double borrowCost;
 
     @OneToMany(mappedBy = "info")
     private Set<Book> books = new LinkedHashSet<>();

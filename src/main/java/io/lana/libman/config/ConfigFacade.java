@@ -10,21 +10,14 @@ public class ConfigFacade {
     @Value("${config.vfs.base-path}")
     private final String baseFile;
 
-    @Value("${config.cost.default}")
+    @Value("${config.cost.overdue-default}")
     private final double cost;
-
-    @Value("${config.cost.overdue-multiply}")
-    private final double overDueMultiply;
 
     public String getBaseVfsPath() {
         return baseFile;
     }
 
-    public double getDefaultCost() {
+    public double getOverDueDefaultCost() {
         return cost;
-    }
-
-    public double getDefaultOverDueMultiply() {
-        return overDueMultiply;
     }
 }

@@ -16,4 +16,6 @@ public interface BookDetails {
     Integer getReleaseYear();
 
     Set<String> getGenresSet();
+
+    double getBorrowCost();
 }

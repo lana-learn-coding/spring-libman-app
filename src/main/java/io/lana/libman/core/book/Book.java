@@ -65,7 +65,6 @@ public class Book extends AuditableEntity implements Named, BookDetails {
         info.setName(name);
     }
 
-
     public enum Status {
         AVAILABLE,
         BORROWED,

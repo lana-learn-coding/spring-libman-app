@@ -23,6 +23,8 @@ public class SimpleBookDetail implements BookDetails {
 
     private Set<String> genresSet = new HashSet<>();
 
+    private double borrowCost;
+
     @Override
     public String getGenresName() {
         return String.join(",", genresSet);

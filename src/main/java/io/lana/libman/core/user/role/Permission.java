@@ -22,7 +22,7 @@ import static io.lana.libman.core.user.role.Authorities.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "`permission`")
+@Table(name = "perm")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Permission extends DescriptiveEntity implements GrantedAuthority {
     @ManyToMany(mappedBy = "permissions")

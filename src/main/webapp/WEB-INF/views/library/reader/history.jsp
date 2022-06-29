@@ -5,6 +5,7 @@
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookBorrow>"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.reader.Reader"--%>
@@ -75,6 +76,7 @@
                                         <th scope="col">Id</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Borrow</th>
+                                        <th scope="col">Cost</th>
                                         <th scope="col">Updated At</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -127,6 +129,11 @@
                                                         <helper:format-date date="${item.returnDate}"/></span>
                                                      </div>
                                                 </c:if>
+                                            </td>
+                                            <td <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <fmt:formatNumber value="${item.totalCost}" type="currency"
+                                                                  maxFractionDigits="2"/>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>

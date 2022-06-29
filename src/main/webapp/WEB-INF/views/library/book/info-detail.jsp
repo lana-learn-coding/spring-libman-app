@@ -203,6 +203,7 @@
                                         <th scope="col">Shelf</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Borrow</th>
+                                        <th scope="col">Cost</th>
                                         <th scope="col">Updated At</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -254,6 +255,11 @@
                                                 <c:if test="${empty item.ticket}">
                                                     NONE
                                                 </c:if>
+                                            </td>
+                                            <td <component:table-higlight
+                                                    test="${isHighlight}"/>>
+                                                <fmt:formatNumber value="${item.totalCost}" type="currency"
+                                                                  maxFractionDigits="2"/>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
                                                 <div><helper:format-instant date="${item.updatedAt}"/></div>

@@ -99,6 +99,7 @@
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_CREATE')">
                                         <button up-href="${pageContext.request.contextPath}/library/borrows/create"
                                                 class="btn btn-primary" up-instant up-layer="new" up-size="large"
+                                                up-history="false"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                             Create

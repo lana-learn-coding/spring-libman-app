@@ -70,9 +70,16 @@
                                     </form>
                                     <div>
                                         <button up-href="${pageContext.request.contextPath}/library/borrows/batch/${reader.id}/return"
-                                                class="btn btn-danger" up-instant up-layer="new" up-history="false">
+                                                class="btn btn-danger me-2" up-instant up-layer="new"
+                                                up-history="false">
                                             Return All
                                         </button>
+                                    </div>
+                                    <div class="d-none d-lg-block">
+                                        <a href="${pageContext.request.contextPath}/library/borrows/batch"
+                                           class="btn btn-light" up-instant up-back up-follow>
+                                            Back
+                                        </a>
                                     </div>
                                 </div>
                                 <form class="col-xs-12 col-md-6 my-1" up-target="#table, nav .pagination"

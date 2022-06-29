@@ -65,8 +65,12 @@ class BookBorrowController {
 
     @GetMapping("create")
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
-    public ModelAndView create() {
+    public ModelAndView create(@RequestParam(required = false) String parentId) {
         final var borrow = new BookBorrow();
+        if (StringUtils.isNotBlank(parentId)) {
+            final var reader = readerRepo.findById(parentId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            borrow.setReader(reader);
+        }
         borrow.setBorrowCost(0d);
         borrow.setOverDueAdditionalCost(config.getOverDueDefaultCost());
         return new ModelAndView("/library/borrow/borrow-edit", Map.of(
@@ -79,7 +83,8 @@ class BookBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_CREATE')")
     public ModelAndView create(@Validated @ModelAttribute("entity") BookBorrow entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes,
-                               @RequestHeader(required = false, value = "X-Up-Validate") String validate) {
+                               @RequestHeader(required = false, value = "X-Up-Validate") String validate,
+                               @RequestHeader String referer) {
         validateBorrow(entity, bindingResult);
 
         final boolean isValidate = StringUtils.isNotBlank(validate);
@@ -109,9 +114,8 @@ class BookBorrowController {
         entity.setTicketId(entity.getId());
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
-        redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Borrow ticket created successfully").success();
-        return new ModelAndView("redirect:/library/borrows");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @PostMapping("{id}/update")

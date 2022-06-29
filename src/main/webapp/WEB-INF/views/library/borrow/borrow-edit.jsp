@@ -67,25 +67,31 @@
                                    <input type="hidden" name="reader" value="${entity.reader.id}">
                                </c:if>
                                <c:if test="${not edit}">
-                                   <div class="mb-3">
-                                       <label class="col-form-label pt-0" for="reader">Reader</label>
-                                       <form:select
-                                               data-placeholder="Select reader"
-                                               required="true" disabled="${edit}"
-                                               select2="${pageContext.request.contextPath}/library/readers/autocomplete"
-                                               path="reader" cssClass="form-select"
-                                               cssErrorClass="form-select is-invalid">
+                                   <c:if test="${not empty param.parentId}">
+                                       <input type="hidden" name="reader" value="${entity.reader.id}">
+                                   </c:if>
+                                   <c:if test="${empty param.parentId}">
+                                       <div class="mb-3">
+                                           <label class="col-form-label pt-0" for="reader">Reader</label>
+                                           <form:select
+                                                   data-placeholder="Select reader"
+                                                   required="true" disabled="${edit}"
+                                                   select2="${pageContext.request.contextPath}/library/readers/autocomplete"
+                                                   path="reader" cssClass="form-select"
+                                                   data-disabled="${not empty param.parentId}"
+                                                   cssErrorClass="form-select is-invalid">
                                            <c:if test="${not empty entity.reader}">
                                                <option value="${entity.reader.id}"
                                                        selected>${entity.reader.account.email}</option>
                                            </c:if>
                                        </form:select>
-                                       <c:if test="${edit}">
+                                           <c:if test="${edit}">
                                            <small class="form-text text-muted">Cannot change reader after
                                                created</small>
                                        </c:if>
-                                       <form:errors path="reader" cssClass="invalid-feedback"/>
-                                   </div>
+                                           <form:errors path="reader" cssClass="invalid-feedback"/>
+                                       </div>
+                                   </c:if>
                                    <div class="mb-3">
                                        <label class="col-form-label pt-0" for="book">Book</label>
                                        <form:select

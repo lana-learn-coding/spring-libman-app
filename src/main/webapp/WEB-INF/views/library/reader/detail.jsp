@@ -138,7 +138,7 @@
                 </div>
             </div>
             <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
-                <div class="row">
+                <div class="row" id="borrow">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header pb-0">
@@ -154,6 +154,22 @@
                                                 up-dismissable="button" up-history="false">
                                             <i class="fa fa-clock-o fa-lg pe-2"></i>
                                             Borrow History
+                                        </button>
+                                    </sec:authorize>
+                                        <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_CREATE')">
+                                        <button up-href="${pageContext.request.contextPath}/library/borrows/create?parentId=${id}"
+                                                class="btn btn-primary me-2" up-instant up-layer="new"
+                                                up-history="false"
+                                                up-dismissable="button">
+                                            <i class="fa fa-plus-square-o fa-lg pe-2"></i>
+                                            Borrow
+                                        </button>
+                                    </sec:authorize>
+                                        <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
+                                        <button up-href="${pageContext.request.contextPath}/library/borrows/batch/${id}/edit"
+                                                class="btn btn-primary" up-instant up-follow>
+                                            <i class="fa fa-check fa-lg pe-2"></i>
+                                            Batch
                                         </button>
                                     </sec:authorize>
                                     </div>

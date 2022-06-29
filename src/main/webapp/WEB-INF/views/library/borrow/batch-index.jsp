@@ -91,18 +91,8 @@
                                     <component:sorting
                                             target="#table"
                                             up="up-scroll='layer' up-transition='cross-fade'"
-                                            labels="Borrow Count;Borrowing Count;Over Due;Updated At;Updated By;Id"
-                                            values="borrowsCount,desc;borrowingsCount,desc;overDuesCount,desc;updatedAt,desc;updatedBy;id,desc"/>
-                                        </div>
-                                        <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
-                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BORROW_CREATE')">
-                                        <button up-href="${pageContext.request.contextPath}/library/borrows/tickets/create"
-                                                class="btn btn-primary" up-instant up-layer="new" up-size="large"
-                                                up-dismissable="button">
-                                            <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                            Create Batch
-                                        </button>
-                                    </sec:authorize>
+                                            labels="Borrowing Count;Over Due;Updated At;Updated By;Id"
+                                            values="borrowingBooksCount,desc;overDueBooksCount,desc;updatedAt,desc;updatedBy;id,desc"/>
                                         </div>
                                     </div>
                                     <div class="table-responsive">
@@ -145,7 +135,7 @@
                                                     </c:if>
                                                 </div>
                                                 <a class="txt-primary" up-follow up-layer="parent root"
-                                                   href="${pageContext.request.contextPath}/library/readers/${item.id}/detail">
+                                                   href="${pageContext.request.contextPath}/library/readers/${item.id}/detail#borrow">
                                                         ${  item.account.email }
                                                 </a>
                                                 <c:if test="${not empty item.account.phone}">
@@ -175,14 +165,16 @@
                                                     by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
-                                                <sec:authorize
-                                                        access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN', 'FORCE')">
+                                                <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE')">
                                                     <a href="${pageContext.request.contextPath}/library/borrows/batch/${item.id}/edit"
                                                        up-instant up-follow
                                                        class="mr-1 txt-primary">
                                                         <i data-feather="external-link"
                                                            style="width: 20px; height: 20px"></i>
                                                     </a>
+                                                </sec:authorize>
+                                                <sec:authorize
+                                                        access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN', 'FORCE')">
                                                     <a href="${pageContext.request.contextPath}/library/borrows/batch/${item.id}/return"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
                                                        up-history="false">

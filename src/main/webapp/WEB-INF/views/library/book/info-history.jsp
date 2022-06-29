@@ -76,8 +76,8 @@
                                         <th scope="col">Id</th>
                                         <th scope="col">Contact</th>
                                         <th scope="col">Borrow</th>
-                                        <th scope="col">Updated At</th>
                                         <th scope="col">Cost</th>
+                                        <th scope="col">Updated At</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>

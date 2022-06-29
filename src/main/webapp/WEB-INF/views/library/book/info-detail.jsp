@@ -9,6 +9,7 @@
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.Book>"--%>
@@ -161,7 +162,7 @@
                                     </sec:authorize>
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_CREATE')">
                                         <button up-href="${pageContext.request.contextPath}/library/books/books/create?parentId=${id}"
-                                                class="btn btn-primary" up-instant up-layer="new"
+                                                class="btn btn-primary" up-instant up-layer="new" up-history="false"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                             Create
@@ -258,8 +259,8 @@
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <fmt:formatNumber value="${item.totalCost}" type="currency"
-                                                                  maxFractionDigits="2"/>
+                                                <fmt:formatNumber value="${item.info.borrowCost}" type="currency"
+                                                                  maxFractionDigits="2"/> / day
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
                                                 <div><helper:format-instant date="${item.updatedAt}"/></div>

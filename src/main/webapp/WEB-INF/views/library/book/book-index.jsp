@@ -74,7 +74,7 @@
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
                                     <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOK_CREATE')">
                                         <button up-href="${pageContext.request.contextPath}/library/books/books/create"
-                                                class="btn btn-primary" up-instant up-layer="new"
+                                                class="btn btn-primary" up-instant up-layer="new" up-history="false"
                                                 up-dismissable="button">
                                             <i class="fa fa-plus-square-o fa-lg pe-2"></i>
                                             Create

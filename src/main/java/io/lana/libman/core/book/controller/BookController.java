@@ -126,7 +126,8 @@ class BookController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOK_CREATE')")
     public ModelAndView create(@RequestPart(required = false) MultipartFile file,
                                @Validated @ModelAttribute("entity") Book entity,
-                               BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                               @RequestHeader String referer) {
         if (repo.existsById(entity.getId())) {
             bindingResult.rejectValue("id", "id.unique", "The id was already taken");
         }
@@ -147,9 +148,8 @@ class BookController {
 
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
-        redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Item created successfully").success();
-        return new ModelAndView("redirect:/library/books/books");
+        return new ModelAndView("redirect:" + referer);
     }
 
     @GetMapping("{id}/delete")

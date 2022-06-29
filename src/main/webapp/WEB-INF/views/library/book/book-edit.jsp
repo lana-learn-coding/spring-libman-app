@@ -61,21 +61,26 @@
                        </div>
                        <div class="card-body">
                            <div class="theme-form" style="max-width: 1000px">
-                               <div class="mb-3">
-                                   <label class="col-form-label pt-0" for="info">Book Info</label>
-                                   <form:select
-                                           data-placeholder="Select info"
-                                           select2="${pageContext.request.contextPath}/library/books/infos/autocomplete"
-                                           path="info" cssClass="form-select"
-                                           required="true"
-                                           cssErrorClass="form-select is-invalid">
-                                               <c:if test="${not empty entity.info}">
-                                                   <option value="${entity.info.id}"
-                                                           selected>${entity.info.title}</option>
-                                               </c:if>
-                                           </form:select>
-                                   <form:errors path="info" cssClass="invalid-feedback"/>
-                               </div>
+                               <c:if test="${not empty param.parentId}">
+                                       <input type="hidden" value="${entity.info.id}" name="info">
+                               </c:if>
+                               <c:if test="${empty param.parentId}">
+                                   <div class="mb-3">
+                                       <label class="col-form-label pt-0" for="info">Book Info</label>
+                                       <form:select
+                                               data-placeholder="Select info"
+                                               select2="${pageContext.request.contextPath}/library/books/infos/autocomplete"
+                                               path="info" cssClass="form-select"
+                                               required="true" data-disabled="${not empty param.parentId}"
+                                               cssErrorClass="form-select is-invalid">
+                                           <c:if test="${not empty entity.info}">
+                                               <option value="${entity.info.id}"
+                                                       selected>${entity.info.title}</option>
+                                           </c:if>
+                                       </form:select>
+                                       <form:errors path="info" cssClass="invalid-feedback"/>
+                                   </div>
+                               </c:if>
                                <c:if test="${not edit}">
                                    <div class="mb-3">
                                        <label class="col-form-label pt-0" for="id">Id</label>

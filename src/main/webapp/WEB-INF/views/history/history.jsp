@@ -71,23 +71,15 @@
                             <ul class="nav nav-pills nav-primary">
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                       href="${pageContext.request.contextPath}/library/borrows"
-                                       up-alias="${pageContext.request.contextPath}/library/borrows?*"
-                                       up-follow>Individual</a>
+                                       href="${pageContext.request.contextPath}/library/history"
+                                       up-alias="${pageContext.request.contextPath}/library/history?*"
+                                       up-follow>History</a>
                                 </li>
-                                <sec:authorize access="hasAnyAuthority('ADMIN', 'READER_READ')">
-                                    <li class="nav-item">
-                                        <a class="nav-link"
-                                           href="${pageContext.request.contextPath}/library/borrows/batch"
-                                           up-alias="${pageContext.request.contextPath}/library/borrows/batch?*"
-                                           up-follow>Batch</a>
-                                    </li>
-                                </sec:authorize>
                                 <li class="nav-item">
                                     <a class="nav-link"
-                                       href="${pageContext.request.contextPath}/library/borrows/history"
-                                       up-alias="${pageContext.request.contextPath}/library/borrows/history?*"
-                                       up-follow>History</a>
+                                       href="${pageContext.request.contextPath}/library/history/income"
+                                       up-alias="${pageContext.request.contextPath}/library/history/income?*"
+                                       up-follow>Income</a>
                                 </li>
                             </ul>
                             <div class="tab-content mt-4">
@@ -166,20 +158,25 @@
                                             </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>
-                                                    <c:if test="${not empty item.reader.account.firstName}">
-                                                        <span class="me-1">${item.reader.account.firstName}</span>
+                                                <c:if test="${not empty item.reader}">
+                                                    <div>
+                                                        <c:if test="${not empty item.reader.account.firstName}">
+                                                            <span class="me-1">${item.reader.account.firstName}</span>
+                                                        </c:if>
+                                                        <c:if test="${not empty item.reader.account.lastName}">
+                                                            <span>${item.reader.account.lastName}</span>
+                                                        </c:if>
+                                                    </div>
+                                                    <a class="txt-primary" up-follow up-layer="parent root"
+                                                       href="${pageContext.request.contextPath}/library/readers/${item.reader.id}/detail">
+                                                            ${  item.reader.account.email }
+                                                    </a>
+                                                    <c:if test="${not empty item.reader.account.phone}">
+                                                        <div>Phone: ${item.reader.account.phone}</div>
                                                     </c:if>
-                                                    <c:if test="${not empty item.reader.account.lastName}">
-                                                        <span>${item.reader.account.lastName}</span>
-                                                    </c:if>
-                                                </div>
-                                                <a class="txt-primary" up-follow up-layer="parent root"
-                                                   href="${pageContext.request.contextPath}/library/readers/${item.reader.id}/detail">
-                                                        ${  item.reader.account.email }
-                                                </a>
-                                                <c:if test="${not empty item.reader.account.phone}">
-                                                    <div>Phone: ${item.reader.account.phone}</div>
+                                                </c:if>
+                                                <c:if test="${empty item.reader}">
+                                                    <div>READER DELETED</div>
                                                 </c:if>
                                             </td>
                                             <td <component:table-higlight
@@ -218,7 +215,7 @@
                                                 <c:if test="${item.returned}">
                                                     <sec:authorize
                                                             access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')">
-                                                        <a href="${pageContext.request.contextPath}/library/borrows/history/${item.id}/delete"
+                                                        <a href="${pageContext.request.contextPath}/library/history/${item.id}/delete"
                                                            up-history="false" up-layer="new" up-instant
                                                            up-dismissable="button"
                                                            class="txt-danger">

@@ -84,12 +84,6 @@
                                            up-follow>Batch</a>
                                     </li>
                                 </sec:authorize>
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                       href="${pageContext.request.contextPath}/library/borrows/history"
-                                       up-alias="${pageContext.request.contextPath}/library/borrows/history?*"
-                                       up-follow>History</a>
-                                </li>
                             </ul>
                             <div class="tab-content mt-4">
                                 <div class="tab-pane fade show active">

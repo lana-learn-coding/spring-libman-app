@@ -251,37 +251,6 @@ class BookBorrowController {
         return new ModelAndView("redirect:" + referer);
     }
 
-    @GetMapping("history")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
-    public ModelAndView history(@RequestParam(required = false) String query, @RequestParam(required = false) String reader,
-                                @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
-        reader = StringUtils.isBlank(reader) ? null : "%" + reader + "%";
-        final var page = repo.findAllByQueryAndReader(query, reader, pageable);
-        return new ModelAndView("/library/borrow/history", Map.of("data", page));
-    }
-
-    @GetMapping("history/{id}/delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')")
-    public ModelAndView deleteHistory(@PathVariable String id) {
-        final var history = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return new ModelAndView("/library/borrow/history-delete", Map.of("entity", history));
-    }
-
-    @PostMapping("history/{id}/delete")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')")
-    public ModelAndView deleteHistory(@PathVariable String id, RedirectAttributes redirectAttributes, @RequestHeader String referer) {
-        final var history = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (!history.isReturned()) {
-            ui.toast("Item currently borrowed (not a history)").error();
-            redirectAttributes.addAttribute("sort", "updatedAt,desc");
-            return new ModelAndView("redirect:" + referer);
-        }
-        repo.delete(history);
-        ui.toast("History deleted successfully").success();
-        return new ModelAndView("redirect:" + referer);
-    }
-
     private void validateBorrow(BookBorrow borrow, BindingResult bindingResult) {
         if (borrow.getBook() != null) {
             final var book = bookRepo.findById(borrow.getBook().getId());

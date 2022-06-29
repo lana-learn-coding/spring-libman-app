@@ -19,15 +19,15 @@
                         <h3 class="f-w-600 mt-3">Delete history</h3>
                         <span>#${entity.id}</span>
                         <c:if test="${entity.totalCost > 0.0}">
-                            <span class="txt-danger fw-bold">This will affect cost report (<fmt:formatNumber
+                            <span class="txt-danger fw-bold">This will affect income report (<fmt:formatNumber
                                     type="currency" value="${-1 * entity.totalCost}"/>)</span>
                         </c:if>
                     </div>
                     <div class="modal-footer">
-                        <a href="${pageContext.request.contextPath}/library/borrows/history"
+                        <a href="${pageContext.request.contextPath}/library/history"
                            class="btn btn-light" up-dismiss up-follow up-back>Back</a>
 
-                        <form action="${pageContext.request.contextPath}/library/borrows/history/${id}/delete"
+                        <form action="${pageContext.request.contextPath}/library/history/${id}/delete"
                               method="post" up-layer="root" up-scroll="false">
                             <sec:csrfInput/>
                             <button type="submit" class="btn btn-danger">Delete</button>

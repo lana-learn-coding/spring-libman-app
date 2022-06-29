@@ -89,6 +89,15 @@
                                 </a>
                             </li>
                         </sec:authorize>
+                        <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/library/history"
+                                   up-alias="${pageContext.request.contextPath}/library/history/*"
+                                   up-follow up-instant>
+                                    <i data-feather="clock"></i><span>History</span>
+                                </a>
+                            </li>
+                        </sec:authorize>
                         <sec:authorize access="hasAnyAuthority('LIBRARIAN')">
                             <li class="sidebar-main-title">
                                 <div>

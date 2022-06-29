@@ -177,7 +177,7 @@
                             <c:if test="${entity.returned}">
                                  <sec:authorize
                                          access="hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('FORCE', 'ADMIN')">
-                                <button up-href="${pageContext.request.contextPath}/library/borrows/history/${id}/delete"
+                                <button up-href="${pageContext.request.contextPath}/library/history/${id}/delete"
                                         class="btn btn-danger me-2" up-instant up-layer="new" up-history="false">
                                     Delete (History)
                                 </button>

@@ -175,14 +175,14 @@
                                                     by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                             </td>
                                             <td <component:table-higlight test="${isHighlight}"/>>
-                                                <a href="${pageContext.request.contextPath}/library/readers/${item.id}/detail#table"
-                                                   up-instant up-follow
-                                                   class="mr-1 txt-primary">
-                                                    <i data-feather="external-link"
-                                                       style="width: 20px; height: 20px"></i>
-                                                </a>
                                                 <sec:authorize
                                                         access="hasAnyAuthority('ADMIN', 'BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN', 'FORCE')">
+                                                    <a href="${pageContext.request.contextPath}/library/borrows/batch/${item.id}/edit"
+                                                       up-instant up-follow
+                                                       class="mr-1 txt-primary">
+                                                        <i data-feather="external-link"
+                                                           style="width: 20px; height: 20px"></i>
+                                                    </a>
                                                     <a href="${pageContext.request.contextPath}/library/borrows/batch/${item.id}/return"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
                                                        up-history="false">

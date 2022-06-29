@@ -171,7 +171,7 @@
                                                     </c:if>
                                                 </div>
                                                 <a class="txt-primary" up-follow up-layer="parent root"
-                                                   href="${pageContext.request.contextPath}/library/readers/${item.reader.id}/detail">
+                                                   href="${pageContext.request.contextPath}/library/readers/${item.reader.id}/detail#table">
                                                         ${  item.reader.account.email }
                                                 </a>
                                                 <c:if test="${not empty item.reader.account.phone}">

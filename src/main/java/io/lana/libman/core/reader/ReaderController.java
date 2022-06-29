@@ -1,6 +1,8 @@
 package io.lana.libman.core.reader;
 
+import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
+import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.file.ImageService;
 import io.lana.libman.core.user.UserRepo;
 import io.lana.libman.core.user.role.Authorities;
@@ -25,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -43,6 +46,8 @@ class ReaderController {
 
     private final BookBorrowRepo borrowRepo;
 
+    private final BookRepo bookRepo;
+
     private final ImageService imageService;
 
     private final UIFacade ui;
@@ -50,7 +55,7 @@ class ReaderController {
     @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_READ')")
     public ModelAndView detail(@PathVariable String id, @RequestParam(required = false) String query,
-                               @PageableDefault(8) @SortDefault(value = "dueDate") Pageable pageable) {
+                               @SortDefault(value = "dueDate") Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         final var page = StringUtils.isBlank(query)
                 ? borrowRepo.findAllBorrowingByReaderId(id, pageable)
@@ -205,6 +210,17 @@ class ReaderController {
         }
 
         repo.delete(entity);
+        entity.getBorrowingBooks().forEach(borrow -> {
+            final var book = borrow.getBook();
+            book.setStatus(Book.Status.AVAILABLE);
+            bookRepo.save(book);
+
+            borrow.setReturned(true);
+            borrow.setReturnDate(LocalDate.now());
+            borrow.setTotalCost(0d);
+            borrowRepo.save(borrow);
+        });
+
         if (!entity.getAccount().isInternal()) userRepo.delete(entity.getAccount());
         ui.toast("Reader delete succeed").success();
         return new ModelAndView("redirect:/library/readers");

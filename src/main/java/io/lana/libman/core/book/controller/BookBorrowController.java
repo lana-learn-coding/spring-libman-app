@@ -176,7 +176,7 @@ class BookBorrowController {
         book.setStatus(Book.Status.AVAILABLE);
         bookRepo.save(book);
 
-        entity.addIncome(incomeRepo.save(new Income()));
+        if (entity.getTotalCost() > 0d) entity.addIncome(incomeRepo.save(new Income()));
         entity.setReturned(true);
         entity.setReturnDate(LocalDate.now());
         repo.save(entity);
@@ -205,7 +205,6 @@ class BookBorrowController {
         bookRepo.save(book);
 
         entity.setTotalCost(0d);
-        entity.addIncome(incomeRepo.save(new Income()));
         entity.setReturned(true);
         entity.setReturnDate(LocalDate.now());
         repo.save(entity);

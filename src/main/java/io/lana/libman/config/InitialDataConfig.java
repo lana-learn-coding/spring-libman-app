@@ -305,7 +305,6 @@ class InitialDataConfig implements ApplicationRunner {
             final var borrow = new BookBorrow();
             borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
             borrow.setReader(faker.options().nextElement(readers));
-            borrow.addIncome(incomeRepo.save(new Income()));
             final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             borrow.setBorrowDate(borrowDate);
             borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
@@ -317,7 +316,7 @@ class InitialDataConfig implements ApplicationRunner {
             borrow.setBook(book);
             borrow.setBorrowCost(book.getBorrowCost());
             borrow.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
-            borrow.setBorrowCost(book.getInfo().getBorrowCost());
+            if (borrow.getTotalCost() > 0d) borrow.addIncome(incomeRepo.save(new Income()));
             if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
             bookBorrowRepo.save(borrow);
         }

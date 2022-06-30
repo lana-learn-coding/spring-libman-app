@@ -90,7 +90,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @Transient
     public void addIncome(Income income) {
         if (income == null) return;
-        income.addTotalCost(getTotalCost());
+        income.add(this);
     }
 
     @Transient

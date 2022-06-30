@@ -13,6 +13,7 @@ import io.lana.libman.support.data.IdentifiedEntity;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
@@ -25,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -101,14 +103,7 @@ class BatchBorrowController {
             ui.toast("Please select something").error();
             return new ModelAndView("redirect:" + referer);
         }
-        final var entity = selected.stream().findFirst().map(BookBorrow::getReader).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        final var income = incomeRepo.save(new Income());
-        selected.forEach(borrow -> {
-            if (borrow.isReturned()) return;
-            if (!borrow.getReader().equals(entity)) return;
-            returnBorrow(borrow, income);
-        });
-
+        returnAllBorrow(selected);
         ui.toast("All borrow ticket returned successfully").success();
         return new ModelAndView("redirect:" + referer);
     }
@@ -150,20 +145,29 @@ class BatchBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN','FORCE')")
     public ModelAndView returnBorrow(@PathVariable String id, @RequestHeader String referer) {
         final var entity = readerRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        final var income = incomeRepo.save(new Income());
-        entity.getBorrowingBooks().forEach(borrow -> returnBorrow(borrow, income));
+        returnAllBorrow(entity.getBorrowingBooks());
         ui.toast("Borrow ticket returned successfully").success();
         return new ModelAndView("redirect:" + referer);
     }
 
-    private void returnBorrow(BookBorrow borrow, Income income) {
-        final var book = borrow.getBook();
-        book.setStatus(Book.Status.AVAILABLE);
-        bookRepo.save(book);
+    private void returnAllBorrow(Collection<BookBorrow> borrows) {
+        if (borrows.isEmpty()) return;
 
-        borrow.setReturned(true);
-        borrow.addIncome(income);
-        borrow.setReturnDate(LocalDate.now());
-        repo.save(borrow);
+        final var reader = borrows.stream().findAny().map(BookBorrow::getReader).orElse(null);
+        if (reader == null) return;
+
+        final var cost = Precision.round(borrows.stream().mapToDouble(BookBorrow::getTotalCost).sum(), 2);
+        final var income = cost > 0 ? incomeRepo.save(new Income()) : null;
+        borrows.forEach(borrow -> {
+            if (!borrow.getReader().equals(reader)) return;
+            final var book = borrow.getBook();
+            book.setStatus(Book.Status.AVAILABLE);
+            bookRepo.save(book);
+
+            borrow.setReturned(true);
+            if (income != null) borrow.addIncome(income);
+            borrow.setReturnDate(LocalDate.now());
+            repo.save(borrow);
+        });
     }
 }

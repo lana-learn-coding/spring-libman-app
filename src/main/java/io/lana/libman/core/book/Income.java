@@ -5,7 +5,6 @@ import io.lana.libman.support.data.AuditableEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.math3.util.Precision;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,11 +17,17 @@ import java.util.Set;
 @Setter
 @Entity
 public class Income extends AuditableEntity {
-    @Formula("(SELECT COUNT(b.id) FROM book_borrow b WHERE b.ticket_id = id)")
+    @Column(name = "borrows_count", nullable = false, updatable = false)
     private int borrowsCount;
 
-    @Column(name = "total_cost", nullable = false)
+    @Column(name = "total_cost", nullable = false, updatable = false)
     private double totalCost = 0d;
+
+    @Column(name = "total_borrow_cost", nullable = false, updatable = false)
+    private double totalBorrowCost = 0d;
+
+    @Column(name = "total_overdue_additional_cost", nullable = false, updatable = false)
+    private double totalOverDueAdditionalCost = 0d;
 
     @Transient
     public boolean isSingle() {
@@ -38,7 +43,11 @@ public class Income extends AuditableEntity {
     }
 
     @Transient
-    public void addTotalCost(double totalCost) {
-        this.totalCost = Precision.round(totalCost + this.totalCost, 2);
+    public void add(BookBorrow borrow) {
+        this.totalCost = Precision.round(borrow.getTotalCost() + this.totalCost, 2);
+        this.totalBorrowCost = Precision.round(borrow.getTotalBorrowCost() + this.totalCost, 2);
+        this.totalOverDueAdditionalCost = Precision.round(borrow.getTotalOverDueAdditionalCost() + this.totalCost, 2);
+        this.borrowsCount += 1;
+        this.borrows.add(borrow);
     }
 }

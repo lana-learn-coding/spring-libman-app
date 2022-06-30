@@ -88,12 +88,6 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     }
 
     @Transient
-    public void addIncome(Income income) {
-        if (income == null) return;
-        income.add(this);
-    }
-
-    @Transient
     public boolean hasTicket() {
         return income != null;
     }

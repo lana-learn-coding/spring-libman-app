@@ -316,7 +316,12 @@ class InitialDataConfig implements ApplicationRunner {
             borrow.setBook(book);
             borrow.setBorrowCost(book.getBorrowCost());
             borrow.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
-            if (borrow.getTotalCost() > 0d) borrow.addIncome(incomeRepo.save(new Income()));
+            if (borrow.getTotalCost() > 0d) {
+                final var income = new Income().add(borrow);
+                income.setCreatedBy(SYSTEM);
+                income.setReturnDate(borrow.getReturnDate());
+                borrow.setIncome(incomeRepo.save(income));
+            }
             if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
             bookBorrowRepo.save(borrow);
         }

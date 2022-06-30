@@ -165,9 +165,10 @@ class BatchBorrowController {
             bookRepo.save(book);
 
             borrow.setReturned(true);
-            if (income != null) borrow.addIncome(income);
+            if (income != null) borrow.setIncome(income.add(borrow));
             borrow.setReturnDate(LocalDate.now());
             repo.save(borrow);
         });
+        if (income != null) incomeRepo.save(income);
     }
 }

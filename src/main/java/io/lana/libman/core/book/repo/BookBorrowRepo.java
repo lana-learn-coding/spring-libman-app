@@ -14,8 +14,6 @@ public interface BookBorrowRepo extends PagingAndSortingRepository<BookBorrow, S
 
     Set<BookBorrow> findAllByIdInAndReturnedIsFalse(Collection<String> ids);
 
-    boolean existsByTicketId(String ticket);
-
     @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info where b.reader.id = :id and b.returned is false",
             countQuery = "select count(b.id) from BookBorrow b where b.reader.id = :id and b.returned is false")
     Page<BookBorrow> findAllBorrowingByReaderId(String id, Pageable pageable);
@@ -46,19 +44,19 @@ public interface BookBorrowRepo extends PagingAndSortingRepository<BookBorrow, S
     Page<BookBorrow> findAllByBookInfoIdAndQuery(String id, String query, Pageable pageable);
 
     @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info i left join fetch i.series s left join fetch b.reader r left join fetch r.account a " +
-            "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query) or lower(b.ticketId) like lower(:query)) " +
+            "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query)) " +
             "and (:reader is null or lower(a.email) like lower(:reader) or lower(a.firstName) like lower(:reader) or lower(a.lastName) like lower(:reader) or lower(a.phone) like lower(:reader))",
             countQuery = "select count(b.id) from BookBorrow b left join  b.book bo left join  bo.info i left join  i.series s left join  b.reader r left join  r.account a " +
-                    "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query) or lower(b.ticketId) like lower(:query)) " +
+                    "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query)) " +
                     "and (:reader is null or lower(a.email) like lower(:reader) or lower(a.firstName) like lower(:reader) or lower(a.lastName) like lower(:reader) or lower(a.phone) like lower(:reader))")
     Page<BookBorrow> findAllByQueryAndReader(String query, String reader, Pageable pageable);
 
     @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info i left join fetch i.series s left join fetch b.reader r left join fetch r.account a " +
-            "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query) or lower(b.ticketId) like lower(:query)) " +
+            "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query)) " +
             "and (:reader is null or lower(a.email) like lower(:reader) or lower(a.firstName) like lower(:reader) or lower(a.lastName) like lower(:reader) or lower(a.phone) like lower(:reader)) " +
             "and b.returned is false",
             countQuery = "select count(b.id) from BookBorrow b left join  b.book bo left join  bo.info i left join  i.series s left join  b.reader r left join  r.account a " +
-                    "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query) or lower(b.ticketId) like lower(:query)) " +
+                    "where (:query is null  or lower(i.title) like lower(:query) or lower(s.name) like lower(:query)) " +
                     "and (:reader is null or lower(a.email) like lower(:reader) or lower(a.firstName) like lower(:reader) or lower(a.lastName) like lower(:reader) or lower(a.phone) like lower(:reader)) " +
                     "and b.returned is false")
     Page<BookBorrow> findAllBorrowingByQueryAndReader(String query, String reader, Pageable pageable);

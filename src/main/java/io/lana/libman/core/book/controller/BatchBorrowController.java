@@ -58,8 +58,8 @@ class BatchBorrowController {
                               @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
         reader = StringUtils.isBlank(reader) ? null : "%" + reader + "%";
-
-        final var page = readerRepo.findAllByQueryOrTicket(reader, query, pageable);
+        reader = StringUtils.defaultIfBlank(reader, query);
+        final var page = readerRepo.findAllBorrowingByQuery(reader, pageable);
         return new ModelAndView("/library/borrow/batch-index", Map.of("data", page));
     }
 

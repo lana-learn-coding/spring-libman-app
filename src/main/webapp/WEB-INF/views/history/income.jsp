@@ -139,6 +139,7 @@
                                                 <th scope="col">Id</th>
                                                 <th scope="col">Contact</th>
                                                 <th scope="col">Borrow</th>
+                                                <th scope="col">Books</th>
                                                 <th scope="col">Cost</th>
                                                 <th scope="col">Updated At</th>
                                                 <th scope="col">Action</th>
@@ -191,6 +192,7 @@
                                                              </div>
                                                         </c:if>
                                                     </td>
+                                                    <td>${item.borrowsCount}</td>
                                                     <td>
                                                         <div>+ <span class="ms-1">
                                                                 <fmt:formatNumber value="${item.totalBorrowCost}"
@@ -217,7 +219,14 @@
                                                         <div>
                                                             by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                        <a href="${pageContext.request.contextPath}/library/history/income/${item.id}/detail"
+                                                           up-instant up-follow="new" class="mr-1 txt-primary"
+                                                           up-history="true">
+                                                            <i data-feather="external-link"
+                                                               style="width: 20px; height: 20px"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>

@@ -53,6 +53,16 @@ class HistoryController {
         return new ModelAndView("history/income", Map.of("data", page, "summary", summary));
     }
 
+    @GetMapping("income/{id}/detail")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
+    public ModelAndView incomeDetail(@PathVariable String id, @RequestParam(required = false) String query, Pageable pageable) {
+        final var entity = incomeRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
+        final var page = repo.findAllByIncomeIdAndQuery(entity.getId(), query, pageable);
+        return new ModelAndView("history/income-detail", Map.of("data", page, "entity", entity));
+    }
+
     @GetMapping("{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_DELETE') && hasAnyAuthority('ADMIN', 'FORCE')")
     public ModelAndView deleteHistory(@PathVariable String id) {

@@ -40,7 +40,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @Setter(AccessLevel.PROTECTED)
     @Column(name = "income_id", updatable = false, insertable = false)
-    private String ticketId;
+    private String incomeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "income_id", foreignKeyDefinition = "FOREIGN KEY (income_id) REFERENCES income(id) ON DELETE CASCADE"))
@@ -80,10 +80,11 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
         return bookDetail;
     }
 
-    public String getTicketId() {
+    @Transient
+    public String getIncomeId() {
         if (income == null) return id;
-        if (StringUtils.isBlank(ticketId)) return income.getId();
-        return ticketId;
+        if (StringUtils.isBlank(incomeId)) return income.getId();
+        return incomeId;
     }
 
     @Transient

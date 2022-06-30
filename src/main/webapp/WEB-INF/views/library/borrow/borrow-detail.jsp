@@ -8,6 +8,7 @@
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.book.BookBorrow"--%>
@@ -132,6 +133,23 @@
                                         </span>
                                         <c:if test="${not empty entity.returnDate}">
                                             <span class="txt-primary">(${entity.returnDate})</span>
+                                        </c:if>
+                                    </div>
+                                    <div class="mb-1">
+                                        <span class="me-1">
+                                            Cost <fmt:formatNumber value="${entity.totalCost}" type="currency"
+                                                                   maxFractionDigits="2"/>
+                                        </span>
+                                        <span class="me-1">
+                                            (<fmt:formatNumber value="${entity.borrowCost}" type="currency"
+                                                               maxFractionDigits="2"/> per day)
+                                        </span>
+                                        <c:if test="${entity.totalOverDueAdditionalCost > 0}">
+                                              <span class="txt-primary">
+                                                  + <fmt:formatNumber value="${entity.totalOverDueAdditionalCost}"
+                                                                      type="currency"
+                                                                      maxFractionDigits="2"/>
+                                              </span>
                                         </c:if>
                                     </div>
                                 </div>

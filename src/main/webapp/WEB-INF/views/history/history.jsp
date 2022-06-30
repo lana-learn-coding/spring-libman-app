@@ -7,23 +7,22 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookBorrow>"--%>
-<%--@elvariable id="highlight" type="java.lang.String"--%>
 
 
 <layout:librarian>
-    <jsp:attribute name="title">Borrow Ticket Manage</jsp:attribute>
+    <jsp:attribute name="title">History Manage</jsp:attribute>
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h3>Borrow Manage</h3>
+                        <h3>History Manage</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="${pageContext.request.contextPath}/library/dashboard"
                                    up-follow up-instant>Home</a>
                             </li>
-                            <li class="breadcrumb-item active">Borrows</li>
+                            <li class="breadcrumb-item active">History</li>
                         </ol>
                     </div>
                 </div>

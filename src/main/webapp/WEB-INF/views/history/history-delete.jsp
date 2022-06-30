@@ -19,8 +19,7 @@
                         <h3 class="f-w-600 mt-3">Delete history</h3>
                         <span>#${entity.id}</span>
                         <c:if test="${entity.totalCost > 0.0}">
-                            <span class="txt-danger fw-bold">This will affect income report (<fmt:formatNumber
-                                    type="currency" value="${-1 * entity.totalCost}"/>)</span>
+                            <span class="txt-warning fw-bold">This will affect income report</span>
                         </c:if>
                     </div>
                     <div class="modal-footer">

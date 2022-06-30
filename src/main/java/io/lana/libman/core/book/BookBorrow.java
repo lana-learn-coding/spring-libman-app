@@ -4,9 +4,11 @@ import io.lana.libman.core.book.support.BookDetailConverter;
 import io.lana.libman.core.book.support.BookDetails;
 import io.lana.libman.core.reader.Reader;
 import io.lana.libman.support.data.AuditableEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Delegate;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.util.Precision;
 
 import javax.persistence.*;
@@ -36,7 +38,13 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @JoinColumn(foreignKey = @ForeignKey(name = "book_id", foreignKeyDefinition = "FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL"))
     private Book book;
 
-    private String ticketId = id;
+    @Setter(AccessLevel.PROTECTED)
+    @Column(name = "income_id", updatable = false, insertable = false)
+    private String ticketId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(name = "income_id", foreignKeyDefinition = "FOREIGN KEY (income_id) REFERENCES income(id) ON DELETE CASCADE"))
+    private Income income;
 
     @Column(columnDefinition = "TEXT")
     private String note;
@@ -53,6 +61,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @Column(name = "overdue_additional_cost", nullable = false)
     private double overDueAdditionalCost;
 
+    @Column(name = "total_cost")
     private Double totalCost;
 
     @NotNull
@@ -69,6 +78,23 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     public BookDetails getBookDetail() {
         if (book != null) return book;
         return bookDetail;
+    }
+
+    public String getTicketId() {
+        if (income == null) return id;
+        if (StringUtils.isBlank(ticketId)) return income.getId();
+        return ticketId;
+    }
+
+    @Transient
+    public void addIncome(Income income) {
+        if (income == null) return;
+        income.addTotalCost(getTotalCost());
+    }
+
+    @Transient
+    public boolean hasTicket() {
+        return income != null;
     }
 
     @Transient

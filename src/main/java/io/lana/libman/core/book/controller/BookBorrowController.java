@@ -3,8 +3,10 @@ package io.lana.libman.core.book.controller;
 import io.lana.libman.config.ConfigFacade;
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookBorrow;
+import io.lana.libman.core.book.Income;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookRepo;
+import io.lana.libman.core.book.repo.IncomeRepo;
 import io.lana.libman.core.reader.ReaderRepo;
 import io.lana.libman.support.security.AuthFacade;
 import io.lana.libman.support.security.AuthUser;
@@ -37,6 +39,8 @@ class BookBorrowController {
     private final BookRepo bookRepo;
 
     private final ReaderRepo readerRepo;
+
+    private final IncomeRepo incomeRepo;
 
     private final UIFacade ui;
 
@@ -94,10 +98,6 @@ class BookBorrowController {
             entity.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
         }
 
-        if (repo.existsByTicketId(entity.getTicketId())) {
-            bindingResult.rejectValue("ticket", "ticket.unique", "The ticket was already taken");
-        }
-
         if (bindingResult.hasErrors() || isValidate) {
             final var model = new ModelAndView("/library/borrow/borrow-edit", Map.of(
                     "entity", entity,
@@ -111,7 +111,6 @@ class BookBorrowController {
         book.setStatus(Book.Status.BORROWED);
         bookRepo.save(book);
 
-        entity.setTicketId(entity.getId());
         repo.save(entity);
         redirectAttributes.addFlashAttribute("highlight", entity.getId());
         ui.toast("Borrow ticket created successfully").success();
@@ -177,6 +176,7 @@ class BookBorrowController {
         book.setStatus(Book.Status.AVAILABLE);
         bookRepo.save(book);
 
+        entity.addIncome(incomeRepo.save(new Income()));
         entity.setReturned(true);
         entity.setReturnDate(LocalDate.now());
         repo.save(entity);
@@ -205,6 +205,7 @@ class BookBorrowController {
         bookRepo.save(book);
 
         entity.setTotalCost(0d);
+        entity.addIncome(incomeRepo.save(new Income()));
         entity.setReturned(true);
         entity.setReturnDate(LocalDate.now());
         repo.save(entity);

@@ -3,11 +3,12 @@ package io.lana.libman.core.book.controller;
 
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.BookBorrow;
+import io.lana.libman.core.book.Income;
 import io.lana.libman.core.book.controller.dto.BatchReturnDto;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookRepo;
+import io.lana.libman.core.book.repo.IncomeRepo;
 import io.lana.libman.core.reader.ReaderRepo;
-import io.lana.libman.support.data.IdUtils;
 import io.lana.libman.support.data.IdentifiedEntity;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,8 @@ class BatchBorrowController {
     private final ReaderRepo readerRepo;
 
     private final BookRepo bookRepo;
+
+    private final IncomeRepo incomeRepo;
 
     private final UIFacade ui;
 
@@ -99,11 +102,11 @@ class BatchBorrowController {
             return new ModelAndView("redirect:" + referer);
         }
         final var entity = selected.stream().findFirst().map(BookBorrow::getReader).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        final var ticketId = IdUtils.newTimeSortableId();
+        final var income = incomeRepo.save(new Income());
         selected.forEach(borrow -> {
             if (borrow.isReturned()) return;
             if (!borrow.getReader().equals(entity)) return;
-            returnBorrow(borrow, ticketId);
+            returnBorrow(borrow, income);
         });
 
         ui.toast("All borrow ticket returned successfully").success();
@@ -147,19 +150,19 @@ class BatchBorrowController {
     @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE') && hasAnyAuthority('ADMIN','FORCE')")
     public ModelAndView returnBorrow(@PathVariable String id, @RequestHeader String referer) {
         final var entity = readerRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        final var ticketId = IdUtils.newTimeSortableId();
-        entity.getBorrowingBooks().forEach(borrow -> returnBorrow(borrow, ticketId));
+        final var income = incomeRepo.save(new Income());
+        entity.getBorrowingBooks().forEach(borrow -> returnBorrow(borrow, income));
         ui.toast("Borrow ticket returned successfully").success();
         return new ModelAndView("redirect:" + referer);
     }
 
-    private void returnBorrow(BookBorrow borrow, String ticketId) {
+    private void returnBorrow(BookBorrow borrow, Income income) {
         final var book = borrow.getBook();
         book.setStatus(Book.Status.AVAILABLE);
         bookRepo.save(book);
 
         borrow.setReturned(true);
-        borrow.setTicketId(ticketId);
+        borrow.addIncome(income);
         borrow.setReturnDate(LocalDate.now());
         repo.save(borrow);
     }

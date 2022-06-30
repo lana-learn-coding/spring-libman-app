@@ -33,7 +33,7 @@ class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/library/**/*", "/authorities/**/*")
                 .hasAuthority(Authorities.LIBRARIAN)
-                .antMatchers("/me/**/*")
+                .antMatchers("/me/**/*", "/me")
                 .authenticated()
                 .anyRequest().permitAll()
 

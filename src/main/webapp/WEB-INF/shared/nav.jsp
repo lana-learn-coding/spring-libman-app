@@ -4,7 +4,7 @@
 <header class="main-nav">
     <sec:authorize access="isAuthenticated()">
         <div class="sidebar-user text-center">
-            <a class="setting-primary" href="javascript:void(0)"><i data-feather="settings"></i></a>
+            <a class="setting-primary" href="/me" up-follow><i data-feather="settings"></i></a>
             <sec:authentication property="principal.avatar" var="avatar"/>
             <img class="img-90 rounded-circle"
                  src="${pageContext.request.contextPath}${(empty avatar ? '/static/images/avatar/default.png' : avatar)}"
@@ -56,10 +56,17 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" up-follow href="${pageContext.request.contextPath}/home">
                             <i data-feather="home"></i><span>Home</span>
                         </a>
                     </li>
+                    <sec:authorize access="isAuthenticated()">
+                        <li>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/me" up-follow>
+                                <i data-feather="user"></i><span>Profile</span>
+                            </a>
+                        </li>
+                    </sec:authorize>
                     <sec:authorize access="hasAuthority('LIBRARIAN')">
                         <li class="sidebar-main-title">
                             <div>

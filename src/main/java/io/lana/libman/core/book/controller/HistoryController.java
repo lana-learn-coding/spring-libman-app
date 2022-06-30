@@ -1,6 +1,7 @@
 package io.lana.libman.core.book.controller;
 
 import io.lana.libman.core.book.repo.BookBorrowRepo;
+import io.lana.libman.core.book.repo.IncomeRepo;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @Validated
@@ -23,6 +25,8 @@ import java.util.Map;
 @RequestMapping("/library/history")
 @RequiredArgsConstructor
 class HistoryController {
+    private final IncomeRepo incomeRepo;
+
     private final BookBorrowRepo repo;
 
     private final UIFacade ui;
@@ -35,6 +39,18 @@ class HistoryController {
         reader = StringUtils.isBlank(reader) ? null : "%" + reader + "%";
         final var page = repo.findAllByQueryAndReader(query, reader, pageable);
         return new ModelAndView("history/history", Map.of("data", page));
+    }
+
+    @GetMapping("income")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')")
+    public ModelAndView income(@RequestParam(required = false) String query,
+                               @RequestParam(required = false) LocalDate from,
+                               @RequestParam(required = false) LocalDate to,
+                               @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
+        final var page = incomeRepo.findAllInRangeByQuery(query, from, to, pageable);
+        final var summary = incomeRepo.findSummaryInRangeByQuery(query, from, to);
+        return new ModelAndView("history/income", Map.of("data", page, "summary", summary));
     }
 
     @GetMapping("{id}/delete")

@@ -115,7 +115,30 @@ up.compiler('[select2]', (el) => {
 });
 
 up.compiler('input.datepicker-here', (el) => {
-  $(el).datepicker({ gotoCurrent: true });
+  const $el = $(el);
+
+  if ($el.attr('up-autosubmit') != null) {
+    $el.on('change', () => {
+      console.log('fuck');
+    });
+    $el.datepicker({
+      gotoCurrent: true, onSelect: () => {
+        console.log('s');
+        const $form = $el.closest('form');
+        if ($form.length > 0) up.submit($form[0]);
+      },
+    });
+  } else if ($el.attr('up-validate') != null) {
+    $el.datepicker({
+      gotoCurrent: true, onSelect: () => {
+        console.log('s');
+        const $form = $el.closest('form');
+        if ($form.length > 0) up.validate($form[0]);
+      },
+    });
+  } else {
+    $el.datepicker({ gotoCurrent: true });
+  }
   return () => {
     const data = $(el).data('datepicker');
     if (data) data.destroy();

@@ -137,7 +137,7 @@
       this.keys = [];
       this.minRange = '';
       this.maxRange = '';
-      this._prevOnSelectValue = '';
+      this._prevOnSelectValue = this.$el.val();
 
       this.init();
     };

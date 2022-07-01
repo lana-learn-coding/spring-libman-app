@@ -15,7 +15,7 @@ public interface IncomeRepo extends PagingAndSortingRepository<Income, String> {
     @Query(value = "select i from Income i left join fetch i.borrows b left join fetch b.reader r left join fetch r.account a " +
             "where (:query is null or lower(a.email) like lower(:query) or lower(a.firstName) like lower(:query) or lower(a.lastName) like lower(:query) or lower(a.phone) like lower(:query)) " +
             "and (cast(:fromDate as java.time.LocalDate) is null or :fromDate <= i.returnDate) and (cast(:to as java.time.LocalDate) is null or :to >= i.returnDate)",
-            countQuery = "select count(i) from Income i left join i.borrows b left join b.reader r left join r.account a " +
+            countQuery = "select count(distinct i.id) from Income i left join i.borrows b left join b.reader r left join r.account a " +
                     "where (:query is null or lower(a.email) like lower(:query) or lower(a.firstName) like lower(:query) or lower(a.lastName) like lower(:query) or lower(a.phone) like lower(:query)) " +
                     "and (cast(:fromDate as java.time.LocalDate) is null or :fromDate <= i.returnDate) and (cast(:to as java.time.LocalDate) is null or :to >= i.returnDate)")
     Page<Income> findAllInRangeByQuery(String query, LocalDate fromDate, LocalDate to, Pageable pageable);

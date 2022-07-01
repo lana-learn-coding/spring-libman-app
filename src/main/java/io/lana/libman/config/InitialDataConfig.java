@@ -167,7 +167,7 @@ class InitialDataConfig implements ApplicationRunner {
                     }
                     final var reader = new Reader();
                     reader.setAccount(user);
-                    reader.setBorrowLimit(faker.number().numberBetween(2, 20));
+                    reader.setBorrowLimit(faker.number().numberBetween(3, 12));
                     reader.setCreatedBy(SYSTEM);
                     readerRepo.save(reader);
                 });
@@ -301,30 +301,43 @@ class InitialDataConfig implements ApplicationRunner {
                 .filter(User::isInternal)
                 .collect(Collectors.toList());
 
-        for (int i = 0; i < 300; i++) {
-            final var borrow = new BookBorrow();
-            borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
-            borrow.setReader(faker.options().nextElement(readers));
-            final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            borrow.setBorrowDate(borrowDate);
-            borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
-            borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
-            borrow.setDueDate(faker.date().past(60, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            borrow.setReturned(true);
-            borrow.setReturnDate(faker.date().past(120, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            final var book = faker.options().nextElement(books);
-            borrow.setBook(book);
-            borrow.setBorrowCost(book.getBorrowCost());
-            borrow.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
-            if (borrow.getTotalCost() > 0d) {
-                final var income = new Income().add(borrow);
-                income.setCreatedBy(SYSTEM);
-                income.setReturnDate(borrow.getReturnDate());
-                borrow.setIncome(incomeRepo.save(income));
-            }
-            if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
-            bookBorrowRepo.save(borrow);
-        }
+        Stream.generate(() -> faker.options().nextElement(readers))
+                .distinct()
+                .limit(50)
+                .forEach(reader -> {
+                    final var numberOfTickets = faker.number().numberBetween(1, 10);
+                    for (int i = 0; i < numberOfTickets; i++) {
+                        var income = incomeRepo.save(new Income());
+                        final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        income.setReturnDate(borrowDate);
+                        income.setCreatedBy(SYSTEM);
+
+                        var borrowLimit = faker.number().numberBetween(1, 8);
+                        for (int j = 0; j < borrowLimit; j++) {
+                            final var borrow = new BookBorrow();
+                            borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
+                            borrow.setReader(faker.options().nextElement(readers));
+                            borrow.setBorrowDate(borrowDate);
+                            borrow.setCreatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+                            borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+                            borrow.setDueDate(faker.date().past(60, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                            borrow.setReturned(true);
+                            borrow.setReturnDate(faker.date().past(120, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                            final var book = faker.options().nextElement(books);
+                            borrow.setBook(book);
+                            borrow.setBorrowCost(book.getBorrowCost());
+                            borrow.setOverDueAdditionalCost(Math.max(book.getBorrowCost(), config.getOverDueDefaultCost()));
+                            if (borrow.getTotalCost() > 0d) {
+                                if (borrow.getReturnDate().isAfter(income.getReturnDate())) income.setReturnDate(borrow.getReturnDate());
+                                borrow.setIncome(income.add(borrow));
+                            }
+                            if (faker.bool().bool()) borrow.setNote(faker.howIMetYourMother().quote());
+                            bookBorrowRepo.save(borrow);
+                        }
+                        incomeRepo.save(income);
+                    }
+                });
+
 
         // generate borrowing ticket
         final List<Book> borrowedBook = new ArrayList<>();

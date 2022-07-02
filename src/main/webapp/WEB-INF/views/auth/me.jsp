@@ -57,12 +57,17 @@
                                                    <span>${empty lastName ? '' : lastName}</span>
                                                </h3>
                                                <p class="f-12">
-                                                       <sec:authorize access="hasAnyAuthority('ADMIN')">
-                                                           ADMIN
-                                                       </sec:authorize>
-                                                   <sec:authorize access="!hasAnyAuthority('ADMIN')">
+                                                   <sec:authorize access="hasAnyAuthority('ADMIN')">
+                                                       ADMIN
+                                                   </sec:authorize>
+                                                   <sec:authorize
+                                                           access="!hasAnyAuthority('ADMIN') && hasAnyAuthority('LIBRARIAN')">
                                                            LIBRARIAN
-                                                       </sec:authorize>
+                                                   </sec:authorize>
+                                                   <sec:authorize
+                                                           access="!hasAnyAuthority('ADMIN') && !hasAnyAuthority('LIBRARIAN')">
+                                                           READER
+                                                   </sec:authorize>
                                                </p>
                                            </div>
                                        </div>

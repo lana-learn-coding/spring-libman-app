@@ -21,11 +21,11 @@
             </a>
             <p class="mb-0 font-roboto">Human Resources Department</p>
             <ul>
-                <li><span><span class="counter">Librarian</span></span>
+                <li><span>Librarian</span>
                     <p>Internal user</p>
                 </li>
                 <sec:authorize access="hasAnyAuthority('ADMIN')">
-                    <li><span><span class="counter">Admin</span></span>
+                    <li><span>Admin</span>
                         <p>Account Manager</p>
                     </li>
                 </sec:authorize>

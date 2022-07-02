@@ -129,7 +129,8 @@
                                     </c:if>
                                     <div class="mb-1">
                                         <span class="me-1">
-                                            From ${entity.borrowDate} to ${entity.dueDate}
+                                            From ${entity.borrowDate} to <span
+                                                <c:if test="${entity.dueDate.isBefore(LocalDate.now())}">class="txt-danger"</c:if>>${entity.dueDate}</span>
                                         </span>
                                         <c:if test="${not empty entity.returnDate}">
                                             <span class="txt-primary">(${entity.returnDate})</span>

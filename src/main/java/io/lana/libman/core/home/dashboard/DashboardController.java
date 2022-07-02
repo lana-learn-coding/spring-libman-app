@@ -26,6 +26,7 @@ class DashboardController {
         final var summary = dashboardRepo.countDashboardSummary();
         return new ModelAndView("/home/dashboard", Map.of(
                 "summary", summary,
+                "overDues", dashboardRepo.getTopOverDueBorrow(),
                 "borrow7Days", convertCountLast7DaysToChart(dashboardRepo.countBorrowByDayInLast7Days()),
                 "reader7Days", convertCountLast7DaysToChart(dashboardRepo.countReaderByDayInLast7Days()),
                 "income7Days", convertCountLast7DaysToChart(dashboardRepo.countIncomeByDayInLast7Days())

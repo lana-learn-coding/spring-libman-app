@@ -3,11 +3,14 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%--@elvariable id="summary" type="io.lana.libman.core.home.dashboard.DashboardSummary"--%>
 <%--@elvariable id="borrow7Days" type="java.util.Map"--%>
 <%--@elvariable id="reader7Days" type="java.util.Map"--%>
 <%--@elvariable id="income7Days" type="java.util.Map"--%>
+<%--@elvariable id="overDues" type="java.util.List<io.lana.libman.core.book.BookBorrow>"--%>
 
 <layout:librarian>
     <jsp:attribute name="title">Dashboard</jsp:attribute>
@@ -169,6 +172,90 @@
                         </div>
                         <div id="chart-income7Days">
                             <div class="flot-chart-placeholder" id="chart-widget-top-third"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 xl-100 box-col-12">
+                <div class="card">
+                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')" var="canRead"/>
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h5>OVERDUE BORROW</h5>
+                        <c:if test="${canRead}">
+                            <div class="setting-list">
+                                <ul class="list-unstyled setting-option">
+                                    <li>
+                                        <a class="setting-primary"
+                                           href="${pageContext.request.contextPath}/library/borrows?sort=borrowDate%2Cdesc"
+                                           up-follow up-instant>
+                                            <i class="icon-arrow-top-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </c:if>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordernone">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Details</th>
+                                    <th scope="col">Reader</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                                </thead>
+                                <c:if test="${canRead}">
+                                    <tbody>
+                                    <c:forEach items="${overDues}" varStatus="loop" var="item">
+                                        <tr>
+                                            <td>${loop.index + 1}</td>
+                                            <td>
+                                                <a class="d-block"
+                                                   href="${pageContext.request.contextPath}/library/borrows/${item.id}/detail"
+                                                   up-follow>${item.book.title}
+                                                </a>
+                                                <c:if test="${not empty item.seriesName}">
+                                                     <small class="small">
+                                                         In Series: ${ item.seriesName }
+                                                     </small>
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <c:if test="${not empty item.reader.account.firstName}">
+                                                        <span class="me-1">${item.reader.account.firstName}</span>
+                                                    </c:if>
+                                                    <c:if test="${not empty item.reader.account.lastName}">
+                                                        <span>${item.reader.account.lastName}</span>
+                                                    </c:if>
+                                                </div>
+                                                <a class="txt-primary" up-follow up-layer="parent root"
+                                                   href="${pageContext.request.contextPath}/library/readers/${item.reader.id}/detail#borrow">
+                                                        ${  item.reader.account.email }
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <fmt:formatNumber value="${item.totalBorrowCost}" type="currency"
+                                                                      maxFractionDigits="2"/>
+                                                </div>
+                                                <div class="txt-danger">
+                                                    + <fmt:formatNumber value="${item.totalOverDueAdditionalCost}"
+                                                                        type="currency"
+                                                                        maxFractionDigits="2"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </c:if>
+                            </table>
+                            <c:if test="${not canRead or empty overDues}">
+                                <component:empty message="Currently no overdue"/>
+                            </c:if>
                         </div>
                     </div>
                 </div>

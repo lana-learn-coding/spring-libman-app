@@ -1,5 +1,6 @@
 package io.lana.libman.core.home.dashboard;
 
+import io.lana.libman.core.book.BookBorrow;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -52,5 +54,13 @@ class DashboardRepo {
                 .getResultList();
         return result.stream().collect(Collectors.toMap(r -> r.get("date").toString(), r -> ((Long) r.get("count")).doubleValue(),
                 (a, b) -> a, LinkedHashMap::new));
+    }
+
+    public List<BookBorrow> getTopOverDueBorrow() {
+        return em.createQuery("select b from BookBorrow b left join fetch b.reader r left join fetch r.account a left join fetch b.book bo left join fetch bo.info i left join fetch i.series s " +
+                        "where b.returned is false and b.dueDate < :now order by b.dueDate desc", BookBorrow.class)
+                .setParameter("now", LocalDate.now())
+                .setMaxResults(4)
+                .getResultList();
     }
 }

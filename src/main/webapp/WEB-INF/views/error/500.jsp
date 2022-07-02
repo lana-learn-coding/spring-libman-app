@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <layout:base>
-    <jsp:attribute name="title">Not Found</jsp:attribute>
+    <jsp:attribute name="title">Error</jsp:attribute>
     <jsp:attribute name="body">
      <div class="error-wrapper">
          <div class="container">

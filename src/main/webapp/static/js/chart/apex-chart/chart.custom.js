@@ -1,13 +1,7 @@
-scoped(async () => {
-  if (window.ApexCharts) return;
-
-  const queue = [];
-  window.createApexCharts = async (selector, opt) => {
+scoped(() => {
+  window.createApexCharts = (selector, opt) => {
     const el = typeof selector === 'string' ? document.querySelector(selector) : selector;
-    if (window.ApexCharts) {
-      return Promise.resolve(new window.ApexCharts(el, opt));
-    }
-    return new Promise(resolve => queue.push(() => resolve(new window.ApexCharts(el, opt))));
+    return new window.ApexCharts(el, opt);
   };
 
   window.showApexChartsFromData = (selector, options, data = []) => {
@@ -59,9 +53,6 @@ scoped(async () => {
       colors: [vihoAdminConfig.primary],
       ...options,
     };
-    window.createApexCharts(selector, chartOptions).then(c => c.render());
+    window.createApexCharts(selector, chartOptions).render();
   };
-
-  await inject('/static/js/chart/apex-chart/apex-chart.js');
-  while (queue.length) queue.shift().call();
 });

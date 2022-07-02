@@ -16,7 +16,6 @@
     <jsp:attribute name="title">Dashboard</jsp:attribute>
     <jsp:attribute name="body">
         <jsp:include page="/WEB-INF/presets/counter.head.jsp"/>
-        <jsp:include page="/WEB-INF/presets/chart.head.jsp"/>
         <div class="container-fluid">
             <div class="page-header">
                 <div class="row">

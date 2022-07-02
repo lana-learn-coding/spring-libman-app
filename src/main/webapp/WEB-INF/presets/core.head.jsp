@@ -33,6 +33,8 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/date-picker.min.css"/>">
 <script src="<c:url value="/static/js/select2/select2.full.min.js"/>" defer></script>
 <script src="<c:url value="/static/js/datepicker/date-picker/datepicker.min.js"/>" defer></script>
+<script src="<c:url value="/static/js/chart/apex-chart/apex-chart.js"/>" defer></script>
+<script src="<c:url value="/static/js/chart/apex-chart/chart.custom.js"/>" defer></script>
 
 <%-- App styles and colors --%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.min.css"/>">

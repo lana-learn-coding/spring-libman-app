@@ -22,6 +22,10 @@
   // Defer script call hack
   const queue = [];
   window.defer = (func) => {
+    if (document.getElementById('deferred')) {
+      func.call();
+      return;
+    }
     queue.push(func);
   };
 

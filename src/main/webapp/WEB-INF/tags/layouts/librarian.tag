@@ -46,5 +46,6 @@
 </div>
 
 <jsp:invoke fragment="scripts"/>
+<div id="deferred" class="d-none"></div>
 </body>
 </html>

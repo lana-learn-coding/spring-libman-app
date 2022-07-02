@@ -5,11 +5,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--@elvariable id="summary" type="io.lana.libman.core.home.dashboard.DashboardSummary"--%>
+<%--@elvariable id="borrow7Days" type="java.util.Map"--%>
+<%--@elvariable id="reader7Days" type="java.util.Map"--%>
+<%--@elvariable id="income7Days" type="java.util.Map"--%>
 
 <layout:librarian>
     <jsp:attribute name="title">Dashboard</jsp:attribute>
     <jsp:attribute name="body">
         <jsp:include page="/WEB-INF/presets/counter.head.jsp"/>
+        <jsp:include page="/WEB-INF/presets/chart.head.jsp"/>
         <div class="container-fluid">
             <div class="page-header">
                 <div class="row">
@@ -116,5 +120,92 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card o-hidden">
+                    <div class="chart-widget-top">
+                        <div class="row card-body">
+                            <div class="col-5">
+                                <h6 class="f-w-600 font-primary">BORROW</h6>
+                            </div>
+                            <div class="col-7 text-end">
+                                <h4 class="num total-value"><span class="counter"><fmt:formatNumber
+                                        value="${borrow7Days.today}"/></span></h4>
+                            </div>
+                        </div>
+                        <div>
+                            <div id="chart-borrow7Days"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="card o-hidden">
+                    <div class="chart-widget-top">
+                        <div class="row card-body">
+                            <div class="col-7">
+                                <h6 class="f-w-600 font-secondary">ACTIVE READER</h6>
+                            </div>
+                            <div class="col-5 text-end">
+                                <h4 class="num total-value"><span class="counter"><fmt:formatNumber
+                                        value="${reader7Days.today}"/></span></h4>
+                            </div>
+                        </div>
+                        <div id="chart-reader7Days"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="card o-hidden">
+                    <div class="chart-widget-top">
+                        <div class="row card-body">
+                            <div class="col-8">
+                                <h6 class="f-w-600 font-primary">INCOME</h6>
+                            </div>
+                            <div class="col-4 text-end">
+                                <h4 class="num total-value">$<span class="counter"><fmt:formatNumber
+                                        value="${income7Days.today}"/></span></h4>
+                            </div>
+                        </div>
+                        <div id="chart-income7Days">
+                            <div class="flot-chart-placeholder" id="chart-widget-top-third"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            /*Line chart*/
+            defer(() => {
+                showApexChartsFromData('#chart-borrow7Days', {
+                    chart: {
+                        toolbar: {
+                            show: false
+                        },
+                        height: 170,
+                        type: 'area',
+                    },
+                }, ${borrow7Days.data});
+                showApexChartsFromData('#chart-reader7Days', {
+                    chart: {
+                        toolbar: {
+                            show: false
+                        },
+                        height: 170,
+                        type: 'area',
+                    },
+                    colors: [vihoAdminConfig.secondary],
+                }, ${reader7Days.data});
+                showApexChartsFromData('#chart-income7Days', {
+                    chart: {
+                        toolbar: {
+                            show: false
+                        },
+                        height: 170,
+                        type: 'area',
+                    },
+                }, ${income7Days.data})
+            });
+        </script>
     </jsp:attribute>
 </layout:librarian>

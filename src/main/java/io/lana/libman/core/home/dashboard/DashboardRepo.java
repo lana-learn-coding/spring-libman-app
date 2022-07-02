@@ -7,6 +7,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,5 +28,29 @@ class DashboardRepo {
                 .getSingleResult();
         return new DashboardSummary((long) result.get("readersCount"), (long) result.get("booksCount"),
                 (long) result.get("borrowsCount"), (long) result.get("overDuesCount"));
+    }
+
+    public Map<String, Double> countBorrowByDayInLast7Days() {
+        final var result = em.createQuery("select b.borrowDate as date, count(b.id) as count from BookBorrow b where b.borrowDate >= :last group by b.borrowDate order by b.borrowDate asc", Tuple.class)
+                .setParameter("last", LocalDate.now().minusDays(7))
+                .getResultList();
+        return result.stream().collect(Collectors.toMap(r -> r.get("date").toString(), r -> ((Long) r.get("count")).doubleValue(),
+                (a, b) -> a, LinkedHashMap::new));
+    }
+
+    public Map<String, Double> countIncomeByDayInLast7Days() {
+        final var result = em.createQuery("select b.returnDate as date, sum(b.totalCost) as count from Income b where b.returnDate >= :last group by b.returnDate order by b.returnDate asc", Tuple.class)
+                .setParameter("last", LocalDate.now().minusDays(7))
+                .getResultList();
+        return result.stream().collect(Collectors.toMap(r -> r.get("date").toString(), r -> (Double) r.get("count"),
+                (a, b) -> a, LinkedHashMap::new));
+    }
+
+    public Map<String, Double> countReaderByDayInLast7Days() {
+        final var result = em.createQuery("select b.borrowDate as date, count(distinct b.reader.id) as count from BookBorrow b where b.borrowDate >= :last group by b.borrowDate order by b.borrowDate asc", Tuple.class)
+                .setParameter("last", LocalDate.now().minusDays(7))
+                .getResultList();
+        return result.stream().collect(Collectors.toMap(r -> r.get("date").toString(), r -> ((Long) r.get("count")).doubleValue(),
+                (a, b) -> a, LinkedHashMap::new));
     }
 }

@@ -322,7 +322,7 @@
                             show: false
                         },
                         type: 'area',
-                        height: 365,
+                        height: 350,
                         stacked: false,
                     },
                     stroke: {
@@ -350,6 +350,13 @@
                             opacityTo: 0.55,
                             stops: [0, 100, 100, 100]
                         }
+                    },
+                    grid: {
+                        show: true,
+                        padding: {
+                            left: 5,
+                            right: 20,
+                        },
                     },
                     colors: [vihoAdminConfig.primary, '#51bb25', '#ff5f24']
                 })

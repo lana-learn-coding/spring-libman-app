@@ -38,6 +38,9 @@ scoped(() => {
           right: 30,
         },
       },
+      yaxis: {
+        min: 0,
+      },
       fill: {
         type: 'gradient',
         gradient: {

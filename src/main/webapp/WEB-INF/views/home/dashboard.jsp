@@ -10,6 +10,7 @@
 <%--@elvariable id="borrow7Days" type="java.util.Map"--%>
 <%--@elvariable id="reader7Days" type="java.util.Map"--%>
 <%--@elvariable id="income7Days" type="java.util.Map"--%>
+<%--@elvariable id="income30Days" type="java.util.Map"--%>
 <%--@elvariable id="overDues" type="java.util.List<io.lana.libman.core.book.BookBorrow>"--%>
 
 <layout:librarian>
@@ -177,9 +178,9 @@
             </div>
         </div>
         <div class="row">
+            <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')" var="canRead"/>
             <div class="col-xl-6 xl-100 box-col-12">
                 <div class="card">
-                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKBORROW_READ')" var="canRead"/>
                     <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                         <h5>OVERDUE BORROW</h5>
                         <c:if test="${canRead}">
@@ -242,9 +243,9 @@
                                                                       maxFractionDigits="2"/>
                                                 </div>
                                                 <div class="txt-danger">
-                                                    + <fmt:formatNumber value="${item.totalOverDueAdditionalCost}"
-                                                                        type="currency"
-                                                                        maxFractionDigits="2"/>
+                                                    <fmt:formatNumber value="${item.totalOverDueAdditionalCost}"
+                                                                      type="currency"
+                                                                      maxFractionDigits="2"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -256,6 +257,30 @@
                                 <component:empty message="Currently no overdue"/>
                             </c:if>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 box-col-12 xl-100 invoice-sec">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-top d-sm-flex justify-content-between align-items-center">
+                            <h5>Monthly Overview</h5>
+                            <c:if test="${canRead}">
+                                <div class="setting-list">
+                                    <ul class="list-unstyled setting-option">
+                                        <li>
+                                            <a class="setting-primary"
+                                               href="${pageContext.request.contextPath}/library/history/income"
+                                               up-follow up-instant>
+                                                <i class="icon-arrow-top-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="chart-monthly"></div>
                     </div>
                 </div>
             </div>
@@ -290,7 +315,44 @@
                         height: 170,
                         type: 'area',
                     },
-                }, ${income7Days.data})
+                }, ${income7Days.data});
+                showApexChartsFromData('#chart-monthly', {
+                    chart: {
+                        toolbar: {
+                            show: false
+                        },
+                        type: 'area',
+                        height: 365,
+                        stacked: false,
+                    },
+                    stroke: {
+                        width: [5, 1, 3],
+                        curve: 'straight'
+                    },
+                    series: [{
+                        name: 'Total Income',
+                        data: ${income30Days.totalCost}
+                    }, {
+                        name: 'Borrow Income',
+                        data: ${income30Days.borrowCost},
+                        type: 'column',
+                    }, {
+                        name: 'Overdue',
+                        data: ${income30Days.overDueCost}
+                    }],
+                    fill: {
+                        opacity: [0.85, 0.25, 1],
+                        gradient: {
+                            inverseColors: false,
+                            shade: 'light',
+                            type: "vertical",
+                            opacityFrom: 0.85,
+                            opacityTo: 0.55,
+                            stops: [0, 100, 100, 100]
+                        }
+                    },
+                    colors: [vihoAdminConfig.primary, '#51bb25', '#ff5f24']
+                })
             });
         </script>
     </jsp:attribute>

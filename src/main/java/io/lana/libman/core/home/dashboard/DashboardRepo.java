@@ -63,4 +63,14 @@ class DashboardRepo {
                 .setMaxResults(4)
                 .getResultList();
     }
+
+    public Map<String, Map<String, Double>> countIncomeByDayInLast30Days() {
+        final var result = em.createQuery("select b.returnDate as date, sum(b.totalCost) as totalCost, sum(b.totalBorrowCost) as borrowCost, sum(b.totalOverDueAdditionalCost) as overDueCost from Income b " +
+                        "where b.returnDate >= :last and b.returnDate < :now group by b.returnDate order by b.returnDate asc", Tuple.class)
+                .setParameter("last", LocalDate.now().minusDays(31)).setParameter("now", LocalDate.now())
+                .getResultList();
+        return result.stream().collect(Collectors.toMap(r -> r.get("date").toString(),
+                r -> Map.of("totalCost", (Double) r.get("totalCost"), "borrowCost", (Double) r.get("borrowCost"), "overDueCost", (Double) r.get("overDueCost")),
+                (a, b) -> a, LinkedHashMap::new));
+    }
 }

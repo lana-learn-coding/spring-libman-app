@@ -29,3 +29,12 @@
     while (queue.length) queue.shift().call();
   });
 })();
+
+defer(() => {
+  const color = document.getElementById('color');
+  window.vihoAdminConfig = {
+    primary: color.getAttribute('data-primary'),
+    secondary: color.getAttribute('data-secondary'),
+    color: color.getAttribute('data-attr'),
+  };
+});

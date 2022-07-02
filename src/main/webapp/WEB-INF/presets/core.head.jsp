@@ -38,15 +38,15 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.min.css"/>">
 <sec:authorize access="!hasAuthority('LIBRARIAN')" var="isAdmin">
     <link id="color" rel="stylesheet" href="<c:url value="/static/css/color-1.min.css"/>"
-          media="screen">
+          media="screen" data-attr="color-1" data-primary="#24695c" data-secondary="#ba895d">
 </sec:authorize>
 <sec:authorize access="isAuthenticated() && !hasAuthority('ADMIN')" var="isAdmin">
-    <link id="color" rel="stylesheet" href="<c:url value="/static/css/color-4.min.css"/>"
-          media="screen">
+    <link id="color" rel="stylesheet" href="<c:url value="/static/css/color-5.min.css"/>"
+          media="screen" data-attr="color-5" data-primary="#3a9aa8" data-secondary="#984ff3">
 </sec:authorize>
 <sec:authorize access="isAuthenticated() && hasAuthority('ADMIN')" var="isAdmin">
     <link id="color" rel="stylesheet" href="<c:url value="/static/css/color-2.min.css"/>"
-          media="screen">
+          media="screen" data-attr="color-2" data-primary="#d97f3d" data-secondary="#f25f4c">
 </sec:authorize>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/responsive.min.css"/>">
 

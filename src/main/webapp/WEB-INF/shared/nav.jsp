@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" up-follow href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" up-follow up-instant href="${pageContext.request.contextPath}/home">
                             <i data-feather="home"></i><span>Home</span>
                         </a>
                     </li>
@@ -74,7 +74,8 @@
                             </div>
                         </li>
                         <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/library/dashboard">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/library/dashboard" up-follow
+                               up-instant>
                                 <i data-feather="bar-chart-2"></i><span>Dashboard</span>
                             </a>
                         </li>

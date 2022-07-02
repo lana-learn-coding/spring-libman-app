@@ -24,10 +24,5 @@ class HomeController {
     public String home() {
         return "/home/home";
     }
-
-    @GetMapping("/library/dashboard")
-    public String dashboard() {
-        return "/home/dashboard";
-    }
 }
 

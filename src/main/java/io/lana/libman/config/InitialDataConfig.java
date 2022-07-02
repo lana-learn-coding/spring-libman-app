@@ -28,8 +28,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -308,13 +310,15 @@ class InitialDataConfig implements ApplicationRunner {
                     final var numberOfTickets = faker.number().numberBetween(1, 10);
                     for (int i = 0; i < numberOfTickets; i++) {
                         var income = incomeRepo.save(new Income());
-                        final var borrowDate = faker.date().past(120, 60, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                        income.setReturnDate(borrowDate);
+                        final var returnDate = faker.date().past(62, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        income.setReturnDate(returnDate);
                         income.setCreatedBy(SYSTEM);
 
                         var borrowLimit = faker.number().numberBetween(1, 8);
                         for (int j = 0; j < borrowLimit; j++) {
                             final var borrow = new BookBorrow();
+                            final var borrowDate = faker.date().past(92, (int) ChronoUnit.DAYS.between(returnDate.minusDays(1), LocalDate.now()), TimeUnit.DAYS)
+                                    .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                             borrow.setCreatedBy(faker.options().nextElement(users).getUsername());
                             borrow.setReader(faker.options().nextElement(readers));
                             borrow.setBorrowDate(borrowDate);
@@ -322,7 +326,7 @@ class InitialDataConfig implements ApplicationRunner {
                             borrow.setUpdatedAt(borrowDate.atStartOfDay().toInstant(ZoneOffset.UTC));
                             borrow.setDueDate(faker.date().past(60, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                             borrow.setReturned(true);
-                            borrow.setReturnDate(faker.date().past(120, 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                            borrow.setReturnDate(returnDate);
                             final var book = faker.options().nextElement(books);
                             borrow.setBook(book);
                             borrow.setBorrowCost(book.getBorrowCost());
@@ -350,10 +354,10 @@ class InitialDataConfig implements ApplicationRunner {
                     final var numberOfTickets = faker.number().numberBetween(1, borrowLimit);
 
                     for (int i = 0; i < numberOfTickets; i++) {
-                        final var borrowDate = faker.date().past(20, 2, TimeUnit.DAYS)
+                        final var borrowDate = faker.date().past(15, 0, TimeUnit.DAYS)
                                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         final var dueDate = faker.number().numberBetween(0, 10) < 1
-                                ? faker.date().past(2, 1, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                                ? faker.date().past((int) ChronoUnit.DAYS.between(borrowDate, LocalDate.now()), 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                                 : faker.date().future(10, 1, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         final var note = faker.howIMetYourMother().quote();
                         final var numberOfBorrow = faker.number().numberBetween(1, borrowLimit);

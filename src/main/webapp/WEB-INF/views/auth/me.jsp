@@ -20,14 +20,12 @@
                     <div class="col-sm-8">
                         <h3>Edit Profile</h3>
                         <ol class="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="${pageContext.request.contextPath}/library/dashboard"
-                                       up-follow up-instant>Home</a>
-                                </li>
-                                <li class="breadcrumb-item">Users</li>
-                                <li class="breadcrumb-item active">Edit Profile</li>
-                            </ol>
+                            <li class="breadcrumb-item">
+                                <a href="${pageContext.request.contextPath}/library/dashboard"
+                                   up-follow up-instant>Home</a>
+                            </li>
+                            <li class="breadcrumb-item">Users</li>
+                            <li class="breadcrumb-item active">Edit Profile</li>
                         </ol>
                     </div>
                 </div>
@@ -88,7 +86,7 @@
                                    <div class="mb-1">Name
                                        <div class="ms-2 txt-primary d-inline">
                                             <c:if test="${not empty user.firstName}">
-                                                <span class="me-2">${user.firstName}</span>
+                                                <span>${user.firstName} </span>
                                             </c:if>
                                            <c:if test="${not empty user.firstName}">
                                                 <span>${user.lastName}</span>

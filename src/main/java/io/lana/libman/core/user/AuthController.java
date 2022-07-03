@@ -93,7 +93,7 @@ class AuthController {
 
         BeanUtils.copyProperties(dto, user);
         userRepo.save(user);
-        ui.toast("User successfully updated").success();
+        ui.toast("Profile updated successfully. Please re-login to view updated info").success();
         return new ModelAndView("redirect:/me");
     }
 }

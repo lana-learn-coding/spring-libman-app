@@ -15,7 +15,7 @@ up-modal-content .modal { display: block; position: static; background: transpar
 up-modal-content .modal-dialog { width: 100%; max-width: 100%; margin: 0}
 up-modal-content .page-main-header, up-modal-content .footer, up-modal-content .main-nav, up-modal-content .page-header { display: none!important;}
 .dark-only .standalone-wrapper .page-body-wrapper {  background: transparent!important; }
-up-modal-content .modal-p-0 { padding: 0!important; }up-modal-content .modal-m-0{margin: 0!important;}
+up-modal-content .modal-p-0 { padding: 0!important; }up-modal-content .modal-m-0{margin: 0!important;}up-modal-content .modal-d-none{display: none!important;}
 .up-active-overlay{display: none} form.up-active .up-active-overlay {left: 0;top: 0;width: 100%;height: 100%;position: absolute;background: rgba(0, 0, 0, .2);z-index: 100; display: flex; justify-content: center; align-items: center}
 @media screen and (max-width: 575px){up-modal-content .page-wrapper .page-body-wrapper .page-body{padding-top: 0px!important; padding-bottom: 0px!important;}}
 .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav.close_icon ~ footer { margin-left: 0!important;}

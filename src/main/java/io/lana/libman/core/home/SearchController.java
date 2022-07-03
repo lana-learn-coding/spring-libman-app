@@ -26,6 +26,7 @@ class SearchController {
         }
 
         if (!authFacade.hasAnyAuthorities(Authorities.LIBRARIAN)) {
+            redirectAttributes.addAttribute("query", search);
             return "redirect:/home";
         }
 

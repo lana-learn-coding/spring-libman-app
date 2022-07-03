@@ -11,6 +11,6 @@
 <c:if test="${not empty verbose and verbose}">
     <c:set var="to" value="${pageMeta.pageable.offset + pageMeta.pageable.pageSize + 1}"/>
     <span comp="total">
-        Showing ${pageMeta.pageable.offset + 1} to ${to < pageMeta.totalElements ? to : pageMeta.totalElements} of total ${pageMeta.totalElements} results
+        Showing ${pageMeta.pageable.offset + 1} to ${to < pageMeta.totalElements ? to : pageMeta.totalElements} of ${pageMeta.totalElements} results
     </span>
 </c:if>

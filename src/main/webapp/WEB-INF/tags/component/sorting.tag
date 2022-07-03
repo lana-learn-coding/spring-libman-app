@@ -5,6 +5,7 @@
 <%@ attribute name="labels" required="true" type="java.lang.String" %>
 <%@ attribute name="values" required="true" type="java.lang.String" %>
 <%@ attribute name="target" required="false" type="java.lang.String" %>
+<%@ attribute name="cssClass" required="false" type="java.lang.String" %>
 <%@ attribute name="up" required="false" type="java.lang.String" %>
 <c:set var="target" value="[comp=sorting], ${not empty target ? target : ''}"/>
 
@@ -18,7 +19,7 @@ ${empty target ? '' : 'up-target=\"'.concat(target).concat('\"') }>
             <input type="hidden" name="${entry.key}" value="${entry.value}">
         </c:if>
     </c:forEach>
-    <select class="form-select" name="sort"
+    <select class="form-select ${cssClass}" name="sort"
             aria-label="Sort">
         <c:forEach items="${_labels}" varStatus="loop">
             <option value="${_values[loop.index]}"

@@ -20,16 +20,18 @@
                 </h6>
             </a>
             <p class="mb-0 font-roboto">Human Resources Department</p>
-            <ul>
-                <li><span>Librarian</span>
-                    <p>Internal user</p>
-                </li>
-                <sec:authorize access="hasAnyAuthority('ADMIN')">
-                    <li><span>Admin</span>
-                        <p>Account Manager</p>
+            <sec:authorize access="hasAnyAuthority('ADMIN', 'LIBRARIAN')">
+                <ul>
+                    <li><span>Librarian</span>
+                        <p>Internal user</p>
                     </li>
-                </sec:authorize>
-            </ul>
+                    <sec:authorize access="hasAnyAuthority('ADMIN')">
+                        <li><span>Admin</span>
+                            <p>Account Manager</p>
+                        </li>
+                    </sec:authorize>
+                </ul>
+            </sec:authorize>
         </div>
     </sec:authorize>
     <sec:authorize access="!isAuthenticated()">
@@ -56,7 +58,8 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" up-follow up-instant href="${pageContext.request.contextPath}/home">
+                        <a class="nav-link" up-follow up-instant href="${pageContext.request.contextPath}/home"
+                           up-alias="${pageContext.request.contextPath}/home/*">
                             <i data-feather="home"></i><span>Home</span>
                         </a>
                     </li>

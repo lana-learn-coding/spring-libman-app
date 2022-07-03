@@ -356,8 +356,9 @@ class InitialDataConfig implements ApplicationRunner {
                     for (int i = 0; i < numberOfTickets; i++) {
                         final var borrowDate = faker.date().past(15, 0, TimeUnit.DAYS)
                                 .toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                        final var dueDate = faker.number().numberBetween(0, 10) < 1
-                                ? faker.date().past((int) ChronoUnit.DAYS.between(borrowDate, LocalDate.now()), 0, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                        final var bound = (int) ChronoUnit.DAYS.between(borrowDate, LocalDate.now());
+                        final var dueDate = bound <= 0 ? LocalDate.now() : faker.number().numberBetween(0, 10) < 2
+                                ? faker.date().past(bound, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                                 : faker.date().future(10, 1, TimeUnit.DAYS).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         final var note = faker.howIMetYourMother().quote();
                         final var numberOfBorrow = faker.number().numberBetween(1, borrowLimit);

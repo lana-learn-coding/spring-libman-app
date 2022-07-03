@@ -3,7 +3,7 @@ package io.lana.libman.core.reader;
 import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookRepo;
-import io.lana.libman.core.file.ImageService;
+import io.lana.libman.core.services.file.ImageService;
 import io.lana.libman.core.user.UserRepo;
 import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.support.ui.UIFacade;

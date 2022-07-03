@@ -1,4 +1,4 @@
-package io.lana.libman.core.file;
+package io.lana.libman.core.services.file;
 
 import org.springframework.data.repository.CrudRepository;
 

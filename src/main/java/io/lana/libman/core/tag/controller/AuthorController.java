@@ -2,7 +2,7 @@ package io.lana.libman.core.tag.controller;
 
 import io.lana.libman.core.book.BookInfo;
 import io.lana.libman.core.book.repo.BookInfoRepo;
-import io.lana.libman.core.file.ImageService;
+import io.lana.libman.core.services.file.ImageService;
 import io.lana.libman.core.tag.Author;
 import io.lana.libman.core.tag.repo.AuthorRepo;
 import org.apache.commons.lang3.ObjectUtils;

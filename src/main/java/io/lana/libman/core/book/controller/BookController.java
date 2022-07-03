@@ -6,7 +6,7 @@ import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookInfoRepo;
 import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.book.support.SimpleBookDetail;
-import io.lana.libman.core.file.ImageService;
+import io.lana.libman.core.services.file.ImageService;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

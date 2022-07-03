@@ -52,13 +52,18 @@
     <td style="padding: 30px">
       <h6 style="font-weight: 600" th:if="${!#strings.isEmpty(mail.header())}" th:text="${mail.header()}"></h6>
       <p th:if="${#strings.isEmpty(mail.header())}">Hi There,</p>
-      <p th:if="${!#strings.isEmpty(mail.content())}" th:text="${mail.content()}"></p>
+      <p th:each="line : ${mail.lines()}" th:text="${line}"></p>
       <p th:if="${!#strings.isEmpty(mail.action())}">
         <a th:href="${#strings.defaultString(mail.link(), 'javascript:void(0)')}"
            style="padding: 10px; background-color: #24695c; color: #fff; display: inline-block; border-radius: 4px;font-weight:600;"
            th:text="${mail.action()}"></a>
       </p>
-      <p th:if="${!#strings.isEmpty(mail.subContent())}" th:text="${mail.subContent()}"></p>
+      <p th:if="${!#strings.isEmpty(mail.sub())}" th:text="${mail.sub()}"></p>
+      <p th:if="${!#strings.isEmpty(mail.link())}" style="font-size: 12px; color: #777777">
+        <i>Copy this link into browser address bar if the button above not working:
+          <a th:href="${mail.link()}" style="color: #47a6ee; font-size: 12px;" th:text="${mail.link()}"></a>
+        </i>
+      </p>
       <p style="margin-bottom: 0">
         Regards,<br>Libman Library</p>
     </td>

@@ -29,12 +29,12 @@ class TestMailService implements MailService {
         if (StringUtils.isNotBlank(simpleMessage.header())) {
             log.info("  Header: {}", simpleMessage.header());
         }
-        log.info("  Content: {}", simpleMessage.content());
+        simpleMessage.lines().forEach(line -> log.info("  Line: {}", line));
         if (StringUtils.isNotBlank(simpleMessage.action())) {
             log.info("  Action: {} <{}>,", simpleMessage.action(), StringUtils.defaultIfBlank(simpleMessage.link(), "No Link"));
         }
-        if (StringUtils.isNotBlank(simpleMessage.subContent())) {
-            log.info("  Content: {}", simpleMessage.subContent());
+        if (StringUtils.isNotBlank(simpleMessage.sub())) {
+            log.info("  Sub: {}", simpleMessage.sub());
         }
         log.info("END SENDING MOCK MAIL");
     }

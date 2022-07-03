@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
+import java.util.*;
 
 @Getter
 @Setter
@@ -36,9 +36,10 @@ public class MailTemplate {
 
     private String link;
 
-    private String content;
+    @Setter(AccessLevel.NONE)
+    private List<String> lines = new ArrayList<>();
 
-    private String subContent;
+    private String sub;
 
     public MailTemplate to(String to) {
         this.to = new String[]{to};
@@ -55,6 +56,16 @@ public class MailTemplate {
         return this;
     }
 
+    public MailTemplate lines(String line, String... lines) {
+        this.lines.addAll(Arrays.asList(lines));
+        return this;
+    }
+
+    public MailTemplate setLines(Collection<String> lines) {
+        this.lines = new ArrayList<>(lines);
+        return this;
+    }
+
     private MailTemplate(String template) {
         this.template = template;
     }
@@ -66,9 +77,9 @@ public class MailTemplate {
     public static MailTemplate changePassword() {
         return new MailTemplate("mail")
                 .header("Change Password")
-                .content("you forgot your password for Libman. If this is true, click below to reset your password")
+                .lines("you forgot your password for Libman. If this is true, click below to reset your password")
                 .action("Change Password")
-                .subContent("If you have remember your password you can safely ignore his email.");
+                .sub("If you have remember your password you can safely ignore his email.");
     }
 
     public static MailTemplate ofTemplate(String template) {

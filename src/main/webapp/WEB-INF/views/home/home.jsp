@@ -75,6 +75,7 @@
                                             <helper:inherit-param excludes="query"/>
                                             <input class="form-control" type="search"
                                                    placeholder="Search for books..." name="query"
+                                                   value="${param.query}"
                                                    up-autosubmit up-delay="400">
                                             <i class="fa fa-search"></i>
                                         </div>

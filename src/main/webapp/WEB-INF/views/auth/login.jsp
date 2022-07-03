@@ -41,7 +41,8 @@
                                         <input id="checkbox1" type="checkbox" name="remember-me">
                                         <label for="checkbox1">Remember me</label>
                                     </div>
-                                    <a class="link" href="#">Forgot password?</a>
+                                    <a class="link" href="${pageContext.request.contextPath}/reset-password" up-follow>Forgot
+                                        password?</a>
                                 </div>
                                 <div class="form-group">
                                     <button class="btn btn-primary btn-block w-100" type="submit">Sign in</button>

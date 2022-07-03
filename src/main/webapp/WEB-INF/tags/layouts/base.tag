@@ -24,6 +24,7 @@
 </head>
 <body>
 <!-- Loader starts-->
+<jsp:include page="/WEB-INF/shared/notify.jsp"/>
 <div class="loader-wrapper">
     <div class="theme-loader">
         <div class="loader-p"></div>

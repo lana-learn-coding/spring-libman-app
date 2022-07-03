@@ -1,6 +1,8 @@
 package io.lana.libman.core.user;
 
 import io.lana.libman.core.book.repo.BookBorrowRepo;
+import io.lana.libman.core.services.mail.MailService;
+import io.lana.libman.core.services.mail.MailTemplate;
 import io.lana.libman.core.user.dto.ChangePasswordDto;
 import io.lana.libman.core.user.dto.ProfileUpdateDto;
 import io.lana.libman.support.security.AuthFacade;
@@ -42,6 +44,10 @@ class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final MailService mailService;
+
+    private final UserTokenService userTokenService;
+
     @GetMapping("/logout")
     public String logout() {
         return "/auth/logout";
@@ -50,6 +56,26 @@ class AuthController {
     @GetMapping("/login")
     public String login() {
         return "/auth/login";
+    }
+
+    @GetMapping("/reset-password")
+    public ModelAndView requestResetPassword() {
+        return new ModelAndView("/auth/pre-reset-password", Map.of("email", ""));
+    }
+
+    @PostMapping("/reset-password")
+    public ModelAndView requestResetPassword(@RequestParam String email) {
+        final var user = userRepo.findUserForAuth(email);
+        if (user.isPresent()) {
+            mailService.sendAsync(MailTemplate.changePassword()
+                    .subject("Reset your password")
+                    .to(user.get().getEmail())
+                    .link(userTokenService.createResetPasswordLink(user.get())));
+            ui.toast("Please check your mail for resetting password").success();
+            return new ModelAndView("redirect:/login");
+        }
+        ui.toast("The email could not be found").error();
+        return new ModelAndView("/auth/pre-reset-password", Map.of("email", email));
     }
 
     @GetMapping("/me")

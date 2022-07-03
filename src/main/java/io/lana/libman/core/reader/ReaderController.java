@@ -4,7 +4,10 @@ import io.lana.libman.core.book.Book;
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookRepo;
 import io.lana.libman.core.services.file.ImageService;
+import io.lana.libman.core.services.mail.MailService;
+import io.lana.libman.core.services.mail.MailTemplate;
 import io.lana.libman.core.user.UserRepo;
+import io.lana.libman.core.user.UserTokenService;
 import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +54,10 @@ class ReaderController {
     private final ImageService imageService;
 
     private final UIFacade ui;
+
+    private final MailService mail;
+
+    private final UserTokenService tokenService;
 
     @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_READ')")
@@ -178,6 +185,14 @@ class ReaderController {
         user.setId(reader.getId());
         userRepo.save(user);
         repo.save(reader);
+
+        mail.sendAsync(MailTemplate.changePassword()
+                .to(user.getEmail())
+                .subject("Welcome to Libman")
+                .lines("Please follow this link to setup your password")
+                .link(tokenService.createResetPasswordLink(user))
+                .sub(MailTemplate.EMPTY));
+
         redirectAttributes.addFlashAttribute("highlight", reader.getId());
         redirectAttributes.addAttribute("sort", "createdAt,desc");
         ui.toast("Reader created successfully").success();

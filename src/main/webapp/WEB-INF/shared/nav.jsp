@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <header class="main-nav">
     <sec:authorize access="isAuthenticated()">
@@ -65,10 +66,19 @@
                     </li>
                     <sec:authorize access="isAuthenticated()">
                         <li>
-                            <a class="nav-link" href="${pageContext.request.contextPath}/me" up-follow>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/me" up-follow up-instant>
                                 <i data-feather="user"></i><span>Profile</span>
                             </a>
                         </li>
+                        <sec:authentication property="principal" var="principal"/>
+                        <c:if test="${principal.isReader()}">
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/me/borrowing" up-follow
+                                   up-instant>
+                                    <i data-feather="inbox"></i><span>Borrowing</span>
+                                </a>
+                            </li>
+                        </c:if>
                     </sec:authorize>
                     <sec:authorize access="hasAuthority('LIBRARIAN')">
                         <li class="sidebar-main-title">

@@ -5,6 +5,7 @@
 <%@ taglib prefix="helper" tagdir="/WEB-INF/tags/helpers" %>
 <%@ taglib prefix="component" tagdir="/WEB-INF/tags/component" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookInfo>"--%>
 
 <layout:librarian>
@@ -28,8 +29,10 @@
                                     <a href="${pageContext.request.contextPath}/home" up-follow up-instant><i
                                             data-feather="book"></i></a>
                                 </li>
-                                <li><a href="javascript:void(0)" data-container="body"><i
-                                        data-feather="inbox"></i></a></li>
+                                <sec:authorize access="isAuthenticated()">
+                                    <li><a href="${pageContext.request.contextPath}/me/borowing" up-follow up-instant><i
+                                            data-feather="inbox"></i></a></li>
+                                </sec:authorize>
                                 <li><a href="javascript:void(0)"><i class="bookmark-search"
                                                                     data-feather="star"></i></a>
                                 </li>

@@ -188,7 +188,7 @@
                                 <ul class="list-unstyled setting-option">
                                     <li>
                                         <a class="setting-primary"
-                                           href="${pageContext.request.contextPath}/library/borrows?sort=borrowDate%2Cdesc"
+                                           href="${pageContext.request.contextPath}/library/borrows?sort=dueDate"
                                            up-follow up-instant>
                                             <i class="icon-arrow-top-right"></i></a>
                                     </li>

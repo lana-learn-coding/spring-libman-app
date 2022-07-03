@@ -13,11 +13,18 @@ public class ConfigFacade {
     @Value("${config.cost.overdue-default}")
     private final double cost;
 
+    @Value("${config.email.from}")
+    private final String from;
+
     public String getBaseVfsPath() {
         return baseFile;
     }
 
     public double getOverDueDefaultCost() {
         return cost;
+    }
+
+    public String getEmailFrom() {
+        return from;
     }
 }

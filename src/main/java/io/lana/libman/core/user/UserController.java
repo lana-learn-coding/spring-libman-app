@@ -1,8 +1,8 @@
 package io.lana.libman.core.user;
 
-import io.lana.libman.core.file.ImageService;
 import io.lana.libman.core.reader.Reader;
 import io.lana.libman.core.reader.ReaderRepo;
+import io.lana.libman.core.services.file.ImageService;
 import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.RequiredArgsConstructor;

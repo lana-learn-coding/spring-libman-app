@@ -111,7 +111,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @Transient
     public long getOverDueDays() {
-        final var overDueDays = ChronoUnit.DAYS.between(dueDate.plusDays(1), LocalDate.now());
+        final var overDueDays = ChronoUnit.DAYS.between(dueDate, LocalDate.now());
         return overDueDays > 0 ? overDueDays : 0;
     }
 

@@ -112,7 +112,7 @@ class BookInfoController {
                                @Validated @ModelAttribute("entity") BookInfo entity,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
-            final var image = imageService.crop(file, 200, 200);
+            final var image = imageService.crop(file, 500, 600);
             entity.setImage(imageService.save(image).getUri());
         }
 
@@ -138,7 +138,7 @@ class BookInfoController {
                                @Validated @ModelAttribute("entity") CreateBookInfoDto form,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
-            final var image = imageService.crop(file, 200, 200);
+            final var image = imageService.crop(file, 500, 600);
             form.setImage(imageService.save(image).getUri());
         }
 

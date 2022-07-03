@@ -101,7 +101,7 @@ class BookController {
         }
 
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
-            final var image = imageService.crop(file, 200, 200);
+            final var image = imageService.crop(file, 500, 500);
             book.setImage(imageService.save(image).getUri());
         }
 
@@ -133,7 +133,7 @@ class BookController {
         }
 
         if (Objects.nonNull(file) && imageService.validate(file, bindingResult, "image")) {
-            final var image = imageService.crop(file, 200, 200);
+            final var image = imageService.crop(file, 500, 500);
             entity.setImage(imageService.save(image).getUri());
         }
 

@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+
 @Slf4j
 @Service
 @Qualifier("testMailService")
@@ -35,5 +37,11 @@ class TestMailService implements MailService {
             log.info("  Content: {}", simpleMessage.subContent());
         }
         log.info("END SENDING MOCK MAIL");
+    }
+
+    @Override
+    public CompletableFuture<Void> sendAsync(MailTemplate template) {
+        send(template);
+        return CompletableFuture.completedFuture(null);
     }
 }

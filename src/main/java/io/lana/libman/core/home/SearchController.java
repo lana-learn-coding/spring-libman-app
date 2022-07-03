@@ -32,7 +32,6 @@ class SearchController {
 
         final var limiter = Pageable.ofSize(1);
         if (!readerRepo.findAllByQuery("%" + search + "%", limiter).getContent().isEmpty()) {
-            redirectAttributes.addAttribute("query", search);
             redirectAttributes.addAttribute("email", search);
             return "redirect:/library/readers";
         }

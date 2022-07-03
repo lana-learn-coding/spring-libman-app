@@ -47,9 +47,9 @@
                                     <button class="btn btn-primary btn-block w-100" type="submit">Sign in</button>
                                 </div>
                                 <div class="login-social-title">
-                                    <h5>Sign in with</h5>
+                                    <h5>Libman Library</h5>
                                 </div>
-                                <p>Don't have account?<a class="ms-2" href="#">Create Account</a></p>
+                                <p><a class="ms-2" href="${pageContext.request.contextPath}/">Go Back Home</a></p>
                             </form>
                         </div>
                     </div>

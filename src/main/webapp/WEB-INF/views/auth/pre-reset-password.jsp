@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <layout:base>
-    <jsp:attribute name="title">Login</jsp:attribute>
+    <jsp:attribute name="title">Reset Password</jsp:attribute>
     <jsp:attribute name="body">
         <section>
             <div class="container-fluid p-0">

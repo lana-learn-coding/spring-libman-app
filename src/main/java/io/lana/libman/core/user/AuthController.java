@@ -5,6 +5,7 @@ import io.lana.libman.core.services.mail.MailService;
 import io.lana.libman.core.services.mail.MailTemplate;
 import io.lana.libman.core.user.dto.ChangePasswordDto;
 import io.lana.libman.core.user.dto.ProfileUpdateDto;
+import io.lana.libman.core.user.dto.ResetPasswordDto;
 import io.lana.libman.support.security.AuthFacade;
 import io.lana.libman.support.security.AuthUser;
 import io.lana.libman.support.ui.UIFacade;
@@ -21,10 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -76,6 +74,42 @@ class AuthController {
         }
         ui.toast("The email could not be found").error();
         return new ModelAndView("/auth/pre-reset-password", Map.of("email", email));
+    }
+
+    @GetMapping("/reset-password/{token}")
+    public ModelAndView resetPassword(@PathVariable String token) {
+        final var user = userTokenService.getUserByToken(token);
+        if (user.isEmpty()) {
+            ui.toast("Expired reset token. Please try again").error();
+            return new ModelAndView("redirect:/reset-password");
+        }
+        return new ModelAndView("/auth/reset-password", Map.of("entity", new ResetPasswordDto()));
+    }
+
+    @PostMapping("/reset-password/{token}")
+    public ModelAndView resetPassword(@PathVariable String token,
+                                      @Validated @ModelAttribute("entity") ResetPasswordDto dto, BindingResult bindingResult) {
+        final var user = userTokenService.getUserByToken(token);
+        if (user.isEmpty()) {
+            ui.toast("Expired reset token. Please try again").error();
+            return new ModelAndView("redirect:/reset-password");
+        }
+
+        if (!StringUtils.equals(dto.getPassword(), dto.getRetypePassword())) {
+            bindingResult.rejectValue("password", "", "Retype password not match");
+            bindingResult.rejectValue("retypePassword", "", "Retype password not match");
+        }
+
+        if (bindingResult.hasErrors()) {
+            final var model = new ModelAndView("/auth/reset-password", Map.of("entity", dto));
+            model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
+            return model;
+        }
+
+        user.get().setPassword(passwordEncoder.encode(dto.getPassword()));
+        userRepo.save(user.get());
+        ui.toast("Password successfully changed").success();
+        return new ModelAndView("redirect:/login");
     }
 
     @GetMapping("/me")

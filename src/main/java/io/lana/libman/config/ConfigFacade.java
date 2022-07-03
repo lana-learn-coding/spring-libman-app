@@ -1,10 +1,10 @@
 package io.lana.libman.config;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Component
 public class ConfigFacade {
     @Value("${config.vfs.base-path}")
@@ -15,6 +15,9 @@ public class ConfigFacade {
 
     @Value("${config.email.from}")
     private final String from;
+
+    @Value(value = "${config.app.url}")
+    private final String appUrl;
 
     public String getBaseVfsPath() {
         return baseFile;
@@ -27,4 +30,9 @@ public class ConfigFacade {
     public String getEmailFrom() {
         return from;
     }
+
+    public String getAppUrl() {
+        return appUrl;
+    }
+
 }

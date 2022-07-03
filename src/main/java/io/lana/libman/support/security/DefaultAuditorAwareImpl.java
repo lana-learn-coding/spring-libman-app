@@ -14,6 +14,7 @@ public class DefaultAuditorAwareImpl implements AuditorAware<String> {
 
     @Override
     public Optional<String> getCurrentAuditor() {
+        if (authFacade.isNotAuthenticated()) return Optional.empty();
         return authFacade.getPrincipal().map(UserDetails::getUsername);
     }
 }

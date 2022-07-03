@@ -88,6 +88,12 @@
                                 <div class="card">
                                     <div class="product-box">
                                         <div class="product-img">
+                                            <c:if test="${ item.availableBooksCount == 0 and item.booksCount != 0}">
+                                                <div class="ribbon ribbon-danger">Not Available</div>
+                                            </c:if>
+                                            <c:if test="${item.booksCount == 0}">
+                                                <div class="ribbon ribbon-primary">Preview</div>
+                                            </c:if>
                                             <img class="img-fluid"
                                                  src="${(empty item.image ? '/static/images/book-default.png' : item.image)}"
                                                  alt="book cover">

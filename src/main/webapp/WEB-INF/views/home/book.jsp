@@ -97,7 +97,9 @@
                                     <div>
                                         <span class="txt-warning">${entity.booksCount - entity.availableBooksCount}</span>
                                         Borrowed,
-                                        <span class="txt-primary">${entity.availableBooksCount}</span> Available
+                                        <span class="txt-primary">${entity.availableBooksCount}</span>
+                                        Available,
+                                        <span>${entity.booksCount}</span> Total
                                     </div>
                                 </div>
                                 <div class="addcart-btn">

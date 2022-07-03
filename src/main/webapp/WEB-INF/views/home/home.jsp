@@ -102,10 +102,9 @@
                                                  alt="book cover">
                                             <div class="product-hover">
                                                 <ul>
-                                                    <li>
-                                                        <a href="${pageContext.request.contextPath}/home/books/${item.id}"
-                                                           up-layer="new" up-size="large" up-instant>
-                                                            <i class="icon-eye"></i></a>
+                                                    <li up-href="${pageContext.request.contextPath}/home/books/${item.id}"
+                                                        up-layer="new" up-size="large" up-instant up-clickable>
+                                                        <div><i class="icon-eye"></i></div>
                                                     </li>
                                                 </ul>
                                             </div>

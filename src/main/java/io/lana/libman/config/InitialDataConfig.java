@@ -173,6 +173,13 @@ class InitialDataConfig implements ApplicationRunner {
                     reader.setCreatedBy(SYSTEM);
                     readerRepo.save(reader);
                 });
+
+        // Create default reader
+        final var reader = new Reader();
+        reader.setAccount(userRepo.findUserForAuth("reader").orElseThrow());
+        reader.setBorrowLimit(faker.number().numberBetween(8, 16));
+        reader.setCreatedBy(SYSTEM);
+        readerRepo.save(reader);
     }
 
     @Transactional

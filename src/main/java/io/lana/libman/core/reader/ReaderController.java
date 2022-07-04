@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -209,6 +210,7 @@ class ReaderController {
         ));
     }
 
+    @Transactional
     @PostMapping("{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_DELETE')")
     public ModelAndView delete(@PathVariable String id, RedirectAttributes redirectAttributes) {

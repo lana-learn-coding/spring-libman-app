@@ -77,7 +77,9 @@ public class User extends AuditableEntity implements AuthUser, Named {
     @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+            inverseJoinColumns = {@JoinColumn(name = "role_id")},
+            foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE"),
+            inverseForeignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE")
     )
     private Set<Role> roles = new HashSet<>();
 

@@ -25,8 +25,8 @@ public class Role extends DescriptiveEntity {
             name = "role_permission",
             joinColumns = {@JoinColumn(name = "role_id")},
             inverseJoinColumns = {@JoinColumn(name = "permission_id")},
-            foreignKey = @ForeignKey(name = "role_id", foreignKeyDefinition = "FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE"),
-            inverseForeignKey = @ForeignKey(name = "permission_id", foreignKeyDefinition = "FOREIGN KEY (permission_id) REFERENCES perm(id) ON DELETE CASCADE")
+            foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE"),
+            inverseForeignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (permission_id) REFERENCES perm(id) ON DELETE CASCADE")
     )
     private Set<Permission> permissions = new HashSet<>();
 

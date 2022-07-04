@@ -32,7 +32,7 @@ public class Book extends AuditableEntity implements Named, BookDetails {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "shelf_id", foreignKeyDefinition = "FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE SET NULL"))
+    @JoinColumn(name = "shelf_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (shelf_id) REFERENCES shelf(id) ON DELETE SET NULL"))
     private Shelf shelf;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")

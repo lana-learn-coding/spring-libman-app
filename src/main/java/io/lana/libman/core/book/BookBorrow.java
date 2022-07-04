@@ -30,12 +30,12 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "reader_id", foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE SET NULL"))
+    @JoinColumn(name = "reader_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE SET NULL"))
     private Reader reader;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "book_id", foreignKeyDefinition = "FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL"))
+    @JoinColumn(name = "book_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL"))
     private Book book;
 
     @Setter(AccessLevel.PROTECTED)
@@ -43,7 +43,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     private String incomeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "income_id", foreignKeyDefinition = "FOREIGN KEY (income_id) REFERENCES income(id) ON DELETE CASCADE"))
+    @JoinColumn(name = "income_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (income_id) REFERENCES income(id) ON DELETE CASCADE"))
     private Income income;
 
     @Column(columnDefinition = "TEXT")

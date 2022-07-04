@@ -1,13 +1,13 @@
 package io.lana.libman.core.user;
 
 import io.lana.libman.core.book.repo.BookBorrowRepo;
+import io.lana.libman.core.book.repo.BookInfoRepo;
 import io.lana.libman.core.services.mail.MailService;
 import io.lana.libman.core.services.mail.MailTemplate;
 import io.lana.libman.core.user.dto.ChangePasswordDto;
 import io.lana.libman.core.user.dto.ProfileUpdateDto;
 import io.lana.libman.core.user.dto.ResetPasswordDto;
 import io.lana.libman.support.security.AuthFacade;
-import io.lana.libman.support.security.AuthUser;
 import io.lana.libman.support.ui.UIFacade;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -34,9 +34,11 @@ import java.util.Map;
 class AuthController {
     private final BookBorrowRepo borrowRepo;
 
+    private final BookInfoRepo bookInfoRepo;
+
     private final UserRepo userRepo;
 
-    private final AuthFacade<AuthUser> auth;
+    private final AuthFacade<User> auth;
 
     private final UIFacade ui;
 
@@ -114,16 +116,14 @@ class AuthController {
 
     @GetMapping("/me")
     public ModelAndView me() {
-        final var authUser = auth.requirePrincipal();
-        final var user = userRepo.findById(authUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var user = auth.requirePrincipal();
         return new ModelAndView("/auth/me", Map.of("user", user, "password", new ChangePasswordDto(), "profile", new ProfileUpdateDto(user)));
     }
 
     @GetMapping("/me/borrowing")
     public ModelAndView myBorrowing(@RequestParam(required = false) String query,
                                     @PageableDefault(30) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        final var authUser = auth.requirePrincipal();
-        final var entity = userRepo.findById(authUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var entity = auth.requirePrincipal();
         if (!entity.isReader()) {
             return new ModelAndView("/auth/borrowing", Map.of(
                     "entity", entity,
@@ -140,10 +140,46 @@ class AuthController {
         ));
     }
 
+    @PostMapping("/me/favor/{id}")
+    public String favorite(@PathVariable String id, @RequestParam(required = false, defaultValue = "false") boolean remove,
+                           @RequestHeader String referrer) {
+        final var authUser = auth.requirePrincipal();
+        final var book = bookInfoRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var entity = userRepo.findById(authUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (!entity.isReader()) {
+            ui.toast("You are not a reader").error();
+            return "redirect:" + referrer;
+        }
+        final var reader = entity.getReader();
+        if (remove) reader.getFavorites().remove(book);
+        else reader.getFavorites().add(book);
+        ui.toast("Item added to favorite list").error();
+        return "redirect:" + referrer;
+    }
+
+    @GetMapping("/me/favorites")
+    public ModelAndView myFavorite(@RequestParam(required = false) String query,
+                                   @PageableDefault(30) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        final var entity = auth.requirePrincipal();
+        if (!entity.isReader()) {
+            return new ModelAndView("/auth/favorites", Map.of(
+                    "entity", entity,
+                    "data", Page.empty(pageable)
+            ));
+        }
+
+        final var page = StringUtils.isBlank(query)
+                ? bookInfoRepo.findAllByFavourersIs(entity.getReader(), pageable)
+                : bookInfoRepo.findAllByFavourersIsAndTitleLikeIgnoreCase(entity.getReader(), "%" + query + "%", pageable);
+        return new ModelAndView("/auth/favorites", Map.of(
+                "entity", entity,
+                "data", page
+        ));
+    }
+
     @PostMapping("/me/change-password")
     public ModelAndView changePassword(@Validated @ModelAttribute("password") ChangePasswordDto dto, BindingResult bindingResult) {
-        final var authUser = auth.requirePrincipal();
-        final var user = userRepo.findById(authUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        final var user = auth.requirePrincipal();
 
         if (!StringUtils.equals(dto.getNewPassword(), dto.getRetypeNewPassword())) {
             bindingResult.rejectValue("newPassword", "", "Retype password not match");
@@ -168,13 +204,12 @@ class AuthController {
 
     @PostMapping("/me/update-profile")
     public ModelAndView updateProfile(@Validated @ModelAttribute("profile") ProfileUpdateDto dto, BindingResult bindingResult) {
-        final var authUser = auth.requirePrincipal();
+        final var user = auth.requirePrincipal();
 
-        if (!StringUtils.equals(dto.getId(), authUser.getId())) {
+        if (!StringUtils.equals(dto.getId(), user.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        final var user = userRepo.findById(authUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (bindingResult.hasErrors()) {
             final var model = new ModelAndView("/auth/me", Map.of("user", user, "password", new ChangePasswordDto(), "profile", dto));
             model.setStatus(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -183,7 +218,7 @@ class AuthController {
 
         BeanUtils.copyProperties(dto, user);
         userRepo.save(user);
-        ui.toast("Profile updated successfully. Please re-login to view updated info").success();
+        ui.toast("Profile updated successfully.").success();
         return new ModelAndView("redirect:/me");
     }
 }

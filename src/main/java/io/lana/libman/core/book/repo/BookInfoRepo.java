@@ -1,11 +1,14 @@
 package io.lana.libman.core.book.repo;
 
 import io.lana.libman.core.book.BookInfo;
+import io.lana.libman.core.reader.Reader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface BookInfoRepo extends PagingAndSortingRepository<BookInfo, String> {
@@ -18,6 +21,13 @@ public interface BookInfoRepo extends PagingAndSortingRepository<BookInfo, Strin
     Page<BookInfo> findAllByPublisherIdAndTitleLikeIgnoreCase(String id, String name, Pageable pageable);
 
     Page<BookInfo> findAllBySeriesIdAndTitleLikeIgnoreCase(String id, String name, Pageable pageable);
+
+    Page<BookInfo> findAllByFavourersIsAndTitleLikeIgnoreCase(Reader favourer, String query, Pageable pageable);
+
+    Page<BookInfo> findAllByFavourersIs(Reader favourer, Pageable pageable);
+
+    @Override
+    List<BookInfo> findAll();
 
     @Query(value = "select distinct b from BookInfo b " +
             "left join fetch b.author a left join fetch b.publisher p left join fetch b.series s left join b.genres g " +

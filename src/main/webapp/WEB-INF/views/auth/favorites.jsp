@@ -9,16 +9,17 @@
 <%--@elvariable id="data" type="org.springframework.data.domain.Page<io.lana.libman.core.book.BookInfo>"--%>
 
 <layout:librarian>
-    <jsp:attribute name="title">Home</jsp:attribute>
+    <jsp:attribute name="title">My Favorites</jsp:attribute>
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="page-header">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3>Books</h3>
+                        <h3>Favorites</h3>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/">Home</a></li>
-                            <li class="breadcrumb-item active">Books</li>
+                            <li class="breadcrumb-item">Books</li>
+                            <li class="breadcrumb-item">Favorites</li>
                         </ol>
                     </div>
                     <div class="col-sm-6">
@@ -94,11 +95,12 @@
                                 <div class="card">
                                     <div class="product-box">
                                         <div class="product-img">
+                                            <div class="ribbon ribbon-primary">Favorite</div>
                                             <c:if test="${ item.availableBooksCount == 0 and item.booksCount != 0}">
-                                                <div class="ribbon ribbon-danger">Not Available</div>
+                                                <div class="ribbon ribbon-danger m-t-40">Not Available</div>
                                             </c:if>
                                             <c:if test="${item.booksCount == 0}">
-                                                <div class="ribbon ribbon-primary">Preview</div>
+                                                <div class="ribbon ribbon-primary m-t-40">Preview</div>
                                             </c:if>
                                             <img class="img-fluid"
                                                  src="${(empty item.image ? '/static/images/book-default.png' : item.image)}"

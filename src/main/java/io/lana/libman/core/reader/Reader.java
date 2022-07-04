@@ -1,6 +1,7 @@
 package io.lana.libman.core.reader;
 
 import io.lana.libman.core.book.BookBorrow;
+import io.lana.libman.core.book.BookInfo;
 import io.lana.libman.core.user.User;
 import io.lana.libman.support.data.AuditableEntity;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -42,4 +44,14 @@ public class Reader extends AuditableEntity {
         this.account = account;
         this.id = account.getId();
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "reader_favorites",
+            joinColumns = {@JoinColumn(name = "reader_id")},
+            inverseJoinColumns = {@JoinColumn(name = "book_info_id")},
+            foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE CASCADE"),
+            inverseForeignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (book_info_id) REFERENCES book_info(id) ON DELETE CASCADE")
+    )
+    private Set<BookInfo> favorites = new HashSet<>();
 }

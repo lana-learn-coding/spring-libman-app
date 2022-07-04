@@ -1,6 +1,7 @@
 package io.lana.libman.core.book;
 
 import io.lana.libman.core.book.support.BookDetails;
+import io.lana.libman.core.reader.Reader;
 import io.lana.libman.core.tag.Author;
 import io.lana.libman.core.tag.Genre;
 import io.lana.libman.core.tag.Publisher;
@@ -51,6 +52,9 @@ public class BookInfo extends AuditableEntity implements Named, BookDetails {
 
     @OneToMany(mappedBy = "info")
     private Set<Book> books = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "favorites")
+    private Set<Reader> favourers = new LinkedHashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "author_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (author_id) REFERENCES author(id) ON DELETE SET NULL"))

@@ -78,6 +78,12 @@
                                     <i data-feather="inbox"></i><span>Borrowing</span>
                                 </a>
                             </li>
+                            <li>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/me/favorites" up-follow
+                                   up-instant>
+                                    <i data-feather="heart"></i><span>Favorites</span>
+                                </a>
+                            </li>
                         </c:if>
                     </sec:authorize>
                     <sec:authorize access="hasAuthority('LIBRARIAN')">

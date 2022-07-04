@@ -86,6 +86,8 @@ class InitialDataConfig implements ApplicationRunner {
         initBook();
         log.info("Generating borrow tickets");
         initBookBorrow();
+        log.info("Generating favorites");
+        initFavorites();
         log.info("Generation completed");
     }
 
@@ -394,5 +396,22 @@ class InitialDataConfig implements ApplicationRunner {
                     }
                 });
         bookRepo.saveAll(borrowedBook);
+    }
+
+    @Transactional
+    void initFavorites() {
+        final var readers = readerRepo.findAll();
+        final var books = bookInfoRepo.findAll().toArray(new BookInfo[0]);
+        for (final var reader : readers) {
+            final var favoritesCount = faker.number().numberBetween(0, 10);
+            if (favoritesCount <= 0) continue;
+
+            final Set<BookInfo> favorites = new HashSet<>();
+            for (int i = 0; i < favoritesCount; i++) {
+                favorites.add(faker.options().nextElement(books));
+            }
+            reader.setFavorites(favorites);
+            readerRepo.save(reader);
+        }
     }
 }

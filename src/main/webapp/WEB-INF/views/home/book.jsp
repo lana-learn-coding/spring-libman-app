@@ -1,6 +1,4 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="io.lana.libman.core.book.Book.Status" %>
 
 <%@ taglib prefix="layout" tagdir="/WEB-INF/tags/layouts" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -13,6 +11,7 @@
 
 <%--@elvariable id="highlight" type="java.lang.String"--%>
 <%--@elvariable id="entity" type="io.lana.libman.core.book.BookInfo"--%>
+<%--@elvariable id="reader" type="java.util.Optional<io.lana.libman.core.reader.Reader>"--%>
 
 <layout:modal>
     <jsp:attribute name="title">Book Detail</jsp:attribute>
@@ -103,13 +102,38 @@
                                     </div>
                                 </div>
                                 <div class="addcart-btn">
-                                    <a class="btn btn-primary mt-4" href=${pageContext.request.contextPath}/home"
+                                    <a class="btn btn-light mt-4 me-2" href=${pageContext.request.contextPath}/home"
                                        up-follow up-back up-dismiss>Back</a>
+
+                                    <c:if test="${not reader.isEmpty()}">
+                                        <c:choose>
+                                            <c:when test="${not reader.get().favorites.contains(entity)}">
+                                                <form action="${pageContext.request.contextPath}/me/favour/${entity.id}"
+                                                      up-submit method="post" class="d-inline" up-layer="root"
+                                                      up-scroll="false">
+                                                    <sec:csrfInput/>
+                                                    <button class="btn btn-primary mt-4 " type="submit">Favorite
+                                                    </button>
+                                                </form>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form action="${pageContext.request.contextPath}/me/favour/${entity.id}?remove=true"
+                                                      up-submit method="post" class="d-inline" up-layer="root"
+                                                      up-scroll="false">
+                                                    <sec:csrfInput/>
+                                                    <button class="btn btn-outline-primary mt-4 " type="submit">
+                                                        Unfavorite
+                                                    </button>
+                                                </form>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </jsp:attribute>
 </layout:modal>

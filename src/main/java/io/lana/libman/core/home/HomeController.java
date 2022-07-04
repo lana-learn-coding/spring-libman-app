@@ -1,6 +1,7 @@
 package io.lana.libman.core.home;
 
 import io.lana.libman.core.book.repo.BookInfoRepo;
+import io.lana.libman.core.user.User;
 import io.lana.libman.core.user.role.Authorities;
 import io.lana.libman.support.security.AuthFacade;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +19,12 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 class HomeController {
-    private final AuthFacade<UserDetails> authFacade;
+    private final AuthFacade<User> authFacade;
 
     private final BookInfoRepo bookInfoRepo;
 
@@ -45,8 +46,9 @@ class HomeController {
 
     @GetMapping("/home/books/{id}")
     public ModelAndView book(@PathVariable String id) {
+        final var reader = authFacade.isAuthenticated() ? authFacade.requirePrincipal().getReader() : null;
         final var entity = bookInfoRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return new ModelAndView("/home/book", Map.of("entity", entity));
+        return new ModelAndView("/home/book", Map.of("entity", entity, "reader", Optional.ofNullable(reader)));
     }
 }
 

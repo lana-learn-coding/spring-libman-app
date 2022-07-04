@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepo extends PagingAndSortingRepository<User, String> {
-    @Query("select u from User u left join fetch u.roles r left join fetch r.permissions left join fetch u.reader where u.username = :username or u.email = :username")
+    @Query("select u from User u left join fetch u.roles r left join fetch r.permissions left join fetch u.reader re left join fetch re.favorites " +
+            "where u.username = :username or u.email = :username")
     Optional<User> findUserForAuth(String username);
 
     boolean existsByUsernameIgnoreCaseAndIdNot(String username, String id);

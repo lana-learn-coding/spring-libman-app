@@ -2,6 +2,7 @@ package io.lana.libman.core.user;
 
 import io.lana.libman.core.book.repo.BookBorrowRepo;
 import io.lana.libman.core.book.repo.BookInfoRepo;
+import io.lana.libman.core.reader.ReaderRepo;
 import io.lana.libman.core.services.mail.MailService;
 import io.lana.libman.core.services.mail.MailTemplate;
 import io.lana.libman.core.user.dto.ChangePasswordDto;
@@ -32,6 +33,8 @@ import java.util.Map;
 @Validated
 @AllArgsConstructor
 class AuthController {
+    private final ReaderRepo readerRepo;
+
     private final BookBorrowRepo borrowRepo;
 
     private final BookInfoRepo bookInfoRepo;
@@ -140,21 +143,22 @@ class AuthController {
         ));
     }
 
-    @PostMapping("/me/favor/{id}")
+    @PostMapping("/me/favour/{id}")
     public String favorite(@PathVariable String id, @RequestParam(required = false, defaultValue = "false") boolean remove,
-                           @RequestHeader String referrer) {
-        final var authUser = auth.requirePrincipal();
+                           @RequestHeader(required = false, defaultValue = "/home") String referer) {
+        final var entity = auth.requirePrincipal();
         final var book = bookInfoRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        final var entity = userRepo.findById(authUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (!entity.isReader()) {
             ui.toast("You are not a reader").error();
-            return "redirect:" + referrer;
+            return "redirect:" + referer;
         }
-        final var reader = entity.getReader();
+        final var reader = readerRepo.findById(entity.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (remove) reader.getFavorites().remove(book);
         else reader.getFavorites().add(book);
-        ui.toast("Item added to favorite list").error();
-        return "redirect:" + referrer;
+        readerRepo.save(reader);
+        entity.setReader(reader);
+        ui.toast("Book added to favorite list").success();
+        return "redirect:" + referer;
     }
 
     @GetMapping("/me/favorites")

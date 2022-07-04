@@ -93,10 +93,10 @@ class ImageServiceImpl implements ImageService {
     }
 
     private BufferedImage scaleToCropIfNeeded(BufferedImage image, int width, int height) {
-        final var wRatio = Math.floor((double) image.getWidth() / width);
-        final var hRatio = Math.floor((double) image.getHeight() / height);
+        final var wRatio = (double) image.getWidth() / width;
+        final var hRatio = (double) image.getHeight() / height;
         final var ratio = Math.min(wRatio, hRatio);
-        if (ratio < 1) {
+        if (ratio < 1 && ratio > 0) {
             final var scaledWidth = (int) Math.ceil(image.getWidth() / ratio);
             final var scaledHeight = (int) Math.ceil(image.getHeight() / ratio);
             return scaleImage(image, scaledWidth, scaledHeight);

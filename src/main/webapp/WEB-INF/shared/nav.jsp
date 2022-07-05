@@ -74,7 +74,7 @@
                         <c:if test="${principal.isReader()}">
                             <li>
                                 <a class="nav-link" href="${pageContext.request.contextPath}/me/borrowing" up-follow
-                                   up-instant>
+                                   up-alias="${pageContext.request.contextPath}/me/borrowing/*" up-instant>
                                     <i data-feather="inbox"></i><span>Borrowing</span>
                                 </a>
                             </li>

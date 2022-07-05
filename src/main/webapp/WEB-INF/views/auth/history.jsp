@@ -11,7 +11,7 @@
 <%--@elvariable id="entity" type="io.lana.libman.core.user.User"--%>
 
 <layout:librarian>
-    <jsp:attribute name="title">Borrowing Books</jsp:attribute>
+    <jsp:attribute name="title">Borrow History</jsp:attribute>
     <jsp:attribute name="body">
         <div class="container-fluid">
             <div class="page-header">
@@ -24,7 +24,8 @@
                                    up-follow up-instant>Home</a>
                             </li>
                             <li class="breadcrumb-item">Users</li>
-                            <li class="breadcrumb-item active">Borrowing</li>
+                            <li class="breadcrumb-item">Borrowing</li>
+                            <li class="breadcrumb-item active">History</li>
                         </ol>
                     </div>
                 </div>
@@ -36,13 +37,14 @@
                    <div class="card">
                        <div class="card-header pb-0">
                            <h5>Borrowing Book</h5>
-                           <span>List of your borrowing books (<component:total pageMeta="${data}"/>)</span>
+                           <span>Your borrowed books (<component:total pageMeta="${data}"/>)</span>
                            <c:if test="${entity.isReader()}">
                                <c:set value="${entity.getReader().borrowLimit - data.totalElements}" var="borrowLeft"/>
                                <div class="mt-2 f-w-500 ">
                                    <span class="me-1 txt-primary">
                                        Your borrow limit is ${entity.getReader().borrowLimit}
                                    </span>
+                                   <small>(${borrowLeft > 0 ? borrowLeft : 0} left)</small>
                                </div>
                            </c:if>
                        </div>
@@ -67,8 +69,8 @@
                                        <div class="col-xs-12 col-md-3 col-lg-2 my-1">
                                            <component:sorting target="#table"
                                                               up="up-scroll='#table' up-transition='cross-fade'"
-                                                              labels="Title;Borrow Date;Due Date;Oldest"
-                                                              values="book.info.title;borrowDate,desc;dueDate,asc;createdAt,asc"/>
+                                                              labels="Title;Borrow Date;Due Date;Return Date;Oldest"
+                                                              values="book.info.title;borrowDate,desc;dueDate,asc;returnDate,desc;createdAt,asc"/>
                                        </div>
                                        <form class="col-xs-12 col-md-6 my-1"
                                              up-target="#table, nav .pagination" up-transition='cross-fade'
@@ -128,14 +130,13 @@
                                                    </small>
                                                </td>
                                                <td>
-                                               <span <c:if test="${item.isOverDue()}">class="txt-danger"</c:if>>
-                                                   <helper:format-date date="${item.dueDate}"/>
-                                               </span>
+                                                   <div><helper:format-date date="${item.dueDate}"/></div>
+                                                   <span class="txt-primary"><helper:format-date
+                                                           date="${item.returnDate}"/></span>
                                                </td>
                                                <td>
-                                               <span>
-                                                   <fmt:formatNumber value="${item.totalCost}" type="currency"
-                                                                     maxFractionDigits="2"/></span>
+                                                   <span><fmt:formatNumber value="${item.totalCost}" type="currency"
+                                                                           maxFractionDigits="2"/></span>
                                                </td>
                                                <td>
                                                    <div>
@@ -144,14 +145,6 @@
                                                            type="currency"
                                                            maxFractionDigits="2"/>
                                                    </div>
-                                                   <c:if test="${item.isOverDue()}">
-                                                   <div class="txt-warning">+
-                                                       <fmt:formatNumber
-                                                               value="${item.overDueAdditionalCost}"
-                                                               type="currency"
-                                                               maxFractionDigits="2"/>
-                                                   </div>
-                                               </c:if>
                                                </td>
                                            </tr></c:forEach>
                                            </tbody>

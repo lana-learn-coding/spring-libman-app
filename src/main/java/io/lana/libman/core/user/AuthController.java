@@ -143,6 +143,25 @@ class AuthController {
         ));
     }
 
+    @GetMapping("/me/borrowing/history")
+    public ModelAndView myBorrowingHistory(@RequestParam(required = false) String query,
+                                           @PageableDefault(30) @SortDefault(value = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        final var entity = auth.requirePrincipal();
+        if (!entity.isReader()) {
+            return new ModelAndView("/auth/borrowing", Map.of(
+                    "entity", entity,
+                    "data", Page.empty(pageable)
+            ));
+        }
+
+        query = StringUtils.isBlank(query) ? null : "%" + query + "%";
+        final var page = borrowRepo.findAllByReaderIdAndQuery(entity.getReader().getId(), query, pageable);
+        return new ModelAndView("/auth/history", Map.of(
+                "entity", entity,
+                "data", page
+        ));
+    }
+
     @PostMapping("/me/favour/{id}")
     public String favorite(@PathVariable String id, @RequestParam(required = false, defaultValue = "false") boolean remove,
                            @RequestHeader(required = false, defaultValue = "/home") String referer) {

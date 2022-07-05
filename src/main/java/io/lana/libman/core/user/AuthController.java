@@ -155,7 +155,7 @@ class AuthController {
         }
 
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
-        final var page = borrowRepo.findAllByReaderIdAndQuery(entity.getReader().getId(), query, pageable);
+        final var page = borrowRepo.findAllReturnedByReaderIdAndQuery(entity.getReader().getId(), query, pageable);
         return new ModelAndView("/auth/history", Map.of(
                 "entity", entity,
                 "data", page

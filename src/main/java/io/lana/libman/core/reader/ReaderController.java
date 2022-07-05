@@ -81,7 +81,7 @@ class ReaderController {
                                 @PageableDefault(5) @SortDefault(value = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         query = StringUtils.isBlank(query) ? null : "%" + query + "%";
-        final var page = borrowRepo.findAllByReaderIdAndQuery(id, query, pageable);
+        final var page = borrowRepo.findAllReturnedByReaderIdAndQuery(id, query, pageable);
         return new ModelAndView("/library/reader/history", Map.of(
                 "entity", entity,
                 "data", page

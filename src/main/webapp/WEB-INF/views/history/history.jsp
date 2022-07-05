@@ -180,10 +180,10 @@
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>+ <span class="ms-1">
+                                                <div class="text-nowrap">+ <span class="ms-1">
                                                         <helper:format-date date="${item.borrowDate}"/></span>
                                                 </div>
-                                                <div>+ <span class="ms-1">
+                                                <div class="text-nowrap">+ <span class="ms-1">
                                                         <helper:format-date date="${item.dueDate}"/></span>
                                                 </div>
                                                 <c:if test="${not empty item.returnDate}">

@@ -183,10 +183,10 @@
                                                     test="${isHighlight}"/>>
                                                 <div
                                                         <c:if test="${item.isOverDue()}">class="txt-danger"</c:if>>
-                                                    <div>+ <span class="ms-1">
+                                                    <div class="text-nowrap">+ <span class="ms-1">
                                                         <helper:format-date date="${item.borrowDate}"/></span>
                                                     </div>
-                                                    <div>+ <span class="ms-1">
+                                                    <div class="text-nowrap">+ <span class="ms-1">
                                                         <helper:format-date date="${item.dueDate}"/></span>
                                                     </div>
                                                 </div>

@@ -73,7 +73,6 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Id</th>
                                         <th scope="col">Contact</th>
                                         <th scope="col">Borrow</th>
                                         <th scope="col">Cost</th>
@@ -91,12 +90,6 @@
                                                     test="${isHighlight}"/>>
                                                 <component:index pageMeta="${data}" i="${loop.index}"/>
                                             </th>
-                                            <td <component:table-higlight
-                                                    test="${isHighlight}"/>>
-                                                <div style="max-width: 120px">
-                                                        ${ item.id }
-                                                </div>
-                                            </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <c:if test="${not empty item.reader}">
@@ -130,10 +123,10 @@
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>+ <span class="ms-1">
+                                                <div class="text-nowrap">+ <span class="ms-1">
                                                         <helper:format-date date="${item.borrowDate}"/></span>
                                                 </div>
-                                                <div>+ <span class="ms-1">
+                                                <div class="text-nowrap">+ <span class="ms-1">
                                                         <helper:format-date date="${item.dueDate}"/></span>
                                                 </div>
                                                 <c:if test="${not empty item.returnDate}">

@@ -18,13 +18,13 @@ import java.util.Set;
 @Setter
 @Entity
 public class Income extends AuditableEntity {
-    @Column(name = "borrow_date", nullable = false)
+    @Column(name = "first_borrow_date", nullable = false)
     private LocalDate borrowDate = LocalDate.now().plusYears(1000);
 
-    @Column(name = "dueDate", nullable = false)
+    @Column(name = "last_due_date", nullable = false)
     private LocalDate dueDate = LocalDate.now().minusYears(1000);
 
-    @Column(name = "return_date", nullable = false)
+    @Column(name = "last_return_date", nullable = false)
     private LocalDate returnDate = LocalDate.now();
 
     @Column(name = "borrows_count", nullable = false)
@@ -36,7 +36,7 @@ public class Income extends AuditableEntity {
     @Column(name = "total_borrow_cost", nullable = false)
     private double totalBorrowCost = 0d;
 
-    @Column(name = "total_overdue_additional_cost", nullable = false)
+    @Column(name = "total_overdue_cost", nullable = false)
     private double totalOverDueAdditionalCost = 0d;
 
     @Transient

@@ -83,7 +83,7 @@
                                        <label class="col-form-label pt-0"
                                               for="about">About</label>
                                        <textarea class="form-control" id="about" data-editor="true"
-                                                 placeholder="About">${entity.about}</textarea>
+                                                 placeholder="About" name="about">${entity.about}</textarea>
                                    </div>
                                </c:otherwise>
                            </c:choose>

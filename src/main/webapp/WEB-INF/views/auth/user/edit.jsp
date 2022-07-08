@@ -151,7 +151,7 @@
                                <div class="mb-3">
                                    <label class="col-form-label pt-0" for="roles">Roles</label>
                                    <form:select
-                                           data-placeholder="Select Permissions"
+                                           data-placeholder="Select Roles"
                                            select2="${pageContext.request.contextPath}/authorities/roles/autocomplete"
                                            path="roles" cssClass="form-select"
                                            cssErrorClass="form-select is-invalid">

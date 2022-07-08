@@ -166,6 +166,7 @@
                                                         access="hasAnyAuthority('ADMIN', 'READER_UPDATE')">
                                                     <a href="${pageContext.request.contextPath}/library/readers/${item.id}/update"
                                                        class="mr-1 txt-primary" up-instant up-layer="new"
+                                                       up-size="large"
                                                        up-dismissable="button">
                                                         <i data-feather="edit"
                                                            style="width: 20px; height: 20px"></i>

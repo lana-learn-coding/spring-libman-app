@@ -45,7 +45,7 @@
                                     <input type="text"
                                            class="form-control form-control-lg"
                                            name="query"
-                                           placeholder="Search for reader"
+                                           placeholder="Search for user"
                                            aria-label="query"
                                            value="${param.query}">
                                 </div>

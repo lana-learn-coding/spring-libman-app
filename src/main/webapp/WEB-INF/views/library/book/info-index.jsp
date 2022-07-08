@@ -75,12 +75,14 @@
                                             values="createdAt,desc;title;booksCount,desc;borrowCost,desc;availableBooksCount,desc;updatedAt,desc;updatedBy;id,desc"/>
                                 </div>
                                 <div class="col-6 col-sm-6 d-flex justify-content-end align-items-start">
-                                    <button up-href="${pageContext.request.contextPath}/library/books/infos/create"
-                                            class="btn btn-primary" up-instant up-layer="new" up-size="large"
-                                            up-dismissable="button">
-                                        <i class="fa fa-plus-square-o fa-lg pe-2"></i>
-                                        Create
-                                    </button>
+                                    <sec:authorize access="hasAnyAuthority('ADMIN', 'BOOKINFO_CREATE')">
+                                        <button up-href="${pageContext.request.contextPath}/library/books/infos/create"
+                                                class="btn btn-primary" up-instant up-layer="new" up-size="large"
+                                                up-dismissable="button">
+                                            <i class="fa fa-plus-square-o fa-lg pe-2"></i>
+                                            Create
+                                        </button>
+                                    </sec:authorize>
                                 </div>
                             </div>
                             <div class="table-responsive">

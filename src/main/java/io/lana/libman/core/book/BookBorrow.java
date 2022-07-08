@@ -127,7 +127,7 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
 
     @Transient
     public boolean canRefund() {
-        return ChronoUnit.HOURS.between(createdAt.atZone(ZoneId.systemDefault()).toLocalDateTime(), LocalDateTime.now()) < 24;
+        return ChronoUnit.HOURS.between(borrowDate.atStartOfDay().atZone(ZoneId.systemDefault()).toLocalDateTime(), LocalDateTime.now()) < 24;
     }
 
     @Transient

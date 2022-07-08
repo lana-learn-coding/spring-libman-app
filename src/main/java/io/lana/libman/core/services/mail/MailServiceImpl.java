@@ -73,6 +73,9 @@ class MailServiceImpl implements MailService {
 
     @Override
     public CompletableFuture<Void> sendAsync(MailTemplate template) {
+        if (StringUtils.isBlank(template.from())) {
+            template.from(from);
+        }
         if (StringUtils.equalsIgnoreCase(from, "test")) {
             testMailService.send(template);
             return CompletableFuture.completedFuture(null);

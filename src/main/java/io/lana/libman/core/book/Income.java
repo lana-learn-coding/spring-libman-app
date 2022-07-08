@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.math3.util.Precision;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -47,10 +44,9 @@ public class Income extends AuditableEntity {
     @OneToMany(mappedBy = "income")
     private Set<BookBorrow> borrows = new LinkedHashSet<>();
 
-    @Transient
-    public Reader getReader() {
-        return borrows.stream().findAny().map(BookBorrow::getReader).orElse(null);
-    }
+    @ManyToOne
+    @JoinColumn(name = "reader_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE SET NULL"))
+    private Reader reader;
 
     @Transient
     public Income add(BookBorrow borrow) {
@@ -60,6 +56,7 @@ public class Income extends AuditableEntity {
         this.borrowsCount += 1;
         if (borrow.getDueDate().isAfter(dueDate)) dueDate = borrow.getDueDate();
         if (borrow.getBorrowDate().isBefore(borrowDate)) borrowDate = borrow.getBorrowDate();
+        if (this.reader == null) reader = borrow.getReader();
         return this;
     }
 }

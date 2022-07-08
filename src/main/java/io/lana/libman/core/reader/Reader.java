@@ -48,10 +48,8 @@ public class Reader extends AuditableEntity {
     @ManyToMany
     @JoinTable(
             name = "reader_favorites",
-            joinColumns = {@JoinColumn(name = "reader_id")},
-            inverseJoinColumns = {@JoinColumn(name = "book_info_id")},
-            foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE CASCADE"),
-            inverseForeignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (book_info_id) REFERENCES book_info(id) ON DELETE CASCADE")
+            joinColumns = {@JoinColumn(name = "reader_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (reader_id) REFERENCES reader(id) ON DELETE CASCADE"))},
+            inverseJoinColumns = {@JoinColumn(name = "book_info_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (book_info_id) REFERENCES book_info(id) ON DELETE CASCADE"))}
     )
     private Set<BookInfo> favorites = new HashSet<>();
 }

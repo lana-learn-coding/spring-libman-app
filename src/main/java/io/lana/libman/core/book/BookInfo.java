@@ -71,10 +71,8 @@ public class BookInfo extends AuditableEntity implements Named, BookDetails {
     @ManyToMany
     @JoinTable(
             name = "book_info_genres",
-            joinColumns = {@JoinColumn(name = "book_info_id")},
-            inverseJoinColumns = {@JoinColumn(name = "genre_id")},
-            foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (book_info_id) REFERENCES book_info(id) ON DELETE CASCADE"),
-            inverseForeignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE")
+            joinColumns = {@JoinColumn(name = "book_info_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (book_info_id) REFERENCES book_info(id) ON DELETE CASCADE"))},
+            inverseJoinColumns = {@JoinColumn(name = "genre_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE"))}
     )
     private Set<Genre> genres = new HashSet<>();
 

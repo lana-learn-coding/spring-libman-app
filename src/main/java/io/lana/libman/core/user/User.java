@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @Entity
-@Table(name = "`user`")
+@Table(name = "usr")
 @NoArgsConstructor
 @Unique(value = "email", message = "The email was already registered")
 @Unique(value = "phone", message = "The phone was already used")
@@ -76,10 +76,8 @@ public class User extends AuditableEntity implements AuthUser, Named {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")},
-            foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE"),
-            inverseForeignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE")
+            joinColumns = {@JoinColumn(name = "user_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES usr(id) ON DELETE CASCADE"))},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", foreignKey = @ForeignKey(foreignKeyDefinition = "FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE"))}
     )
     private Set<Role> roles = new HashSet<>();
 

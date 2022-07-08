@@ -106,10 +106,13 @@
                                                    <option value="${entity.book.id}"
                                                            selected>${entity.book.title}</option>
                                                </c:if>
-                                           </form:select>
+                                       </form:select>
                                        <form:errors path="book" cssClass="invalid-feedback"/>
+                                       <c:if test="${not empty param.parentId}">
+                                           <form:errors path="reader" cssClass="invalid-feedback d-block"/>
+                                       </c:if>
                                        <c:if test="${edit}">
-                                        <small class="form-text text-muted">Cannot change reader after created</small>
+                                           <small class="form-text text-muted">Cannot change book after created</small>
                                        </c:if>
                                    </div>
                                </c:if>

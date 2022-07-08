@@ -85,6 +85,11 @@ public class BookInfo extends AuditableEntity implements Named, BookDetails {
         return title;
     }
 
+    @Transient
+    public String getMetaId() {
+        return id;
+    }
+
     @Override
     public void setName(String name) {
         this.title = name;

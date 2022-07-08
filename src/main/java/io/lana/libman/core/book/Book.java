@@ -48,6 +48,11 @@ public class Book extends AuditableEntity implements Named, BookDetails {
     @JoinColumn(name = "book_info_id")
     private BookInfo info;
 
+    @Transient
+    public String getMetaId() {
+        return getInfo().getId();
+    }
+
     public String getImage() {
         if (info == null) return image;
         return StringUtils.defaultIfBlank(image, info.getImage());

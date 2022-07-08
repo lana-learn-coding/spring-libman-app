@@ -121,21 +121,27 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Id</th>
-                                                <th scope="col">Name</th>
+                                                <th scope="col">Title</th>
                                                 <th scope="col">Updated At</th>
-                                                <th scope="col">Updated By</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:set var="content" value="${empty data ? [] : data.content}"/>
                                             <c:forEach var="item" items="${data.content}" varStatus="loop">
                                                 <tr>
-                                                    <th scope="row"><component:index pageMeta="${data}"
-                                                                                     i="${loop.index}"/></th>
-                                                    <td>${ item.id }</td>
-                                                    <td>${ item.name }</td>
-                                                    <td><helper:format-instant date="${item.updatedAt}"/></td>
-                                                    <td>${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</td>
+                                                    <th scope="row">
+                                                        <component:index pageMeta="${data}" i="${loop.index}"/>
+                                                    </th>
+                                                    <td style="max-width: 150px">${ item.id }</td>
+                                                    <td>
+                                                        <a href="${pageContext.request.contextPath}/library/books/infos/${item.metaId}/detail"
+                                                           up-instant up-follow up-layer="root">${ item.title }</a>
+                                                    </td>
+                                                    <td>
+                                                        <div><helper:format-instant date="${item.updatedAt}"/></div>
+                                                        <div>
+                                                            by ${ not empty item.updatedBy ? item.updatedBy : item.createdBy }</div>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>

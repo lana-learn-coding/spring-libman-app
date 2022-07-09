@@ -45,11 +45,11 @@
   </style>
 </head>
 <!--/*@thymesVar id="mail" type="io.lana.libman.core.services.mail.MailTemplate"*/-->
-<body style="margin: 30px auto;">
+<body style="margin: 20px auto;">
 <table style="width: 650px; background-color: #fff; border-radius: 8px">
   <tbody>
   <tr>
-    <td style="padding: 30px">
+    <td>
       <h6 style="font-weight: 600" th:if="${!#strings.isEmpty(mail.header())}" th:text="${mail.header()}"></h6>
       <p th:if="${#strings.isEmpty(mail.header())}">Hi There,</p>
       <p th:each="line : ${mail.lines()}" th:text="${line}"></p>

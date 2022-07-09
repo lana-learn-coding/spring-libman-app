@@ -15,7 +15,7 @@ class TestMailService implements MailService {
 
     @Override
     public void send(MailTemplate simpleMessage) {
-        log.info("START SENDING MOCK MAIL: {}", simpleMessage.template());
+        log.info("== START SENDING MOCK MAIL ==");
         log.info("FROM: {}", simpleMessage.from());
         log.info("TO: {}", StringUtils.join(simpleMessage.to(), ", "));
         if (simpleMessage.cc() != null && simpleMessage.cc().length > 0) {
@@ -36,7 +36,8 @@ class TestMailService implements MailService {
         if (StringUtils.isNotBlank(simpleMessage.sub())) {
             log.info("  Sub: {}", simpleMessage.sub());
         }
-        log.info("END SENDING MOCK MAIL");
+        log.info("TEMPLATE: {}", simpleMessage.template());
+        log.info("== END SENDING MOCK MAIL ==");
     }
 
     @Override

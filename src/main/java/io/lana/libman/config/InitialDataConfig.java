@@ -20,6 +20,7 @@ import io.lana.libman.core.user.role.PermissionRepo;
 import io.lana.libman.core.user.role.Role;
 import io.lana.libman.core.user.role.RoleRepo;
 import io.lana.libman.support.data.Gender;
+import io.lana.libman.support.data.IdUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -145,7 +146,7 @@ class InitialDataConfig implements ApplicationRunner {
         final var password = passwordEncoder.encode("1");
 
         userRepo.saveAll(List.of(
-                User.system(),
+                User.newInstance("SYSTEM", "SYSTEM", passwordEncoder.encode(IdUtils.newTimeSortableId()), Collections.emptyList(), SYSTEM),
                 User.newInstance("admin@admin", "admin", password, Collections.singleton(Role.admin()), SYSTEM),
                 User.newInstance("librarian@librarian", "librarian", password, Collections.singleton(Role.librarian()), SYSTEM)
         ));

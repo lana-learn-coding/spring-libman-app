@@ -165,15 +165,4 @@ public class User extends AuditableEntity implements AuthUser, Named {
         user.roles = new HashSet<>(roles);
         return user;
     }
-
-    public static User system() {
-        final var user = new User();
-        user.id = "SYSTEM";
-        user.email = "SYSTEM";
-        user.username = "SYSTEM";
-        user.password = "{noop}SYSTEM";
-        user.roles = new HashSet<>();
-        user.createdBy = Authorities.User.SYSTEM;
-        return user;
-    }
 }

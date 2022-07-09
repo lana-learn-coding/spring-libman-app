@@ -171,6 +171,14 @@
                                             <i class="fa fa-check fa-lg pe-2"></i>
                                             Batch
                                         </button>
+                                        <c:if test="${entity.overDueBooksCount > 0}">
+                                            <button up-href="${pageContext.request.contextPath}/library/readers/${id}/remind"
+                                                    class="btn btn-warning ms-2 d-none d-md-block" up-instant
+                                                    up-layer="new"
+                                                    up-history="false">
+                                                Remind (${entity.overDueBooksCount})
+                                            </button>
+                                        </c:if>
                                     </sec:authorize>
                                     </div>
                                 </div>

@@ -201,6 +201,43 @@ class ReaderController {
         return new ModelAndView("redirect:/library/readers");
     }
 
+    @GetMapping("{id}/remind")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE')")
+    public ModelAndView remindOverDue(@PathVariable String id) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return new ModelAndView("/library/reader/remind", Map.of(
+                "entity", entity,
+                "id", id
+        ));
+    }
+
+    @PostMapping("{id}/remind")
+    @PreAuthorize("hasAnyAuthority('ADMIN','BOOKBORROW_UPDATE')")
+    public String remindOverDue(@PathVariable String id, @RequestHeader String referer) {
+        final var entity = repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (entity.getOverDueBooksCount() == 0) {
+            ui.toast("Reader does not have any overdue book").success();
+            return "redirect:" + referer;
+        }
+
+        final var user = entity.getAccount();
+        final var overDues = borrowRepo.findAllOverDueByReaderId(id, Pageable.ofSize(10));
+        final var template = MailTemplate.defaultTemplate()
+                .to(user.getEmail())
+                .subject("Reminder: You have overdue books")
+                .lines("You have following overdue books:")
+                .sub("Please return those book to Libman Library");
+        overDues.forEach(b -> template.lines("- " + b.getTitle()));
+
+        if (overDues.getNumberOfElements() < overDues.getTotalElements()) {
+            template.lines("And " + (overDues.getTotalElements() - overDues.getNumberOfElements()) + " More ...");
+        }
+
+        mail.sendAsync(template);
+        ui.toast("Mail sent successfully").success();
+        return "redirect:" + referer;
+    }
+
     @GetMapping("{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN','READER_DELETE')")
     public ModelAndView confirmDelete(@PathVariable String id) {

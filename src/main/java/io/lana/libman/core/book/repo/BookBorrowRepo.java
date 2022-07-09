@@ -12,6 +12,10 @@ import java.util.Set;
 
 public interface BookBorrowRepo extends PagingAndSortingRepository<BookBorrow, String> {
 
+    @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info where b.reader.id = :id and b.returned is false and b.dueDate < :#{T(java.time.LocalDate).now()}",
+            countQuery = "select count(b.id) from BookBorrow b where b.reader.id = :id and b.returned is false and b.dueDate < :#{T(java.time.LocalDate).now()}")
+    Page<BookBorrow> findAllOverDueByReaderId(String id, Pageable pageable);
+
     Set<BookBorrow> findAllByIdInAndReturnedIsFalse(Collection<String> ids);
 
     @Query(value = "select b from BookBorrow b left join fetch b.book bo left join fetch bo.info i join b.income c " +

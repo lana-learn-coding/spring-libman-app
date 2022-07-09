@@ -36,11 +36,13 @@
         </td>
         <td <component:table-higlight
                 test="${isHighlight}"/>>
-            <div>From <span class="ms-1">
-                <helper:format-date date="${item.borrowDate}"/></span>
-            </div>
-            <div>To <span class="ms-1">
-                <helper:format-date date="${item.dueDate}"/></span>
+            <div <c:if test="${item.isOverDue()}">class="txt-danger"</c:if>>
+                <div>From <span class="ms-1">
+                    <helper:format-date date="${item.borrowDate}"/></span>
+                </div>
+                <div>To <span class="ms-1">
+                    <helper:format-date date="${item.dueDate}"/></span>
+                </div>
             </div>
         </td>
         <td <component:table-higlight

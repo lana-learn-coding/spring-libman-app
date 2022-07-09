@@ -66,6 +66,7 @@
                                          alt="image">
                                 </div>
                                 <div class="mt-2 mt-sm-0">
+                                    <div class="mb-1">Id <span class="small ms-2">${entity.id}</span></div>
                                     <div class="mb-1">Email
                                         <span class="ms-2 txt-primary">${entity.account.email}</span>
                                     </div>

@@ -81,13 +81,19 @@ class InitialDataConfig implements ApplicationRunner {
         initPermission();
         log.info("Generating users and readers");
         initUser();
-        log.info("Generating books and tags");
-        initTag();
-        initBook();
-        log.info("Generating borrow tickets");
-        initBookBorrow();
-        log.info("Generating favorites");
-        initFavorites();
+        log.info("Generating shelf and tags");
+        initShelf();
+
+        // fake data
+        if (config.isFakeDataEnabled()) {
+            initTag();
+            log.info("Generating books");
+            initBook();
+            log.info("Generating borrow tickets");
+            initBookBorrow();
+            log.info("Generating favorites");
+            initFavorites();
+        }
         log.info("Generation completed");
     }
 
@@ -125,6 +131,7 @@ class InitialDataConfig implements ApplicationRunner {
             roleRepo.saveAll(List.of(Role.admin(), Role.force(), librarian));
 
             final Set<Permission> amPerms = new HashSet<>();
+            amPerms.addAll(Permission.forReadWrite(Reader.class.getSimpleName()));
             amPerms.addAll(Permission.forReadWrite(User.class.getSimpleName()));
             amPerms.addAll(Permission.forReadWrite(Role.class.getSimpleName()));
             amPerms.addAll(Permission.forReadWrite(Permission.class.getSimpleName()));
@@ -140,10 +147,10 @@ class InitialDataConfig implements ApplicationRunner {
         userRepo.saveAll(List.of(
                 User.system(),
                 User.newInstance("admin@admin", "admin", password, Collections.singleton(Role.admin()), SYSTEM),
-                User.newInstance("librarian@librarian", "librarian", password, Collections.singleton(Role.librarian()), SYSTEM),
-                User.newInstance("reader@reader", "reader", password, Collections.emptyList(), SYSTEM),
-                User.newInstance("am@am", "am", password, Collections.singleton(Role.ofName("AM", Collections.emptyList())), Role.admin().getName())
+                User.newInstance("librarian@librarian", "librarian", password, Collections.singleton(Role.librarian()), SYSTEM)
         ));
+
+        if (!config.isFakeDataEnabled()) return;
 
         final var vnFaker = Faker.instance(new Locale("vi", "VN"));
         Stream.generate(() -> faker.internet().emailAddress())
@@ -178,7 +185,7 @@ class InitialDataConfig implements ApplicationRunner {
 
         // Create default reader
         final var reader = new Reader();
-        reader.setAccount(userRepo.findUserForAuth("reader").orElseThrow());
+        reader.setAccount(User.newInstance("reader@reader", "reader", password, Collections.emptyList(), SYSTEM));
         reader.setBorrowLimit(faker.number().numberBetween(8, 16));
         reader.setCreatedBy(SYSTEM);
         readerRepo.save(reader);
@@ -242,15 +249,19 @@ class InitialDataConfig implements ApplicationRunner {
                         seriesRepo.save(series);
                     });
         }
+    }
 
-        if (shelfRepo.count() == 0) {
-            shelfRepo.save(Shelf.storage());
-            List.of("Historical", "Science", "Manga", "Travel", "Self-help / Personal").forEach(name -> {
-                final var shelf = Shelf.ofName(name);
-                shelf.setCreatedBy(SYSTEM);
-                shelfRepo.save(shelf);
-            });
-        }
+    @Transactional
+    void initShelf() {
+        if (shelfRepo.count() > 0) return;
+        shelfRepo.save(Shelf.storage());
+
+        if (!config.isFakeDataEnabled()) return;
+        List.of("Historical", "Science", "Manga", "Travel", "Self-help / Personal").forEach(name -> {
+            final var shelf = Shelf.ofName(name);
+            shelf.setCreatedBy(SYSTEM);
+            shelfRepo.save(shelf);
+        });
     }
 
     @Transactional

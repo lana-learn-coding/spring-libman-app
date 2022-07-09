@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class ConfigFacade {
+    @Value("${config.data.enable-fake-data}")
+    private final boolean enableFakeData;
+
     @Value("${config.vfs.base-path}")
     private final String baseFile;
 
@@ -35,4 +38,7 @@ public class ConfigFacade {
         return appUrl;
     }
 
+    public boolean isFakeDataEnabled() {
+        return enableFakeData;
+    }
 }

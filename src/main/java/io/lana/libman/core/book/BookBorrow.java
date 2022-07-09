@@ -139,7 +139,10 @@ public class BookBorrow extends AuditableEntity implements BookDetails {
     @PreUpdate
     @PrePersist
     private void calculateTotalCost() {
-        if (!returned) totalCost = null;
+        if (!returned) {
+            totalCost = null;
+            return;
+        }
         if (totalCost != null) return;
         totalCost = Precision.round(getTotalBorrowCost() + getTotalOverDueAdditionalCost(), 2);
     }

@@ -12,7 +12,7 @@
 
     <groupId>io.lana</groupId>
     <artifactId>libman</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <name>libman</name>
     <description>Library management app</description>
     <packaging>war</packaging>

@@ -57,6 +57,7 @@ public class MailTemplate {
     }
 
     public MailTemplate lines(String line, String... lines) {
+        this.lines.add(line);
         this.lines.addAll(Arrays.asList(lines));
         return this;
     }
@@ -64,6 +65,10 @@ public class MailTemplate {
     public MailTemplate setLines(Collection<String> lines) {
         this.lines = new ArrayList<>(lines);
         return this;
+    }
+
+    public MailTemplate clearLines() {
+        return setLines(new ArrayList<>());
     }
 
     private MailTemplate(String template) {

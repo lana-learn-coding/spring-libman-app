@@ -190,6 +190,7 @@ class ReaderController {
         mail.sendAsync(MailTemplate.changePassword()
                 .to(user.getEmail())
                 .subject("Welcome to Libman")
+                .clearLines()
                 .lines("Please follow this link to setup your password")
                 .link(tokenService.createResetPasswordLink(user))
                 .sub(MailTemplate.EMPTY));

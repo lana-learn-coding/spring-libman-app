@@ -213,7 +213,7 @@
                                     <c:set var="content" value="${empty data ? [] : data.content}"/>
                                     <c:forEach var="item" items="${data.content}" varStatus="loop">
                                         <c:set var="isHighlight" value="${item.id == highlight}"/>
-                                        <tr>
+                                        <tr id="${item.id}">
                                             <th scope="row" <component:table-higlight
                                                     test="${isHighlight}"/>>${loop.index + 1}</th>
                                             <td <component:table-higlight test="${isHighlight}"/>>

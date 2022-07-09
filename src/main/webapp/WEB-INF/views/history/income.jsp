@@ -176,7 +176,7 @@
                                                             </c:if>
                                                         </c:if>
                                                         <c:if test="${empty item.reader}">
-                                                            <div>READER OR TICKET DELETED</div>
+                                                            <div>READER DELETED</div>
                                                         </c:if>
                                                     </td>
                                                     <td>

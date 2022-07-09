@@ -73,7 +73,6 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Id</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Borrow</th>
                                         <th scope="col">Cost</th>
@@ -91,30 +90,17 @@
                                                     test="${isHighlight}"/>>
                                                 <component:index pageMeta="${data}" i="${loop.index}"/>
                                             </th>
-                                            <td <component:table-higlight
-                                                    test="${isHighlight}"/>>
-                                                <div style="max-width: 120px">
-                                                        ${ item.id }
-                                                </div>
-                                            </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <c:if test="${not empty item.book}">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail"
-                                                       up-follow>${item.title}
+                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail#${item.book.id}"
+                                                       up-follow up-layer="root">${item.title}
                                                     </a>
+                                                    <small class="d-block text-muted">${item.book.id}</small>
                                                 </c:if>
                                                 <c:if test="${empty item.book}">
                                                     <div>${item.title} (Deleted)</div>
                                                 </c:if>
-                                                <div>
-                                                    <c:if test="${empty item.returnDate}">
-                                                        <span class="badge badge-warning">Borrowing</span>
-                                                    </c:if>
-                                                    <c:if test="${not empty item.returnDate}">
-                                                        <span class="badge badge-success">Returned</span>
-                                                    </c:if>
-                                                </div>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>

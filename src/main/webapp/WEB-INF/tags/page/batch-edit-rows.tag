@@ -30,9 +30,10 @@
         </td>
         <td  <component:table-higlight
                 test="${isHighlight}"/>>
-            <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail"
+            <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail#${item.book.id}"
                up-follow>${item.title}
             </a>
+            <small class="d-block text-muted">${item.book.id}</small>
         </td>
         <td <component:table-higlight
                 test="${isHighlight}"/>>

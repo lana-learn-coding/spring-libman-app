@@ -126,12 +126,13 @@
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <c:if test="${not empty item.book}">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail"
+                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail#${item.book.id}"
                                                        up-follow>${item.title}
                                                         <c:if test="${not empty item.releaseYear}">
                                                         <span class="ms-1">(${item.releaseYear})</span>
                                                     </c:if>
                                                     </a>
+                                                    <small class="d-block text-muted">${item.book.id}</small>
                                                 </c:if>
                                                 <c:if test="${empty item.book}">
                                                     <div up-follow>${item.title}

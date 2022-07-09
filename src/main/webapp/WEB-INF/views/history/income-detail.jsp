@@ -162,9 +162,10 @@
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
                                                 <c:if test="${not empty item.book}">
-                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail"
+                                                    <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail#${item.book.id}"
                                                        up-follow>${item.title}
                                                     </a>
+                                                    <small class="d-block text-muted">${item.book.id}</small>
                                                 </c:if>
                                                 <c:if test="${empty item.book}">
                                                     <div>${item.title} (Deleted)</div>
@@ -228,7 +229,7 @@
                             </div>
                             <nav class="d-flex justify-content-between mt-3">
                                 <component:pagination
-                                        href="${pageContext.request.contextPath}/library/readers/${entity.id}/history"
+                                        href="${pageContext.request.contextPath}/library/history/income/${entity.id}/detail"
                                         pageMeta="${data}" target="#table"
                                         up="up-scroll='layer' up-transition='cross-fade'"/>
                                 <div class="d-none d-md-block pt-2">

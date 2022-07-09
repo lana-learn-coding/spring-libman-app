@@ -245,17 +245,20 @@
                                             </td>
                                             <td  <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail"
+                                                <a href="${pageContext.request.contextPath}/library/books/infos/${item.book.info.id}/detail#${item.book.id}"
                                                    up-follow>${item.title}
                                                 </a>
+                                                <small class="d-block text-muted">${item.book.id}</small>
                                             </td>
                                             <td <component:table-higlight
                                                     test="${isHighlight}"/>>
-                                                <div>From <span class="ms-1">
+                                                <div <c:if test="${item.isOverDue()}">class="txt-danger"</c:if>>
+                                                    <div>From <span class="ms-1">
                                                         <helper:format-date date="${item.borrowDate}"/></span>
-                                                </div>
-                                                <div>To <span class="ms-1">
+                                                    </div>
+                                                    <div>To <span class="ms-1">
                                                         <helper:format-date date="${item.dueDate}"/></span>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td <component:table-higlight

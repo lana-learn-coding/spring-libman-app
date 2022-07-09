@@ -112,6 +112,15 @@
                                             </span>
                                         </div>
                                     </c:if>
+                                    <c:if test="${not empty entity.roles}">
+                                        <div class="mb-1">Roles
+                                            <div class="ms-2 d-inline">
+                                                <c:forEach items="${entity.roles}" var="item">
+                                                    <span class="badge badge-primary">${item.name}</span>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                             <c:if test="${not empty entity.address}">

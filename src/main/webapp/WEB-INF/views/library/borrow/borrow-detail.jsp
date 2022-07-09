@@ -84,7 +84,7 @@
                                         <c:if test="${not empty entity.book}">
                                             <a class="ms-2 d-inline"
                                                href="${pageContext.request.contextPath}/library/books/infos/${entity.book.info.id}/detail"
-                                               up-follow>${entity.title}</a>
+                                               up-follow up-layer="root">${entity.title}</a>
                                         </c:if>
                                         <c:if test="${not empty entity.releaseYear}">(${entity.releaseYear})</c:if>
                                     </div>
@@ -111,7 +111,7 @@
                                     <c:if test="${not empty entity.reader}">
                                         <hr class="my-2">
                                         <div class="mb-1">Borrower
-                                            <a class="ms-2" up-follow
+                                            <a class="ms-2" up-follow up-layer="root"
                                                href="${pageContext.request.contextPath}/library/readers/${entity.reader.id}/detail">
                                                     ${entity.reader.account.email}
                                             </a>
